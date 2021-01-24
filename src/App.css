@@ -1,19 +1,6 @@
-header{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: stretch;
-}
-h1,h2{
-    color: cornsilk;
-}
-img{
-    width: 250px;
-    height: 200px;
-}
-.bricking{
-    align-self: start;
-}
-.worker{ 
-    align-self: flex-end;
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: stretch;
 }
