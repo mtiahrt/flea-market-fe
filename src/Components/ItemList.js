@@ -32,6 +32,7 @@ const ItemList = () => {
   );
 };
 const StyledList = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 `;
 export default ItemList;
