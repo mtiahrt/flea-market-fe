@@ -6,6 +6,7 @@ import styled from "styled-components";
 const myQuery = gql`
   query {
     saleItemsList {
+      id
       description
       manufacturerName
       name
@@ -22,6 +23,7 @@ const ItemList = () => {
     <StyledList className="item-list">
       {data.saleItemsList.map((item) => (
         <Item
+          id={item.id}
           name={item.name}
           manufacturerName={item.manufacturerName}
           description={item.description}

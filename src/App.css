@@ -4,3 +4,16 @@ header {
   align-items: center;
   align-content: stretch;
 }
+/* .styled-heart {
+  padding: 4%;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+  color: #e5195f;
+}
+.svg-heart:hover path {
+  fill: #e5195f;
+}
+.svg-heart path {
+  fill: #15195f;
+} */
