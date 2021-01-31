@@ -72,7 +72,9 @@ const DropdownMenu = () => {
         onEnter={calcHeight}
       >
         <div className="menu">
-          <DropdownItem leftIcon={<ArrowIcon />} goToMenu="main" />
+          <DropdownItem leftIcon={<ArrowIcon />} goToMenu="main">
+            <h2>Clothing & Apperal</h2>
+          </DropdownItem>
           <DropdownItem leftIcon="👕">Womans Shirts</DropdownItem>
           <DropdownItem leftIcon="👖">Womans Jeans</DropdownItem>
           <DropdownItem leftIcon="👗">Womans Dress</DropdownItem>
