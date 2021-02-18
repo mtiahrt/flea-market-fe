@@ -11,7 +11,8 @@ header {
   --nav-size: 60px;
   --border: 1px solid #474a4d;
   --border-radius: 8px;
-  --speed: 500ms;
+  --transition-speed: 500ms;
+  --translateXExitPercent: 110%;
 }
 
 ul {
@@ -72,7 +73,7 @@ a {
   height: 20px;
 }
 
-/* Dropdown Menu */
+/* parent Menu */
 .dropdown {
   position: absolute;
   top: 58px;
@@ -83,7 +84,8 @@ a {
   border-radius: var(--border-radius);
   padding: 1rem;
   overflow: hidden;
-  transition: height var(--speed) ease;
+  height: 0;
+  transition: height var(--transition-speed) ease;
 }
 .menu {
   width: 100%;
@@ -93,7 +95,7 @@ a {
   display: flex;
   align-items: center;
   border-radius: var(--border-radius);
-  transition: background var(--speed);
+  transition: background var(--transition-speed);
   padding: 0.5rem;
 }
 .menu-item .icon-button {
@@ -109,45 +111,33 @@ a {
   margin-left: auto;
 }
 /* CSSTransition classes  */
-.menu-primary-enter {
+/*  menu-primary-appear menu-primary-appear-active */
+/*  menu-primary-appear-done menu-primary-enter-done */
+.menu-primary-appear {
   position: absolute;
-  transform: translateX(-110%);
+  transform: translateX(var(--translateXExitPercent));
 }
-.menu-primary-enter-active {
+.menu-primary-appear-active {
   transform: translateX(0%);
-  transition: all var(--speed) ease;
+  transition: all var(--transition-speed) ease;
 }
 .menu-primary-exit {
   position: absolute;
 }
 .menu-primary-exit-active {
-  transform: translateX(-110%);
-  transition: all var(--speed) ease;
+  transform: translateX(var(--translateXExitPercent));
+  transition: all var(--transition-speed) ease;
 }
 .menu-secondary-enter {
-  transform: translateX(110%);
+  transform: translateX(var(--translateXExitPercent));
 }
 .menu-secondary-enter-active {
   transform: translateX(0%);
-  transition: all var(--speed) ease;
+  transition: all var(--transition-speed) ease;
 }
 .menu-secondary-exit {
 }
 .menu-secondary-exit-active {
-  transform: translateX(110%);
-  transition: all var(--speed) ease;
+  transform: translateX(var(--translateXExitPercent));
+  transition: all var(--transition-speed) ease;
 }
-
-/* .styled-heart {
-  padding: 4%;
-  height: 16px;
-  width: 16px;
-  cursor: pointer;
-  color: #e5195f;
-}
-.svg-heart:hover path {
-  fill: #e5195f;
-}
-.svg-heart path {
-  fill: #15195f;
-} */

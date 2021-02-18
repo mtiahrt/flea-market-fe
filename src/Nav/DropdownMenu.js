@@ -40,10 +40,12 @@ const DropdownMenu = () => {
     >
       <CSSTransition
         in={activeMenu === "main"}
+        appear={true}
         unmountOnExit
         timeout={500}
         classNames="menu-primary"
         onEnter={calcHeight}
+        onExit={calcHeight}
       >
         <div className="menu">
           <DropdownItem leftIcon={<BoltIcon />}>My Profile</DropdownItem>
