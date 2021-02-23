@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { ReactComponent as CogIcon } from "../icons/cog.svg";
 import { ReactComponent as ChevronIcon } from "../icons/chevron.svg";
 import { ReactComponent as ArrowIcon } from "../icons/arrow.svg";
@@ -6,12 +6,17 @@ import { ReactComponent as BoltIcon } from "../icons/bolt.svg";
 import { CSSTransition } from "react-transition-group";
 
 const DropdownMenu = () => {
-  const [activeMenu, setActiveMenu] = useState("main"); //settings, animals and so on
-  const [menuHeight, setMenuHeight] = useState(null); // state for the menu height
+  const [activeMenu, setActiveMenu] = useState(""); //for setting what menu to show
+  const [menuHeight, setMenuHeight] = useState(0); // state for the menu height
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    setMenuHeight(dropdownRef.current?.firstChild.offsetHeight);
+  useLayoutEffect(() => {
+    setActiveMenu("main");
+    return () => {
+      console.log(activeMenu);
+      setActiveMenu("");
+      setMenuHeight(0);
+    };
   }, []);
 
   function calcHeight(ele) {
@@ -40,7 +45,6 @@ const DropdownMenu = () => {
     >
       <CSSTransition
         in={activeMenu === "main"}
-        appear={true}
         unmountOnExit
         timeout={500}
         classNames="menu-primary"
