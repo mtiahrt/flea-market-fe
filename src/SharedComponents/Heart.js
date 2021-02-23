@@ -13,7 +13,6 @@ const Heart = () => {
   return (
     <StyledHeart
       onClick={handleClickIconEvent}
-      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
       fill="#e5195f"
     >

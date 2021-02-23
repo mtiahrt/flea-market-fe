@@ -21,7 +21,7 @@ const Item = ({ id, name, manufacturerName, description, price }) => {
         <CardFieldset>
           <CardOptionsNote>{name}</CardOptionsNote>
           <CardOptionsNote>{description}</CardOptionsNote>
-          <CardOptionsNote>Price {price}</CardOptionsNote>
+          <CardOptionsNote>Price ${price}</CardOptionsNote>
         </CardFieldset>
         <CardFieldset>
           <CardButton>View Details</CardButton>
