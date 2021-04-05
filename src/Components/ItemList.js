@@ -15,21 +15,6 @@ const myQuery = gql`
   }
 `;
 
-//subscirption query
-// subscription{
-//   listen(topic: "saleItemInsertHappen"){
-//     relatedNode{
-//       ... on SaleItem{
-//         id
-//         name
-//         manufacturerName
-//         description
-//         price
-//       }
-//     }
-//   }
-// }
-
 const ItemList = () => {
   const { loading, error, data } = useQuery(myQuery);
   if (loading) return <p>Loading...</p>;

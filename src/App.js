@@ -3,6 +3,7 @@ import ItemList from "./Components/ItemList";
 import NavBar from "./Nav/NavBar";
 import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
+import NewItemList from "./Components/NewItemList";
 
 import { ReactComponent as BellIcon } from "./icons/bell.svg";
 import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
@@ -23,6 +24,7 @@ function App() {
       <header>
         <h1>gretchenkelly shop</h1>
       </header>
+      <NewItemList />
       <ItemList></ItemList>
     </div>
   );
