@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.3.7",
+    "@apollo/client": "^3.3.11",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
+    "apollo-link-ws": "^1.0.20",
     "framer-motion": "^3.2.2-rc.1",
     "graphql": "^15.4.0",
     "react": "^17.0.1",
@@ -18,6 +19,7 @@
     "react-scripts": "4.0.1",
     "react-transition-group": "^4.4.1",
     "styled-components": "^5.2.1",
+    "subscriptions-transport-ws": "^0.9.18",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
