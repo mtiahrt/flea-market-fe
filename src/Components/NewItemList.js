@@ -20,7 +20,7 @@ const mySubscription = gql`
 `;
 
 const NewItemList = () => {
-  const {listen: {relatedNode}, loading, error } = useSubscription(mySubscription);
+  const {listen: {relatedNode = {}}, loading, error } = useSubscription(mySubscription);
   if (error) return <p>An error occured when loading a new arrival</p>;
   return (
     <div>
