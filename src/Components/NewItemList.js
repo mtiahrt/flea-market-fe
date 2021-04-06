@@ -20,7 +20,7 @@ const mySubscription = gql`
 `;
 
 const NewItemList = () => {
-  const { data, loading, error } = useSubscription(mySubscription);
+  const {listen: {relatedNode}, loading, error } = useSubscription(mySubscription);
   if (error) return <p>An error occured when loading a new arrival</p>;
   return (
     <div>
@@ -28,11 +28,11 @@ const NewItemList = () => {
       <StyledList className="new-item-list">
         {!loading && (
           <Item
-            id={data?.listen?.relatedNode.id}
-            name={data?.listen?.relatedNode.name}
-            manufacturerName={data?.listen?.relatedNode.manufacturerName}
-            description={data?.listen?.relatedNode.description}
-            price={data?.listen?.relatedNode.price}
+            id={relatedNode.id}
+            name={relatedNode.name}
+            manufacturerName={relatedNode.manufacturerName}
+            description={relatedNode.description}
+            price={relatedNode.price}
           ></Item>
         )}
       </StyledList>
