@@ -21,7 +21,7 @@ const mySubscription = gql`
 
 const NewItemList = () => {
   useEffect(() => {
-    const [relatedNodes, setRelatedNodes] = useState([]);
+    //const [relatedNodes, setRelatedNodes] = useState([]);
     console.log("on mount");
   }, []);
 
@@ -33,21 +33,21 @@ const NewItemList = () => {
     listen: { relatedNode },
   } = data;
 
-  setRelatedNodes(relatedNodes.push(relatedNode));
+  // setRelatedNodes(relatedNodes.push(relatedNode));
 
   return (
     <div>
       <h1>New Arrivals!!</h1>
       <StyledList className="new-item-list">
-        {relatedNodes.map((relatedNode) => {
-          <Item
-            id={relatedNode.id}
-            name={relatedNode.name}
-            manufacturerName={relatedNode.manufacturerName}
-            description={relatedNode.description}
-            price={relatedNode.price}
-          ></Item>;
-        })}
+        {/* {relatedNodes.map((relatedNode) => { */}
+        <Item
+          id={relatedNode.id}
+          name={relatedNode.name}
+          manufacturerName={relatedNode.manufacturerName}
+          description={relatedNode.description}
+          price={relatedNode.price}
+        ></Item>
+        ;{/* })} */}
       </StyledList>
     </div>
   );

@@ -9,11 +9,11 @@ import { split, HttpLink } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 const httpLink = new HttpLink({
-  uri: "https://flea-market-service.herokuapp.com/graphql",
+  uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_END_POINT_URI`],
 });
 
 const wsLink = new WebSocketLink({
-  uri: "wss://flea-market-service.herokuapp.com/graphql",
+  uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_WEB_SOCKET_URI`],
   options: {
     reconnect: true,
   },
