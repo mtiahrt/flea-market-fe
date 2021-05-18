@@ -4,6 +4,7 @@ import NavBar from "./Nav/NavBar";
 import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
 import NewItemList from "./Components/NewItemList";
+import Facebook from "./Components/Logins/Facebook";
 
 import { ReactComponent as BellIcon } from "./icons/bell.svg";
 import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
@@ -23,6 +24,7 @@ function App() {
       </NavBar>
       <header>
         <h1>gretchenkelly shop</h1>
+        <Facebook/>
       </header>
       <NewItemList />
       <ItemList></ItemList>
