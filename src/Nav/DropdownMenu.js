@@ -13,7 +13,6 @@ const DropdownMenu = () => {
   useLayoutEffect(() => {
     setActiveMenu("main");
     return () => {
-      console.log(activeMenu);
       setActiveMenu("");
       setMenuHeight(0);
     };

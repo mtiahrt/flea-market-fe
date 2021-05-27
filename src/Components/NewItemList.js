@@ -33,7 +33,7 @@ const NewItemList = () => {
     },  
   )
   if (error) return <p>An error occured when loading a new arrival</p>;
-  if (loading) return <div></div>;
+  if (loading) return <div>Listening for new items</div>;
 
   return (
     <div>

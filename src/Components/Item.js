@@ -12,7 +12,7 @@ import {
 
 const Item = ({ id, name, manufacturerName, description, price }) => {
   return (
-    <CardWrapper key={id} className="sale-item">
+    <CardWrapper className="sale-item">
       <Heart></Heart>
       <CardHeader>
         <CardHeading>{manufacturerName}</CardHeading>
