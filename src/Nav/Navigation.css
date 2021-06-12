@@ -52,6 +52,11 @@
   height: 20px;
 }
 
+.icon-button img{
+  border-radius: 50%;
+  width: 130%;
+}
+
 .dropdown {
   position: absolute;
   top: 58px;

@@ -1,16 +1,10 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
 import FacebookLogin from 'react-facebook-login';
 import { LoginContext } from "../../Contexts/LoginContext"
 
 export default function Facebook() {
-    const setIsLoggedIn = useContext(LoginContext);
-    const [userProfile, setUserProfile] = useState({
-        isLoggedIn: false,
-        userID: '',
-        name: '',
-        email: '',
-        picture: ''
-    });
+    const {setUserProfile} = useContext(LoginContext);
+
     const responseFacebook = response => {
         setUserProfile({
             isLoggedIn: true,
@@ -19,8 +13,6 @@ export default function Facebook() {
             email: response.email,
             picture: response.picture.data.url
         });
-        setIsLoggedIn(true);
-        console.table(userProfile)
     }
     return (
     <FacebookLogin
