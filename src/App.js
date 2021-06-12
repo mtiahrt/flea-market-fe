@@ -4,6 +4,8 @@ import NavBar from "./Nav/NavBar";
 import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
 import Facebook from "./Components/Logins/Facebook";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import Profile from './Components/Profile';
 
 import NavItemProfile from "./Nav/NavItemProfile";
@@ -18,21 +20,29 @@ function App() {
 
   return (
     <div className="App">
-      <LoginContext.Provider value={{userProfile, setUserProfile}} >
-        <NavBar>
-          <NavItemProfile imgURL={userProfile.picture}/>
-          <NavItem icon={<PlusIcon />}> </NavItem>
-          <NavItem icon={<MessengerIcon />}></NavItem>
-          <NavItem icon={<CaretIcon />}>
-            <DropdownMenu></DropdownMenu>
-          </NavItem>
-        </NavBar>
-        <header>
-          <h1>Gretchenkelly Shop</h1>
-        </header>
-        <Profile/>
-        {userProfile.isLoggedIn ? <ItemList/> : <Facebook/>}
-      </LoginContext.Provider>
+      <Router>
+        <LoginContext.Provider value={{userProfile, setUserProfile}} >
+          <NavBar>
+            <NavItemProfile imgURL={userProfile.picture}/>
+            <NavItem icon={<PlusIcon />}> </NavItem>
+            <NavItem icon={<MessengerIcon />}></NavItem>
+            <NavItem icon={<CaretIcon />}>
+              <DropdownMenu></DropdownMenu>
+            </NavItem>
+          </NavBar>
+          <Switch>
+            <Route exact path="/">
+              <header>
+                <h1>Gretchenkelly Shop</h1>
+              </header>
+              {userProfile.isLoggedIn ? <ItemList/> : <Facebook/>}
+            </Route>
+            <Router path="/Profile">
+              <Profile userProfile={userProfile}/>
+            </Router>
+          </Switch>
+        </LoginContext.Provider>
+      </Router>
     </div>
   );
 }

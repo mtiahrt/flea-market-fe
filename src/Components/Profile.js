@@ -1,8 +1,6 @@
-import React, {useContext} from 'react';
-import { LoginContext } from "../Contexts/LoginContext";
+import React from 'react';
 
-const Profile = () => {
-    const {userProfile} = useContext(LoginContext);
+const Profile = ({userProfile}) => {
     return (
         <div>
             <h3>User id: {userProfile.userID}</h3>
