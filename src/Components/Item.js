@@ -23,9 +23,6 @@ const Item = ({ id, name, manufacturerName, description, price }) => {
           <CardOptionsNote>{description}</CardOptionsNote>
           <CardOptionsNote>Price ${price}</CardOptionsNote>
         </CardFieldset>
-        <CardFieldset>
-          <CardButton>View Details</CardButton>
-        </CardFieldset>
       </CardBody>
     </CardWrapper>
   );

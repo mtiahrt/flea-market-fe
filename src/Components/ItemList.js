@@ -2,7 +2,7 @@ import React from "react";
 import Item from "./Item";
 import { useQuery, gql } from "@apollo/client";
 import styled from "styled-components";
-// import NewItemList from "../Components/NewItemList"
+import {Link} from 'react-router-dom';
 
 
 const myQuery = gql`
@@ -23,16 +23,17 @@ const ItemList = () => {
   if (error) return <p>Error :(</p>;
   return (
     <StyledList className="item-list">
-      {/* TODO: add this back later... <NewItemList></NewItemList> */}
       {data.saleItemsList.map((item) => (
-        <Item
-        key={item.id}
-          id={item.id}
-          name={item.name}
-          manufacturerName={item.manufacturerName}
-          description={item.description}
-          price={item.price}
-        ></Item>
+        <Link to={`DetailedItem/${item.id}`}>
+          <Item
+          key={item.id}
+            id={item.id}
+            name={item.name}
+            manufacturerName={item.manufacturerName}
+            description={item.description}
+            price={item.price}
+          ></Item>
+        </Link>
       ))}
     </StyledList>
   );

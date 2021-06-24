@@ -7,13 +7,14 @@ import Facebook from "./Components/Logins/Facebook";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Profile from './Components/Profile';
-
+import ItemDetail from './Components/DetailedItem';
 import NavItemProfile from "./Nav/NavItemProfile";
 import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
 import { ReactComponent as CaretIcon } from "./icons/caret.svg";
 import { ReactComponent as PlusIcon } from "./icons/plus.svg";
 import { useState } from "react";
 import { LoginContext} from './Contexts/LoginContext';
+import DetailedItem from "./Components/DetailedItem";
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -37,9 +38,10 @@ function App() {
               </header>
               {userProfile.isLoggedIn ? <ItemList/> : <Facebook/>}
             </Route>
-            <Router path="/Profile">
+            <Route path="/Profile">
               <Profile userProfile={userProfile}/>
-            </Router>
+            </Route>
+            <Route path="/DetailedItem/:id" children={<DetailedItem/>}></Route>
           </Switch>
         </LoginContext.Provider>
       </Router>
