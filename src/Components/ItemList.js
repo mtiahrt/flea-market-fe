@@ -26,7 +26,7 @@ const ItemList = () => {
       {data.saleItemsList.map((item) => (
         <Link to={`DetailedItem/${item.id}`}>
           <Item
-          key={item.id}
+            key={item.id}
             id={item.id}
             name={item.name}
             manufacturerName={item.manufacturerName}

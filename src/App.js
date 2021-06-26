@@ -7,7 +7,6 @@ import Facebook from "./Components/Logins/Facebook";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Profile from './Components/Profile';
-import ItemDetail from './Components/DetailedItem';
 import NavItemProfile from "./Nav/NavItemProfile";
 import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
 import { ReactComponent as CaretIcon } from "./icons/caret.svg";

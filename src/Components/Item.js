@@ -6,8 +6,7 @@ import {
   CardHeading,
   CardBody,
   CardFieldset,
-  CardOptionsNote,
-  CardButton,
+  CardOptionsNote
 } from "../SharedComponents/Card";
 
 const Item = ({ id, name, manufacturerName, description, price }) => {
