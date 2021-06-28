@@ -20,7 +20,6 @@ query($saleId: Int!) {
   }
 `
 
-
 function DetailedItem() {
     const {id} = useParams();
     const saleId = parseInt(id);
@@ -32,7 +31,7 @@ function DetailedItem() {
     console.log(data);
     return (
         <div>
-            <h1>Item Details</h1>
+            <h2>Item Details</h2>
             <h4>Name: {data.saleItem.name}</h4>
             <h4>Manufacturer Name: {data.saleItem.manufacturerName}</h4>
             <h4>Description: {data.saleItem.description}</h4>
@@ -40,6 +39,9 @@ function DetailedItem() {
             {data.saleItem.itemImagesList.map(img => (
                 <img alt="sale item" src={img.url}/>
             ))}
+            <button>Return to Home</button>
+            <button>Add to Cart</button>
+            <button>Buy Now</button>
         </div>
     )
 }
