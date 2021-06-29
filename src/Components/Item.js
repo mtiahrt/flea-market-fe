@@ -9,7 +9,7 @@ import {
   CardOptionsNote
 } from "../SharedComponents/Card";
 
-const Item = ({ id, name, manufacturerName, description, price }) => {
+const Item = ({ name, manufacturerName, description, price, testId }) => {
   return (
     <CardWrapper className="sale-item">
       <Heart></Heart>
@@ -18,7 +18,7 @@ const Item = ({ id, name, manufacturerName, description, price }) => {
       </CardHeader>
       <CardBody>
         <CardFieldset>
-          <CardOptionsNote>{name}</CardOptionsNote>
+          <CardOptionsNote data-testid={testId}>{name}</CardOptionsNote>
           <CardOptionsNote>{description}</CardOptionsNote>
           <CardOptionsNote>Price ${price}</CardOptionsNote>
         </CardFieldset>

@@ -9,7 +9,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
     "apollo-link-ws": "^1.0.20",
     "framer-motion": "^3.2.2-rc.1",
@@ -50,7 +49,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.3",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5"
+    "enzyme-adapter-react-16": "^1.15.5",
+    "react-test-render": "^1.1.2"
   }
 }
