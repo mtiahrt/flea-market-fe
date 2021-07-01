@@ -49,9 +49,6 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^11.2.3",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5",
-    "react-test-render": "^1.1.2"
+    "@testing-library/react": "^11.2.3"
   }
 }
