@@ -5,7 +5,7 @@ const NavItemProfile = ({imgURL}) => {
     return (
         <li className="nav-item">
             <Link to="/Profile" className="icon-button">
-                <img src={imgURL}/>
+                <img alt='profile' src={imgURL}/>
             </Link>
         </li>
     )
