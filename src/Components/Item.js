@@ -18,7 +18,7 @@ const Item = ({ name, manufacturerName, description, price, testId }) => {
       </CardHeader>
       <CardBody>
         <CardFieldset>
-          <CardOptionsNote data-testid={testId}>{name}</CardOptionsNote>
+          <CardOptionsNote>{name}</CardOptionsNote>
           <CardOptionsNote>{description}</CardOptionsNote>
           <CardOptionsNote>Price ${price}</CardOptionsNote>
         </CardFieldset>
