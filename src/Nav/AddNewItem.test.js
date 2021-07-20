@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import NewItem from './AddNewItem';
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent, render, cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-const setup = labelText => {
-    const utils = render(<NewItem />);
-    const input = utils.getByLabelText(labelText)
-    return {
-      input,
-      ...utils,
-    }
+afterEach(() => {
+  cleanup();
+});
+
+const setup = () => {
+    return render(<NewItem />);
   }
 
 it("renders without crashing", () => {
@@ -19,8 +18,9 @@ it("renders without crashing", () => {
 });
 
 it("price field allows numbers and only 1 decimal only", () => {
-    //get the price field
-    const {input} = setup('price-input');
+  //get the price field
+    const component = setup();
+    const input = component.getByLabelText('price-input')
     //put letters and numbers in it
     fireEvent.change(input, {target: {value: '/!@#$%^&*()!+=,`~{};"<>?-[]"\"'}});
     expect(input.value).toBe('');
@@ -42,7 +42,25 @@ it("price field allows numbers and only 1 decimal only", () => {
 });
 
 it("save button disabled when appropriate", () => {
-    
+  const component = setup();
+  const saveButton = component.getByLabelText('save-item');
+  
+  const titleInput = component.getByLabelText('title-input');
+  fireEvent.change(titleInput, {target: {value: 'Test title'}});
+  expect(saveButton).toBeDisabled();
+  
+  const nameInput = component.getByLabelText('name-input');
+  fireEvent.change(nameInput, {target: {value: 'Test name'}});
+  expect(saveButton).toBeDisabled();
+  
+  const descriptionInput = component.getByLabelText('description-input');
+  fireEvent.change(descriptionInput, {target: {value: 'Test description'}});
+  expect(saveButton).toBeDisabled();
+  
+  const priceInput = component.getByLabelText('price-input');
+  fireEvent.change(priceInput, {target: {value: '35.21'}});
+  //test that the button is enabled
+  expect(saveButton).toBeEnabled();
 });
 
 it("save button enabled when appropriate", () => {
