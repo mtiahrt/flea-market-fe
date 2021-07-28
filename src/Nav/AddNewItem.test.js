@@ -1,20 +1,75 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
-import NewItem from './AddNewItem';
-import {fireEvent, render, cleanup} from '@testing-library/react';
+import ReactDOM from 'react-dom';
+import { MockedProvider } from '@apollo/client/testing'
+import NewItem, {ADD_SALE_ITEM} from './AddNewItem';
+import {fireEvent, render, cleanup, screen, findByText} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
 afterEach(() => {
   cleanup();
 });
-
-const setup = () => {
-    return render(<NewItem />);
+const mockValues = {
+  name: "Marks Mock",
+  description: "Mock Description",
+  manufacturerName: "Mock Manufacturer",
+  price: "9.99"
+}
+const mocks = [
+  {
+    request: {
+      query: ADD_SALE_ITEM,
+      variables: {
+        name: mockValues.name,
+        description: mockValues.description,
+        manufacturerName: mockValues.manufacturerName,
+        price: mockValues.price
+      },
+    },
+    result: {
+      data: {
+        createSaleItem: {
+          saleItem: {
+            id: 51,
+            name: "Used a parameter2",
+            description: "parameter description2",
+            manufacturerName: mockValues.manufacturerName,
+            subcategoryId: 7,
+            price: "13.95"
+          }
+        }
+      }
+    }
   }
+];
+const setup = () => {
+    return render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <NewItem/>
+      </MockedProvider>);
+  }
+const enableSaveButton = () => {
+  const component = setup();
+  const titleInput = component.getByLabelText('title-input');
+  fireEvent.change(titleInput, {target: {value: mockValues.manufacturerName}});
+
+  const nameInput = component.getByLabelText('name-input');
+  fireEvent.change(nameInput, {target: {value: mockValues.name}});
+
+  const descriptionInput = component.getByLabelText('description-input');
+  fireEvent.change(descriptionInput, {target: {value: mockValues.description}});
+
+  const priceInput = component.getByLabelText('price-input');
+  fireEvent.change(priceInput, {target: {value: mockValues.price}});
+  return component;
+}
 
 it("renders without crashing", () => {
     const div = document.createElement('div');
-    ReactDOM.render(<NewItem/>, div);
+    ReactDOM.render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <NewItem/>
+      </MockedProvider>, div);
 });
 
 it("price field allows numbers only", () => {
@@ -83,6 +138,23 @@ it("save button enabled when appropriate", () => {
   expect(saveButton).toBeEnabled();
 });
 
-it("upload image allows only the supported formats", ()=> {
+it('should render loading initially after save click', () => {
+  //button must be enabled before it can be clicked
+  enableSaveButton();
 
-})
+  //now submit the form by click event
+  userEvent.click(screen.getByText('Save'));
+  
+  //test if "loading..." <p> tag is pressent
+  expect(screen.getByText('Loading....')).toBeInTheDocument()
+});
+
+it('should render manufacturer name that was added when mutation is completed', async () => {
+  //button must be enabled before it can be clicked
+  const component = enableSaveButton();
+
+  //now submit the form by click event
+  userEvent.click(screen.getByText('Save'));
+  const addedTag = await findByText(component.container, mockValues.manufacturerName + ' was added successfully');
+  expect(addedTag).toBeInTheDocument();
+});

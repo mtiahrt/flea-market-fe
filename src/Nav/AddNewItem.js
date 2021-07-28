@@ -1,6 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
+import { gql, useMutation } from '@apollo/client';
+
+    //query
+    export const ADD_SALE_ITEM = gql`
+    mutation createSaleItem($name: String!, $description: String, $manufacturerName: String, $price: BigFloat){
+        createSaleItem(
+         input: { saleItem: 
+          {name: $name
+            description: $description
+            manufacturerName: $manufacturerName
+            price: $price
+            subcategoryId: 7
+          }}
+        ) {
+          saleItem {
+            id
+            name
+            description
+            manufacturerName
+            subcategoryId
+            price
+          }
+        }
+    }`
 
 const AddNewItem = () => {
+    //hooks
+    const [addSaleItem, {loading, error, data}] = useMutation(ADD_SALE_ITEM);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const [values, setValues] = useState({title: '',
         itemName: '',
@@ -20,6 +46,13 @@ const AddNewItem = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        addSaleItem({variables: 
+                        {name: values.itemName,
+                        description: values.description,
+                        manufacturerName: values.title,
+                        price: values.price}
+                    });
+
     }
     
     const setFormStateValues = target => {
@@ -32,18 +65,30 @@ const AddNewItem = () => {
     const handleInputChange = e => {
         e.preventDefault();
         if(e.target.name === 'price'){
-            /^\d*\.?\d*$/.test(e.target.value) ? setFormStateValues(e.target) : null;
+            if(/^\d*\.?\d*$/.test(e.target.value)){
+                setFormStateValues(e.target);
+                return;
+            }
             return;
         }
         setFormStateValues(e.target)
     }
-
+    if (loading) return <p>Loading....</p>;
+    if (error){
+        console.log(error)
+        return <p>Error!</p>;
+    }
+        
+    if (data){
+        return <h4>{data.createSaleItem.saleItem.manufacturerName} was added successfully</h4>
+    }
+  
     return (
         <form onSubmit={handleSubmit}>
-           <input name="title" value={values.title} onChange={handleInputChange} aria-label="title-input"></input>
-           <input name="itemName" value={values.itemName} onChange={handleInputChange} aria-label="name-input"></input> 
-           <input name="description" value={values.description} onChange={handleInputChange} aria-label="description-input"></input> 
-           <input name="price" value={values.price} onChange={handleInputChange} aria-label="price-input"></input> 
+           <input name="title" value={values.title} onChange={handleInputChange} aria-label="title-input"/>
+           <input name="itemName" value={values.itemName} onChange={handleInputChange} aria-label="name-input"/>
+           <input name="description" value={values.description} onChange={handleInputChange} aria-label="description-input"/>
+           <input name="price" value={values.price} onChange={handleInputChange} aria-label="price-input"/>
            <button name="save" disabled={isSaveDisabled} type='submit' aria-label='save-item'>Save</button>
            <button name="image" aria-label='image-browse'>Add Image</button>
         </form>
