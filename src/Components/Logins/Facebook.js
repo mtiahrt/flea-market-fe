@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import axios from 'axios';
 import { UserProfileContext } from "../../Contexts/LoginContext"
 
@@ -62,30 +62,7 @@ export default function FacebookLogin() {
     const loginToTwitter = () => {
         //go to node endpoint
         axios.post(`https://localhost:8080/twitter/requestToken`).then(({data}) => {
-            //use token and popup window to authorize
-            new Promise((resolve, reject) => {
-                const twitterWindowAuth = popUpWindow(`https://api.twitter.com/oauth/authenticate?oauth_token=${data.oauth_token}`)
-                twitterWindowAuth.addEventListener("load", () => {
-                    try{
-                        const urlParams = new URLSearchParams(twitterWindowAuth.location.search);
-                        if(urlParams.has('oauth_token') && urlParams.has('oauth_verifier')){
-                            const tokenValues = {
-                                oauth_token: urlParams.get('oauth_token'), 
-                                oauth_verifier: urlParams.get('oauth_verifier')
-                            }
-                            resolve(tokenValues);
-                            twitterWindowAuth.close();
-                        }
-                    }catch(ex){
-                        reject(`Failed to get a Twitter token. Reason: ${ex.message}`);
-                    }
-                });
-            }).then(tokenValues => {
-                axios.get(`https://localhost:8080/userProfile?requestToken=${tokenValues.oauth_token}&tokenVerifier=${tokenValues.oauth_verifier}&provider=twitter`)
-                .then(({data}) => {
-                    setUserProfile(data);
-                });
-            })
+            window.location=`https://api.twitter.com/oauth/authenticate?oauth_token=${data.oauth_token}`
     })
     }
 
@@ -93,7 +70,7 @@ export default function FacebookLogin() {
         <div>
             {/* {setUserProfile.isLoggedIn && <button onClick={loginToFacebook}>Login User Facebook</button>} */}
             <button onClick={loginToFacebook}>Login in using Facebook</button><br />
-            <img onClick={loginToTwitter} src="https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/auth-docs/sign-in-with-twitter-gray.png.twimg.1920.png" className="b04__img b04__img-cover b04__img--fixed is-aligned-left"/><br></br>
+            <img alt='Login with Twitter' onClick={loginToTwitter} src="https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/auth-docs/sign-in-with-twitter-gray.png.twimg.1920.png" className="b04__img b04__img-cover b04__img--fixed is-aligned-left"/><br></br>
             <button onClick={loginToGoogle}>Login in using Google</button><br />
         </div>
     )

@@ -7,6 +7,7 @@ import FacebookLogin from "./Components/Logins/Facebook";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Profile from './Components/Profile';
+import Oauth from './Components/Logins/Oauth';
 import NavItemProfile from "./Nav/NavItemProfile";
 import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
 import { ReactComponent as CaretIcon } from "./icons/caret.svg";
@@ -43,6 +44,9 @@ function App() {
               <Profile userProfile={userProfile}/>
             </Route>
             <Route path="/DetailedItem/:id" children={<DetailedItem/>}></Route>
+            <Route path="/oauth">
+              <Oauth/>
+            </Route>
           </Switch>
         </UserProfileContext.Provider>
       </Router>
