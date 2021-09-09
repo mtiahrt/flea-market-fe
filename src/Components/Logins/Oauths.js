@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import axios from 'axios';
 import { UserProfileContext } from "../../Contexts/LoginContext"
 
-export default function FacebookLogin() {
+export default function Oauths() {
     const {setUserProfile} = useContext(UserProfileContext);
 
     const popUpWindow = (url, title) => {
@@ -19,6 +19,7 @@ export default function FacebookLogin() {
             const googleWindowAuth = popUpWindow(`https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&include_granted_scopes=true&response_type=token&state=987654321&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}`, "Google Authorization")
             googleWindowAuth.addEventListener("load", () => {
             	try{
+                    debugger;
             		const urlParams = new URLSearchParams(googleWindowAuth.location.href);
                     if(urlParams.has('access_token')){
                         resolve(urlParams.get('access_token'));

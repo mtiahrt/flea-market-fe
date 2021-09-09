@@ -2,7 +2,7 @@ import React, {useEffect, useContext} from 'react'
 import axios from 'axios';
 import { UserProfileContext } from "../../Contexts/LoginContext"
 
-function Oauth() {
+function TwitterOauthRedirect() {
     const {setUserProfile} = useContext(UserProfileContext);
     useEffect(()=> {
         const urlParams = new URLSearchParams(window.location.search);
@@ -24,4 +24,4 @@ function Oauth() {
     )
 }
 
-export default Oauth
+export default TwitterOauthRedirect
