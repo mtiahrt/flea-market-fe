@@ -3,7 +3,7 @@ import ItemList from "./Components/ItemList";
 import NavBar from "./Nav/NavBar";
 import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
-// import Facebook from "./Components/Logins/Facebook";
+import FacebookLogin from "./Components/Logins/Facebook";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Profile from './Components/Profile';
@@ -12,7 +12,7 @@ import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
 import { ReactComponent as CaretIcon } from "./icons/caret.svg";
 import { ReactComponent as PlusIcon } from "./icons/plus.svg";
 import { useState } from "react";
-import { LoginContext} from './Contexts/LoginContext';
+import { UserProfileContext} from './Contexts/LoginContext';
 import DetailedItem from "./Components/DetailedItem";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <LoginContext.Provider value={{userProfile, setUserProfile}} >
+        <UserProfileContext.Provider value={{userProfile, setUserProfile}} >
           <NavBar>
             <NavItemProfile imgURL={userProfile.picture}/>
             <NavItem icon={<PlusIcon />}> </NavItem>
@@ -30,6 +30,7 @@ function App() {
               <DropdownMenu></DropdownMenu>
             </NavItem>
           </NavBar>
+      <FacebookLogin/>
           <Switch>
             <Route exact path="/">
               <header>
@@ -43,7 +44,7 @@ function App() {
             </Route>
             <Route path="/DetailedItem/:id" children={<DetailedItem/>}></Route>
           </Switch>
-        </LoginContext.Provider>
+        </UserProfileContext.Provider>
       </Router>
     </div>
   );

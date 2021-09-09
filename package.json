@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/user-event": "^13.1.9",
     "apollo-link-ws": "^1.0.20",
+    "axios": "^0.21.1",
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "react": "^17.0.2",
