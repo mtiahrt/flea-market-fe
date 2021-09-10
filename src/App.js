@@ -31,14 +31,12 @@ function App() {
               <DropdownMenu></DropdownMenu>
             </NavItem>
           </NavBar>
-      <Oauths/>
           <Switch>
             <Route exact path="/">
               <header>
                 <h1>Gretchenkelly Shop</h1>
               </header>
-              <ItemList/>
-              {/* {userProfile.isLoggedIn ? <ItemList/> : <Facebook/>} */}
+              {userProfile.isLoggedIn ? <ItemList/> : <Oauths/>}
             </Route>
             <Route path="/Profile">
               <Profile userProfile={userProfile}/>
