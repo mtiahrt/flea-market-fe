@@ -39,24 +39,6 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
 ### Advanced Configuration
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
@@ -65,6 +47,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+### SSL certs
+You will need to add the ssl cert that was created for the Node backend app to be added to this project also.  2 key value pairs in the .env.example need to be added to the .env file. 
+```
+SSL_CRT_FILE=server.cert 
+SSL_KEY_FILE=server.key
+```
+ Add Server.cert and server.key to the root of this project.  Next you will have to add the cert to the mac key chain of the development machine.  You will do this by going into Chrome settings/Privacy and security/Security/Manage certificates.  This will bring up the keychain access.  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In keychain access click "login" on the left. then click File/import items in the menu at the top. Select the server.cert file from its location.  
+
+Once it is added you need to tell the browser chrome to trust it.  double click the blue plus sign.  Click trust section. Select "When using this certificate: Always Trust"  This should set all the drop down items to "Always Trust"  close and restart chrome.  Local host should be loading after you click to to this site anyway.  
