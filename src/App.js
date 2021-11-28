@@ -5,6 +5,7 @@ import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
 import Oauths from "./Components/Logins/Oauths";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Modal from "./SharedComponents/Modal";
 
 import Profile from './Components/Profile';
 import TwitterOauthRedirect from './Components/Logins/TwitterOauthRedirect';
@@ -36,7 +37,13 @@ function App() {
               <header>
                 <h1>Gretchenkelly Shop</h1>
               </header>
-              {userProfile.isLoggedIn ? <ItemList/> : <Oauths/>}
+              <ItemList />
+              <Modal 
+                message="Please sign in" 
+                isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
+                onClose={null}>
+                  <Oauths/>
+              </Modal>
             </Route>
             <Route path="/Profile">
               <Profile userProfile={userProfile}/>
