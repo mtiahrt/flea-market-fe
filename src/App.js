@@ -39,7 +39,8 @@ function App() {
               </header>
               <ItemList />
               <Modal 
-                message="Please sign in" 
+                message="Please sign in"
+                className="login-group"
                 isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
                 onClose={null}>
                   <Oauths/>

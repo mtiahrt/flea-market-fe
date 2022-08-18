@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faFacebookSquare, faGithub, faGoogle, faGoogleDrive, faSquareFacebook, faTwitterSquare } from '@fortawesome/free-brands-svg-icons'
 
 export default function Oauths() {
     const loginToGoogle = () => {
@@ -18,10 +21,10 @@ export default function Oauths() {
     }
 
     return (
-        <div>
-            <button onClick={loginToFacebook}>Login in using Facebook</button><br />
-            <img alt='Login with Twitter' onClick={loginToTwitter} src="https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/auth-docs/sign-in-with-twitter-gray.png.twimg.1920.png" className="b04__img b04__img-cover b04__img--fixed is-aligned-left"/><br></br>
-            <button onClick={loginToGoogle}>Login in using Google</button><br />
+        <div className="login-group">
+            <button className="login login-facebook" onClick={loginToFacebook}><FontAwesomeIcon size="2x" icon={faFacebookSquare} /><span>Login using Facebook</span></button><br />
+            <button className="login login-twitter" onClick={loginToTwitter}><FontAwesomeIcon size="2x" icon={faTwitterSquare} /><span>Login using Twitter</span></button><br />
+            <button className="login login-google" onClick={loginToGoogle}><FontAwesomeIcon size="2x" className='fa-google-color-new' icon={faGoogle} /><span>Login using Google</span></button><br />
         </div>
     )
 }
