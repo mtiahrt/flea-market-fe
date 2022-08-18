@@ -6,17 +6,16 @@
 }
 
 html {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .login{    
-    margin: 1rem;
-    padding: 10px;
-    height: 3rem;
-    width: 12rem;
-    text-align: left;
+  margin: 1rem;
+  padding: 10px;
+  height: 3rem;
+  width: 12rem;
+  text-align: left;
 }
-
 
 .login-group > button {
   box-shadow: none;
