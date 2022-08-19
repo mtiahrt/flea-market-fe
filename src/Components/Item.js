@@ -10,6 +10,7 @@ import {
 } from "../SharedComponents/Card";
 
 const Item = ({ name, manufacturerName, description, price, testId }) => {
+
   return (
     <CardWrapper className="sale-item">
       <Heart></Heart>

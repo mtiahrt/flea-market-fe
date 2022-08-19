@@ -2,7 +2,7 @@ import React from "react";
 import Item from "./Item";
 import { useQuery, gql } from "@apollo/client";
 import styled from "styled-components";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const myQuery = gql`
@@ -20,13 +20,14 @@ const myQuery = gql`
 const ItemList = () => {
   const { loading, error, data } = useQuery(myQuery);
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error :(</p>;  
+
   return (
+
     <StyledList className="item-list">
       {data.saleItemsList.map((item) => (
-        <Link to={`DetailedItem/${item.id}`}>
+        <Link key={item.id.toString()} to={`DetailedItem/${item.id}`}>
           <Item
-            key={item.id.toString()}
             name={item.name}
             manufacturerName={item.manufacturerName}
             description={item.description}
