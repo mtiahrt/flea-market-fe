@@ -40,8 +40,8 @@ function App() {
               <ItemList />
               <Modal 
                 message="Please sign in"
-                isOpen={false}
-                // isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
+                // isOpen={false}
+                isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
                 onClose={null}>
                   <Oauths/>
               </Modal>
