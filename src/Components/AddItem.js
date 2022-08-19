@@ -1,27 +1,80 @@
+import * as React from 'react';
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
-function AddItem() {
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import { TextareaAutosize } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+export default function AddItem() {
     const { register, handleSubmit } = useForm();
     const [data, setData] = useState("");
 
-    const onSubmit = (d) => {
-        alert(JSON.stringify(d));
-    }
-
     return (
-        <form onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
-            <input {...register("name")} placeholder="Name" />
-            <input {...register("manufacturerName")} placeholder="Manufacturer Name" />
-            <textarea {...register("description")} placeholder="Description" />
-            <input {...register("price")} placeholder="Price" />
-            <p>{data}</p>
-            <input type="submit" />
-            <Link to={`/`}><button>Cancel</button></Link>
-        </form>
+
+        <React.Fragment>
+            <form onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
+                <Typography variant="h6" gutterBottom>New Item</Typography>
+                <Grid container spacing={2} >
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            {...register("name")}
+                            required
+                            id="name"
+                            label="Name"
+                            fullWidth
+                            autoComplete="name"
+                            variant="standard" />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            {...register("manufacturerName")}
+                            required
+                            id="manufacturerName"
+                            label="Manufacturer Name"
+                            fullWidth
+                            autoComplete="manufacturer-name"
+                            variant="standard"
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <TextareaAutosize
+                            {...register("description")}
+                            required
+                            id="description"
+                            label="Description"
+                            fullWidth
+                            autoComplete="description"
+                            variant="standard"
+                            aria-label="minimum height"
+                            minRows={8}
+                            placeholder="New Item Description"
+                            style={{ width: '100%' }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            {...register("price")}
+                            required
+                            id="price"
+                            label="Price"
+                            fullWidth
+                            autoComplete="price"
+                            variant="standard"
+                        />
+                    </Grid>
+                </Grid>
+                <p>{data}</p>
+                <Button type="submit" variant="contained">Submit</Button>
+                <Link to={`/`}><Button variant="contained">Cancel</Button></Link>
+
+            </form>
+        </React.Fragment>
     );
 }
-
-
-export default AddItem;

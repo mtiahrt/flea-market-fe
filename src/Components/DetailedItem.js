@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from "@apollo/client";
+import Button from '@mui/material/Button';
 
 const itemDetailQuery = gql`
 query($saleId: Int!) {
@@ -42,9 +43,11 @@ function DetailedItem({ navigation }) {
             {data.saleItem.itemImagesList.map(img => (
                 <img alt="sale item" src={img.url} />
             ))}
-            <Link to={`/`}><button>Return to Home</button></Link>
-            <Link to={`/AddToCart`}><button>Add to Cart</button></Link>
-            <Link to={`/BuyNow`}><button>Buy Now</button></Link>
+            <Link to={`/`}><Button variant="contained">Return to Home</Button></Link>
+            <Link to={`/AddToCart`}><Button variant="contained">Add to Cart</Button></Link>
+            <Link to={`/BuyNow`}><Button variant="contained">Buy Now</Button></Link>
+
+
 
         </div>
     )
