@@ -16,6 +16,7 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { useState } from 'react';
 import { UserProfileContext } from './Contexts/LoginContext';
 import DetailedItem from './Components/DetailedItem';
+import AddItem from "./Components/AddItem";
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -27,7 +28,7 @@ function App() {
         <UserProfileContext.Provider value={{ userProfile, setUserProfile, cartItems, setCartItems }}>
           <NavBar>
             <NavItemProfile imgURL={userProfile.picture} />
-            <NavItem icon={<PlusIcon />}> </NavItem>
+            <NavItem url={"AddItem"} icon={<PlusIcon />}></NavItem>
             <NavItem icon={<MessengerIcon />}></NavItem>
             <NavItem icon={<CaretIcon />}>
               <DropdownMenu></DropdownMenu>
@@ -50,6 +51,7 @@ function App() {
               <Profile userProfile={userProfile} />
             </Route>
             <Route path='/DetailedItem/:id' children={<DetailedItem />}></Route>
+            <Route path="/AddItem" children={<AddItem />}></Route>
             <Route path='/oauth'>
               <OauthRedirect />
             </Route>

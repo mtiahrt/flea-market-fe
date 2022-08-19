@@ -2,6 +2,9 @@ import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
+import { Link } from 'react-router-dom';
+import { useQuery, gql } from "@apollo/client";
+import Button from '@mui/material/Button';
 
 const itemDetailQuery = gql`
 query($saleId: Int!) {
@@ -55,13 +58,13 @@ function DetailedItem() {
       {data.saleItem.itemImagesList.map(img => (
         <img alt='sale item' src={img.url} />
       ))}
-      <button>Return to Home</button>
+      <Link to={`/`}><button>Return to Home</button></Link>
       <button onClick={ () => updateCart(data.saleItem.id) }>
         {isItemAlreadyInCart(data.saleItem.id)
         ? 'Remove from cart'
         : 'Add to Cart'}
       </button>
-      <button>Buy Now</button>
+      <Link to={`/BuyNow`}><button>Buy Now</button></Link>
     </div>
   );
 }
