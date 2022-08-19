@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 const NavItem = (props) => {
-  const [open, setOpen] = useState(false);
+  const [open] = useState(false);
   return (
     <li className="nav-item">
-      <a href="/" className="icon-button">
+      <Link to="/" className="icon-button">
         {props.icon}
-      </a>
+      </Link>
       {open && props.children}
     </li>
   );
