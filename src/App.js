@@ -3,7 +3,7 @@ import ItemList from "./Components/ItemList";
 import NavBar from "./Nav/NavBar";
 import NavItem from "./Nav/NavItem";
 import DropdownMenu from "./Nav/DropdownMenu";
-// import Oauths from "./Components/Logins/Oauths";
+import Oauths from "./Components/Logins/Oauths";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Modal from "./SharedComponents/Modal";
 
@@ -38,12 +38,12 @@ function App() {
                 <h1>Gretchenkelly Shop</h1>
               </header>
               <ItemList />
-              {/* <Modal 
+              <Modal 
                 message="Please sign in"
-                isOpen= {true}
+                isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
                 onClose={null}>
                   <Oauths/>
-              </Modal> */}
+              </Modal>
             </Route>
             <Route path="/Profile">
               <Profile userProfile={userProfile}/>
