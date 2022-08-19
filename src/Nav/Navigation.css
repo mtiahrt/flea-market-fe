@@ -5,6 +5,48 @@
   border-bottom: var(--border);
 }
 
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login{    
+  margin: 1rem;
+  padding: 10px;
+  height: 3rem;
+  width: 12rem;
+  text-align: left;
+}
+
+.login-group > button {
+  box-shadow: none;
+  border-radius: 5px;
+ }
+ 
+.login-google, .login-twitter{
+  border: 1px solid #aaa;
+}
+
+.login-facebook {
+  background-color: #385499;
+  color: #fff;
+  border: 0;
+}
+
+.fa-square-twitter {
+  color: #385499;
+}
+
+.login > * {    
+  vertical-align: middle;
+}
+
+.login > span {    
+  padding-left: 10px;
+}
+
+.fa-google-color-new {
+  color: #4285F4 !important; 
+}
 .navbar-nav {
   max-width: 100%;
   height: 100%;
