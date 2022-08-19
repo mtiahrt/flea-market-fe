@@ -5,9 +5,8 @@ const NavItem = (props) => {
   const [open] = useState(false);
   return (
     <li className="nav-item">
-      <Link to="/" className="icon-button">
-        {props.icon}
-      </Link>
+      <a href={props.url || "/"} className="icon-button" />
+      {props.icon}
       {open && props.children}
     </li>
   );

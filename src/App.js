@@ -14,8 +14,9 @@ import { ReactComponent as MessengerIcon } from "./icons/messenger.svg";
 import { ReactComponent as CaretIcon } from "./icons/caret.svg";
 import { ReactComponent as PlusIcon } from "./icons/plus.svg";
 import { useState } from "react";
-import { UserProfileContext} from './Contexts/LoginContext';
+import { UserProfileContext } from './Contexts/LoginContext';
 import DetailedItem from "./Components/DetailedItem";
+import AddItem from "./Components/AddItem";
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -23,10 +24,12 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <UserProfileContext.Provider value={{userProfile, setUserProfile}} >
+        <UserProfileContext.Provider value={{ userProfile, setUserProfile }} >
           <NavBar>
-            <NavItemProfile imgURL={userProfile.picture}/>
-            <NavItem icon={<PlusIcon />}> </NavItem>
+            <NavItemProfile imgURL={userProfile.picture} />
+
+            <NavItem url={"AddItem"} icon={<PlusIcon />}></NavItem>
+
             <NavItem icon={<MessengerIcon />}></NavItem>
             <NavItem icon={<CaretIcon />}>
               <DropdownMenu></DropdownMenu>
@@ -38,20 +41,21 @@ function App() {
                 <h1>Gretchenkelly Shop</h1>
               </header>
               <ItemList />
-              <Modal 
+              <Modal
                 message="Please sign in"
                 // isOpen={false}
                 isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
                 onClose={null}>
-                  <Oauths/>
+                <Oauths />
               </Modal>
             </Route>
             <Route path="/Profile">
-              <Profile userProfile={userProfile}/>
+              <Profile userProfile={userProfile} />
             </Route>
-            <Route path="/DetailedItem/:id" children={<DetailedItem/>}></Route>
+            <Route path="/DetailedItem/:id" children={<DetailedItem />}></Route>
+            <Route path="/AddItem" children={<AddItem />}></Route>
             <Route path="/oauth">
-              <TwitterOauthRedirect/>
+              <TwitterOauthRedirect />
             </Route>
           </Switch>
         </UserProfileContext.Provider>
