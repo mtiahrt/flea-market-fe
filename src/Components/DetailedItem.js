@@ -1,5 +1,7 @@
-import React from 'react'
-import {useParams} from 'react-router-dom';
+import React from 'react';
+
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useQuery, gql } from "@apollo/client";
 
 const itemDetailQuery = gql`
@@ -20,15 +22,16 @@ query($saleId: Int!) {
   }
 `
 
-function DetailedItem() {
-    const {id} = useParams();
+function DetailedItem({ navigation }) {
+    const { id } = useParams();
     const saleId = parseInt(id);
     const { loading, error, data } = useQuery(itemDetailQuery, {
-        variables:{saleId}
+        variables: { saleId }
     });
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error.message}</p>;
-    console.log(data);
+
     return (
         <div>
             <h2>Item Details</h2>
@@ -37,11 +40,12 @@ function DetailedItem() {
             <h4>Description: {data.saleItem.description}</h4>
             <h4>Price: {data.saleItem.price}</h4>
             {data.saleItem.itemImagesList.map(img => (
-                <img alt="sale item" src={img.url}/>
+                <img alt="sale item" src={img.url} />
             ))}
-            <button>Return to Home</button>
-            <button>Add to Cart</button>
-            <button>Buy Now</button>
+            <Link to={`/`}><button>Return to Home</button></Link>
+            <Link to={`/AddToCart`}><button>Add to Cart</button></Link>
+            <Link to={`/BuyNow`}><button>Buy Now</button></Link>
+
         </div>
     )
 }
