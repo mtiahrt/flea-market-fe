@@ -39,6 +39,8 @@ const ItemList = () => {
 };
 const StyledList = styled.div`
   display: grid;
+  margin: 25px;
+  gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 `;
 export default ItemList;
