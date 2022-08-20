@@ -9,7 +9,9 @@ import {
   CardOptionsNote
 } from "../SharedComponents/Card";
 
-const Item = ({ name, manufacturerName, description, price, testId }) => {
+console.log('Item component is rendering');
+
+const Item = ({ name, manufacturerName, description, price }) => {
   return (
     <CardWrapper className="sale-item">
       <Heart></Heart>

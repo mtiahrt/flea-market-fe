@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { UserProfileContext } from "../../Contexts/LoginContext";
 
-function TwitterOauthRedirect() {
+function OauthRedirect() {
     const {setUserProfile} = useContext(UserProfileContext);
     const history = useHistory();
 
@@ -41,4 +41,4 @@ function TwitterOauthRedirect() {
     )
 }
 
-export default TwitterOauthRedirect
+export default OauthRedirect
