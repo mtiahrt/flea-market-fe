@@ -28,7 +28,6 @@ function DetailedItem() {
     });
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error.message}</p>;
-    console.log(data);
     return (
         <div>
             <h2>Item Details</h2>
