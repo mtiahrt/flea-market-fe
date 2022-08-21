@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
 import { Link } from 'react-router-dom';
-import { useQuery, gql } from "@apollo/client";
-import Button from '@mui/material/Button';
 
 const itemDetailQuery = gql`
 query($saleId: Int!) {
