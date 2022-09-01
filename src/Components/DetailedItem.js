@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
 import { Link } from 'react-router-dom';
-import { useQuery, gql } from "@apollo/client";
-import Button from '@mui/material/Button';
 
 const itemDetailQuery = gql`
 query($saleId: Int!) {
@@ -55,8 +53,8 @@ function DetailedItem() {
       <h4>Manufacturer Name: {data.saleItem.manufacturerName}</h4>
       <h4>Description: {data.saleItem.description}</h4>
       <h4>Price: {data.saleItem.price}</h4>
-      {data.saleItem.itemImagesList.map(img => (
-        <img alt='sale item' src={img.url} />
+      {data.saleItem.itemImagesList.map((img, index) => (
+        <img key={index} alt='sale item' src={img.url} />
       ))}
       <Link to={`/`}><button>Return to Home</button></Link>
       <button onClick={ () => updateCart(data.saleItem.id) }>
