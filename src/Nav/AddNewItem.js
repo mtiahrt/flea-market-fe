@@ -1,28 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { gql, useMutation } from '@apollo/client';
-
-    //query
-    export const ADD_SALE_ITEM = gql`
-    mutation createSaleItem($name: String!, $description: String, $manufacturerName: String, $price: BigFloat){
-        createSaleItem(
-         input: { saleItem: 
-          {name: $name
-            description: $description
-            manufacturerName: $manufacturerName
-            price: $price
-            subcategoryId: 7
-          }}
-        ) {
-          saleItem {
-            id
-            name
-            description
-            manufacturerName
-            subcategoryId
-            price
-          }
-        }
-    }`
+import { ADD_SALE_ITEM } from '../queries/graphQL';
 
 const AddNewItem = () => {
     //hooks
