@@ -13,6 +13,8 @@ import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM } from '../queries/gra
 export default function AddItem() {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
 
   const {
     loading: loadingCategories,
@@ -26,18 +28,15 @@ export default function AddItem() {
     data: dataSubs
   }] = useLazyQuery(GET_SUBCATEGORIES);
 
-  const { register, formState: { errors }, handleSubmit } = useForm();
-  const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
-  const handleMySubmit = data => {
-    debugger;
+  const handleNewItemSubmit = ({ name, manufacturerName, subcategoryId, description, price }) => {
     addSaleItem({
       variables:
         {
-          name: data.name,
-          manufacturerName: data.manufacturerName,
-          subcategoryId: data.subcategoryId,
-          description: data.description,
-          price: data.price
+          name: name,
+          manufacturerName: manufacturerName,
+          subcategoryId: subcategoryId,
+          description: description,
+          price: price
         }
     }).then().catch(reason => console.error(reason));
   };
@@ -55,8 +54,8 @@ export default function AddItem() {
   if (loadingCategories) return 'Loading...';
   if (errorCategories) return `Error! ${errorCategories.message}`;
   return (
-    <StyledForm onSubmit={ handleSubmit((data) => handleMySubmit(data)) }>
-      <Typography variant='h4' gutterBottom>New Item</Typography>
+    <StyledForm onSubmit={ handleSubmit((data) => handleNewItemSubmit(data)) }>
+      <Typography variant='h4' gutterBottom>New Sale Item</Typography>
       <Grid
         container
         spacing={3}>
@@ -97,7 +96,7 @@ export default function AddItem() {
         </Grid>
         {dataSubs?.category?.subcategoriesList &&
           <Grid item xs={12}>
-            <InputLabel disabled id='subcategory-select-label'>Subcategory</InputLabel>
+            <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
             <Select
               {...register('subcategoryId', { required: true })}
               fullWidth
@@ -128,6 +127,7 @@ export default function AddItem() {
         <Grid item xs={12}>
           <TextField
             {...register('price', { required: true })}
+            type="number"
             id='price'
             label='Price'
             fullWidth
