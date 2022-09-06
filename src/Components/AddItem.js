@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Button, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
+import { Button, ImageList, ImageListItem, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import styled from 'styled-components';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,7 @@ import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM } from '../queries/gra
 export default function AddItem() {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
+  const [fileDataURL, setFileDataURL] = useState([]);
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
 
@@ -27,6 +28,21 @@ export default function AddItem() {
     error: errorSubs,
     data: dataSubs
   }] = useLazyQuery(GET_SUBCATEGORIES);
+
+  function handleOnChangeForImages(changeEvent) {
+    if (changeEvent.target.files.length) {
+      Array.from(changeEvent.target.files).forEach(file => {
+        const fileReader = new FileReader();
+        fileReader.onload = e => {
+          const { result } = e.target;
+          if (result) {
+            setFileDataURL(prev => [...prev, result]);
+          }
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+  }
 
   const handleNewItemSubmit = ({ name, manufacturerName, subcategoryId, description, price }) => {
     addSaleItem({
@@ -54,7 +70,7 @@ export default function AddItem() {
   if (loadingCategories) return 'Loading...';
   if (errorCategories) return `Error! ${errorCategories.message}`;
   return (
-    <StyledForm onSubmit={ handleSubmit((data) => handleNewItemSubmit(data)) }>
+    <StyledForm onSubmit={handleSubmit((data) => handleNewItemSubmit(data))}>
       <Typography variant='h4' gutterBottom>New Sale Item</Typography>
       <Grid
         container
@@ -127,7 +143,7 @@ export default function AddItem() {
         <Grid item xs={12}>
           <TextField
             {...register('price', { required: true })}
-            type="number"
+            type='number'
             id='price'
             label='Price'
             fullWidth
@@ -136,6 +152,30 @@ export default function AddItem() {
           />
           {errors.price?.type === 'required' && 'Price is required'}
         </Grid>
+      </Grid>
+      <Grid item style={{ marginTop: '5%' }} xs={12}>
+        <p>
+          <input type='file'
+                 accept='.png, .jpg, .jpeg'
+                 onChange={handleOnChangeForImages}
+                 multiple name='imageFile' />
+        </p>
+        <ImageList cols={3} rowHeight={164}>
+          {fileDataURL?.map((item, index) => (
+            <ImageListItem>
+              <img
+                src={item}
+                alt={'item' + index}
+                loading='lazy'
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+        {fileDataURL.length > 0 && (
+          <p>
+            <button>Upload Files</button>
+          </p>
+        )}
       </Grid>
       <Grid style={{ marginTop: '5%' }} container spacing={4}>
         <Grid item xs={4}>
