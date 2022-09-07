@@ -35,11 +35,17 @@ export const ADD_SALE_ITEM = gql`
         ) {
           saleItem {
             id
-            name
-            description
-            manufacturerName
-            subcategoryId
-            price
           }
         }
     }`
+
+export const ADD_ITEM_IMAGE = gql `
+  mutation createItemImage($saleId: Int!, $imageURL: String!) {
+  createItemImage(input: {itemImage: {saleItemId: $saleId, url: $imageURL}}) {
+    itemImage {
+      id
+      url
+    }
+  }
+}
+`
