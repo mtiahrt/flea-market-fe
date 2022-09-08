@@ -2,18 +2,18 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Button, ImageList, ImageListItem, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
+import { Button, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import styled from 'styled-components';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../queries/graphQL';
+import PreviewImages from '../SharedComponents/PreviewImages';
 
 export default function AddItem() {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
-  const [fileDataURL, setFileDataURL] = useState([]);
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] = useMutation(ADD_ITEM_IMAGE);
@@ -26,25 +26,9 @@ export default function AddItem() {
     loading: loadingSubs, error: errorSubs, data: dataSubs
   }] = useLazyQuery(GET_SUBCATEGORIES);
 
-  function handleOnChangeForImages(changeEvent) {
-    if (changeEvent.target.files.length) {
-      Array.from(changeEvent.target.files).forEach(file => {
-        const fileReader = new FileReader();
-        fileReader.onload = e => {
-          const { result } = e.target;
-          if (result) {
-            setFileDataURL(prev => [...prev, result]);
-          }
-        };
-        fileReader.readAsDataURL(file);
-      });
-    }
-  }
-
   const handleNewItemSubmit = (saleItemData) => {
     // eslint-disable-next-line no-restricted-globals
     const fileInputs = Array.from(event.target.elements).find(({ name }) => name === 'imageFile');
-
     const promises = [...fileInputs.files].map(file => {
       const formData = new FormData();
       formData.append('upload_preset', 'my-uploads');
@@ -54,15 +38,15 @@ export default function AddItem() {
       }).then(response => response.json());
     });
     promises.push(handleAddSaleItem(saleItemData));
-    Promise.all(promises).then( data => handleAddItemImage(data))
-      .then(data => console.log(data))
+    Promise.all(promises).then(data => handleAddItemImage(data))
+      .then(data => console.log(data));
   };
 
   const handleAddItemImage = (values) => {
     if (values.length > 1) {
       //get saleId from last element
       const saleId = values[values.length - 1].data.createSaleItem.saleItem.id;
-      const imageURLs = values.filter(x => x.secure_url)
+      const imageURLs = values.filter(x => x.secure_url);
       return imageURLs.map(item => {
         return addItemImage({
           variables: {
@@ -181,24 +165,7 @@ export default function AddItem() {
       </Grid>
     </Grid>
     <Grid item style={{ marginTop: '5%' }} xs={12}>
-      <p>
-        <input type='file'
-               accept='.png, .jpg, .jpeg'
-               onChange={handleOnChangeForImages}
-               multiple name='imageFile' />
-      </p>
-      <ImageList cols={3} rowHeight={164}>
-        {fileDataURL?.map((item, index) => (<ImageListItem>
-          <img
-            src={item}
-            alt={'item' + index}
-            loading='lazy'
-          />
-        </ImageListItem>))}
-      </ImageList>
-      {fileDataURL.length > 0 && (<p>
-        <button>Upload Files</button>
-      </p>)}
+      <PreviewImages />
     </Grid>
     <Grid style={{ marginTop: '5%' }} container spacing={4}>
       <Grid item xs={4}>
