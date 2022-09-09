@@ -49,3 +49,80 @@ export const ADD_ITEM_IMAGE = gql `
   }
 }
 `
+export const GET_SALE_ITEM = gql`
+query($saleId: Int!) {
+    saleItem(id: $saleId) {
+      id
+      description
+      manufacturerName
+      name
+      price
+      itemImagesList {
+        url
+      }
+      subcategory {
+        description
+        name
+      }
+    }
+  }
+`;
+
+export const GET_SALE_ITEM_AND_CATEGORIES = gql`
+query saleItemData($saleId: Int!) {
+  saleItem(id: $saleId) {
+    description
+    id
+    name
+    manufacturerName
+    price
+    subcategory {
+      id
+      categoryId
+      name
+      category {
+        name
+        id
+      }
+    }
+  }
+}
+`
+
+export const GET_CATEGORIES_SUBCATEGORIES = gql `
+query categoriesAndSubcategories {
+  categoriesList {
+    name
+    id
+    subcategoriesList {
+      name
+      id
+    }
+  }
+}
+`
+
+export const UPDATE_SALE_ITEM = gql`
+mutation updateSaleItem($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $subcategoryId: Int!) {
+  updateSaleItem(
+    input: {
+      id: $id
+    patch: { 
+      manufacturerName: $manufacturerName,
+      description: $description,
+      name: $name,
+      price: $price,
+      subcategoryId: $subcategoryId
+    }
+  }
+) {
+    saleItem {
+      id
+      manufacturerName
+      name
+      price
+      subcategoryId
+    }
+  }
+}
+`

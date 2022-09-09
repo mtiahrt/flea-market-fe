@@ -2,13 +2,12 @@ import { ImageList, ImageListItem } from '@mui/material';
 import * as React from 'react';
 
 const ImagesTile = ({ fileDataURL }) => {
-  console.log('filedata', fileDataURL)
   return (
     <ImageList cols={3} rowHeight={164}>
       {fileDataURL?.map((item, index) => (
-        <ImageListItem>
+        <ImageListItem key={`images${index}`}>
           <img
-            src={item}
+            src={item.url ? item.url : item}
             alt={'item' + index}
             loading='lazy'
           />

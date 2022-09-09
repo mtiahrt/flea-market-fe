@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { UserProfileContext } from './Contexts/LoginContext';
 import DetailedItem from './Components/DetailedItem';
 import AddItem from "./Components/AddItem";
+import EditItem from './Components/EditItem';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -52,6 +53,7 @@ function App() {
             </Route>
             <Route path='/DetailedItem/:id' children={<DetailedItem />}></Route>
             <Route path="/AddItem" children={<AddItem />}></Route>
+            <Route path="/EditItem/:id" children={<EditItem />}></Route>
             <Route path='/oauth'>
               <OauthRedirect />
             </Route>
