@@ -76,6 +76,10 @@ query saleItemData($saleId: Int!) {
     name
     manufacturerName
     price
+    itemImagesList {
+      url
+      id
+    }
     subcategory {
       id
       categoryId
@@ -83,8 +87,16 @@ query saleItemData($saleId: Int!) {
       category {
         name
         id
-      }
+      subcategoriesList {
+          name
+          id
+          }
+       }
     }
+  }
+  categoriesList {
+  name
+  id
   }
 }
 `

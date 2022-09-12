@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Button, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
+import { Button, InputAdornment, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import styled from 'styled-components';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
@@ -26,9 +26,11 @@ export default function AddItem() {
     loading: loadingSubs, error: errorSubs, data: dataSubs
   }] = useLazyQuery(GET_SUBCATEGORIES);
 
-  const handleNewItemSubmit = (saleItemData) => {
-    // eslint-disable-next-line no-restricted-globals
-    const fileInputs = Array.from(event.target.elements).find(({ name }) => name === 'imageFile');
+  const onError = () => {
+    console.error('Error in form submission');
+  };
+  const handleNewItemSubmit = (saleItemData, e) => {
+    const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
     const promises = [...fileInputs.files].map(file => {
       const formData = new FormData();
       formData.append('upload_preset', 'my-uploads');
@@ -37,6 +39,7 @@ export default function AddItem() {
         method: 'POST', body: formData
       }).then(response => response.json());
     });
+    debugger;
     promises.push(handleAddSaleItem(saleItemData));
     Promise.all(promises).then(data => handleAddItemImage(data))
       .then(data => console.log(data));
@@ -86,7 +89,7 @@ export default function AddItem() {
   if (loadingCategories) return 'Loading...';
   if (errorCategories) return `Error! ${errorCategories.message}`;
   return (
-    <StyledForm onSubmit={handleSubmit((data) => handleNewItemSubmit(data))}>
+    <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
       <Typography variant='h4' gutterBottom>New Sale Item</Typography>
       <Grid
         container
@@ -162,6 +165,9 @@ export default function AddItem() {
             fullWidth
             autoComplete='price'
             variant='standard'
+            InputProps={{
+              startAdornment: <InputAdornment position='start'>$</InputAdornment>
+            }}
           />
           {errors.price?.type === 'required' && 'Price is required'}
         </Grid>
