@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
 import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
+import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {
   const [category, setCategory] = useState('');
@@ -18,7 +19,7 @@ export default function AddItem() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] = useMutation(ADD_ITEM_IMAGE);
-
+  const history = useHistory();
   const {
     loading: loadingCategories, error: errorCategories, data: dataCategories
   } = useQuery(GET_CATEGORIES);
@@ -31,16 +32,25 @@ export default function AddItem() {
     console.error('Error in form submission');
   };
   const handleNewItemSubmit = (saleItemData, e) => {
-    const imagePromises = saveImages(e);
-    imagePromises.push(handleAddSaleItem(saleItemData));
-    Promise.all(imagePromises).then(data => handleAddItemImage(data))
-      .then(data => console.log(data));
+    const savePromises = saveImages(e);
+    let newSaleItemId;
+    savePromises.push(handleAddSaleItem(saleItemData));
+    Promise.all(savePromises).then(data => {
+      newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
+      handleAddItemImage(data, newSaleItemId);
+    }).then(data => {
+        history.push({
+          pathname: `/EditItem/${newSaleItemId}`,
+          state: {
+            fileDataURL: null
+          }
+        });
+      });
   };
 
-  const handleAddItemImage = (values) => {
-    if (values.length > 1) {
-      const saleId = values.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
-      return saveItemImage(saleId, values, addItemImage);
+  const handleAddItemImage = (values, newSaleItemId) => {
+    if (values) {
+      return saveItemImage(newSaleItemId, values, addItemImage);
     }
   };
 
