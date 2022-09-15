@@ -8,8 +8,9 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../queries/graphQL';
-import PreviewImages from '../SharedComponents/PreviewImages';
+import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../../queries/graphQL';
+import PreviewImages from '../../SharedComponents/PreviewImages';
+import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
 
 export default function AddItem() {
   const [category, setCategory] = useState('');
@@ -30,52 +31,23 @@ export default function AddItem() {
     console.error('Error in form submission');
   };
   const handleNewItemSubmit = (saleItemData, e) => {
-    const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
-    const promises = [...fileInputs.files].map(file => {
-      const formData = new FormData();
-      formData.append('upload_preset', 'my-uploads');
-      formData.append('file', file);
-      return fetch('https://api.cloudinary.com/v1_1/flea-market/image/upload', {
-        method: 'POST', body: formData
-      }).then(response => response.json());
-    });
-    debugger;
-    promises.push(handleAddSaleItem(saleItemData));
-    Promise.all(promises).then(data => handleAddItemImage(data))
+    const imagePromises = saveImages(e);
+    imagePromises.push(handleAddSaleItem(saleItemData));
+    Promise.all(imagePromises).then(data => handleAddItemImage(data))
       .then(data => console.log(data));
   };
 
   const handleAddItemImage = (values) => {
     if (values.length > 1) {
-      //get saleId from last element
-      const saleId = values[values.length - 1].data.createSaleItem.saleItem.id;
-      const imageURLs = values.filter(x => x.secure_url);
-      return imageURLs.map(item => {
-        return addItemImage({
-          variables: {
-            saleId: saleId,
-            imageURL: item.secure_url
-          }
-        }).then(data => data)
-          .catch(reason => console.error(reason));
-      });
+      const saleId = values.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
+      return saveItemImage(saleId, values, addItemImage);
     }
   };
 
-  const handleAddSaleItem = ({
-                               name, manufacturerName, subcategoryId, description, price
-                             }) => {
-    return addSaleItem({
-      variables: {
-        name: name,
-        manufacturerName: manufacturerName,
-        subcategoryId: subcategoryId,
-        description: description,
-        price: price
-      }
-    }).then(data => data)
-      .catch(reason => console.error(reason));
+  const handleAddSaleItem = (data) => {
+    return saveSaleItem(null, data, addSaleItem);
   };
+
   const handleCategorySelectChange = e => {
     const categoryId = e.target.value;
     setCategory(categoryId);

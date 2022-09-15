@@ -16,8 +16,8 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { useState } from 'react';
 import { UserProfileContext } from './Contexts/LoginContext';
 import DetailedItem from './Components/DetailedItem';
-import AddItem from "./Components/AddItem";
-import EditItem from './Components/EditItem';
+import AddItem from "./Components/ModifyItems/AddItem";
+import EditItem from './Components/ModifyItems/EditItem';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});

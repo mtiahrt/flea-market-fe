@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import { GET_SALE_ITEM } from '../queries/graphQL';
 import styled from 'styled-components';
+import Grid from '@mui/material/Grid';
 
 function DetailedItem() {
   const { cartItems, setCartItems } = useContext(UserProfileContext);
@@ -37,7 +38,9 @@ function DetailedItem() {
       <h4>Manufacturer Name: {data.saleItem.manufacturerName}</h4>
       <h4>Description: {data.saleItem.description}</h4>
       <h4>Price: {data.saleItem.price}</h4>
-      <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
+      <Grid item style={{ marginTop: '5%' }} xs={12}>
+        <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
+      </Grid>
       <Link to={`/`}>
         <button>Return to Home</button>
       </Link>
@@ -46,7 +49,13 @@ function DetailedItem() {
           ? 'Remove from cart'
           : 'Add to Cart'}
       </button>
-      <Link to={`/EditItem/${data.saleItem.id}`}>
+      <Link to={{
+        pathname:`/EditItem/${data.saleItem.id}`,
+        state: {
+          fileDataURL: data.saleItem.itemImagesList,
+        },
+      }}
+      >
         <button>Edit Item</button>
       </Link>
       <Link to={`/BuyNow`}>

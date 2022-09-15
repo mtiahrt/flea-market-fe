@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormState } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import { Button, InputAdornment, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import styled from 'styled-components';
@@ -8,11 +8,21 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { GET_SUBCATEGORIES, ADD_ITEM_IMAGE, UPDATE_SALE_ITEM, GET_SALE_ITEM_AND_CATEGORIES } from '../queries/graphQL';
-import PreviewImages from '../SharedComponents/PreviewImages';
+import {
+  GET_SUBCATEGORIES,
+  ADD_ITEM_IMAGE,
+  UPDATE_SALE_ITEM,
+  GET_SALE_ITEM_AND_CATEGORIES
+} from '../../queries/graphQL';
+import PreviewImages from '../../SharedComponents/PreviewImages';
+import { useLocation } from 'react-router';
+import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
 
 const EditItem = () => {
+  // const { isDirty } = useFormState();
   const { id } = useParams();
+  const location = useLocation();
+  const { fileDataURL } = location.state;
   const saleId = parseInt(id);
   const {
     loading: loadingSaleItem, error: errorSaleItem, data: dataSaleItem
@@ -37,52 +47,22 @@ const EditItem = () => {
   };
 
   const handleEditItemSubmit = (saleItemData, e) => {
-    const promises = [];
-    // const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
-    // const promises = [...fileInputs.files].map(file => {
-    //   const formData = new FormData();
-    //   formData.append('upload_preset', 'my-uploads');
-    //   formData.append('file', file);
-    //   return fetch('https://api.cloudinary.com/v1_1/flea-market/image/upload', {
-    //     method: 'POST', body: formData
-    //   }).then(response => response.json());
-    // });
-    promises.push(handleEditSaleItem(saleItemData));
-    Promise.all(promises).then(data => handleEditItemImage(data))
+    const imagePromises = saveImages(e);
+     // if (isDirty) {
+      imagePromises.push(handleEditSaleItem(saleItemData));
+    // }
+    Promise.all(imagePromises).then(data => handleEditItemImage(data))
       .then(data => console.log(data));
   };
 
   const handleEditItemImage = (values) => {
     if (values.length > 1) {
-      //get saleId from last element
-      const saleId = values[values.length - 1].data.createSaleItem.saleItem.id;
-      const imageURLs = values.filter(x => x.secure_url);
-      return imageURLs.map(item => {
-        return addItemImage({
-          variables: {
-            saleId: saleId,
-            imageURL: item.secure_url
-          }
-        }).then(data => data)
-          .catch(reason => console.error(reason));
-      });
+      return saveItemImage(saleId, values, addItemImage);
     }
   };
 
-  const handleEditSaleItem = ({
-                                name, manufacturerName, subcategoryId, description, price
-                              }) => {
-    return editSaleItem({
-      variables: {
-        id: saleId,
-        name: name,
-        manufacturerName: manufacturerName,
-        subcategoryId: subcategoryId,
-        description: description,
-        price: price
-      }
-    }).then(data => data)
-      .catch(reason => console.error(reason));
+  const handleEditSaleItem = (data) => {
+    return saveSaleItem(saleId, data, editSaleItem);
   };
 
   const handleCategorySelectChange = e => {
@@ -182,7 +162,6 @@ const EditItem = () => {
             label='Price'
             fullWidth
             autoComplete='price'
-            startAd
             variant='standard'
             InputProps={{
               startAdornment: <InputAdornment position='start'>$</InputAdornment>
@@ -192,7 +171,7 @@ const EditItem = () => {
         </Grid>
       </Grid>
       <Grid item style={{ marginTop: '5%' }} xs={12}>
-        <PreviewImages />
+        <PreviewImages fileDataURL={fileDataURL} />
       </Grid>
       <Grid style={{ marginTop: '5%' }} container spacing={4}>
         <Grid item xs={4}>

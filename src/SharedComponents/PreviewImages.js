@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
 
-const PreviewImages = () => {
+const PreviewImages = ({fileDataURL: urls}) => {
+
+  useEffect(() => {
+    if(urls){
+      setFileDataURL(urls)
+    }
+  },[]);
   const [fileDataURL, setFileDataURL] = useState([]);
 
   function handleOnChangeForImages(changeEvent) {
@@ -19,6 +25,7 @@ const PreviewImages = () => {
       });
     }
   }
+
   return (
     <>
       <p>
