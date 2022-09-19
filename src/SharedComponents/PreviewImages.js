@@ -1,8 +1,18 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
+import cloudinary from 'cloudinary/lib/cloudinary';
+import { useMutation } from '@apollo/client';
+import { DELETE_ITEM_IMAGE } from '../queries/graphQL';
+
+cloudinary.config({
+  cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.REACT_APP_CLOUDINARY_API_KEY,
+  api_secret: process.env.REACT_APP_CLOUDINARY_API_SECRET
+});
 
 const PreviewImages = ({fileDataURL: urls}) => {
+  const [deleteItemImage, { deleteImageData, deleteImageLoading, deleteImageError }] = useMutation(DELETE_ITEM_IMAGE);
 
   useEffect(() => {
     if(urls){
@@ -26,6 +36,19 @@ const PreviewImages = ({fileDataURL: urls}) => {
     }
   }
 
+  const deleteImage = e => {
+    const id = Number(e.target.getAttribute('itemid'));
+    const publicId = e.target.getAttribute('data-public-id');
+    const promises = [];
+    promises.push(cloudinary.v2.uploader.destroy(publicId, function(error, result) {
+      console.log(result, error);
+    }));
+    promises.push(deleteItemImage({
+      variables: { id }
+    }));
+    Promise.all(promises).then(setFileDataURL(prev => prev.filter(item => item.id !== id)))
+  };
+
   return (
     <>
       <p>
@@ -34,7 +57,7 @@ const PreviewImages = ({fileDataURL: urls}) => {
                onChange={handleOnChangeForImages}
                multiple name='imageFile' />
       </p>
-      <ImagesTile fileDataURL={fileDataURL} />
+      <ImagesTile deleteHandler={deleteImage} fileDataURL={fileDataURL} />
     </>
   );
 };

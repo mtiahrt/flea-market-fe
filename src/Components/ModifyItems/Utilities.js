@@ -11,10 +11,13 @@ export const saveImages = e => {
 };
 
 export const saveItemImage = (saleId, values, saveFunction) => {
-  const imageURLs = values.filter(x => x.secure_url);
+  const imageURLs = values.filter(x => x.secure_url).map(item => ({
+    imageURL: item.secure_url,
+    publicId: item.public_id.substring(item.public_id.indexOf('/') + 1)
+  }));
   return imageURLs.map(item => {
     return saveFunction({
-      variables: getSaleIdParameter(saleId, { imageURL: item.secure_url })
+      variables: getSaleIdParameter(saleId, item)
     }).then(data => data)
       .catch(reason => console.error(reason));
   });
@@ -25,11 +28,11 @@ export const saveSaleItem = (saleId, {
 }, saveFunction) => {
   return saveFunction({
     variables: getSaleIdParameter(saleId, {
-        name: name,
-        manufacturerName: manufacturerName,
-        subcategoryId: Number(subcategoryId),
-        description: description,
-        price: price
+      name: name,
+      manufacturerName: manufacturerName,
+      subcategoryId: Number(subcategoryId),
+      description: description,
+      price: price
     })
   }).then(data => data)
     .catch(reason => console.error(reason));

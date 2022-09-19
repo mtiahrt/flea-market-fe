@@ -37,18 +37,19 @@ export const ADD_SALE_ITEM = gql`
             id
           }
         }
-    }`
+    }`;
 
-export const ADD_ITEM_IMAGE = gql `
-  mutation createItemImage($id: Int!, $imageURL: String!) {
-  createItemImage(input: {itemImage: {saleItemId: $id, url: $imageURL}}) {
+export const ADD_ITEM_IMAGE = gql`
+  mutation createItemImage($id: Int!, $imageURL: String!, $publicId: String!) {
+  createItemImage(input: {itemImage: {saleItemId: $id, url: $imageURL, publicId: $publicId}}) {
     itemImage {
       id
       url
+      publicId
     }
   }
 }
-`
+`;
 
 export const GET_SALE_ITEM = gql`
 query($saleId: Int!) {
@@ -59,6 +60,8 @@ query($saleId: Int!) {
       name
       price
       itemImagesList {
+        id
+        publicId
         url
       }
       subcategory {
@@ -100,7 +103,7 @@ query saleItemData($saleId: Int!) {
   id
   }
 }
-`
+`;
 
 export const UPDATE_SALE_ITEM = gql`
 mutation updateSaleItem($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $subcategoryId: Int!) {
@@ -125,4 +128,14 @@ mutation updateSaleItem($id: Int!, $manufacturerName: String, $description: Stri
     }
   }
 }
-`
+`;
+
+export const DELETE_ITEM_IMAGE = gql`
+mutation
+deleteItemImage($id: Int!){
+  deleteItemImage(input: {id: $id} ) {
+    clientMutationId
+  }
+}
+
+`;

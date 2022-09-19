@@ -37,15 +37,16 @@ export default function AddItem() {
     savePromises.push(handleAddSaleItem(saleItemData));
     Promise.all(savePromises).then(data => {
       newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
-      handleAddItemImage(data, newSaleItemId);
-    }).then(data => {
+      const savePromises = handleAddItemImage(data, newSaleItemId);
+      Promise.all(savePromises).then(data => {
         history.push({
           pathname: `/EditItem/${newSaleItemId}`,
           state: {
-            fileDataURL: null
+            fileDataURL: data?.map(item => item.data.createItemImage.itemImage)
           }
         });
-      });
+      })
+    });
   };
 
   const handleAddItemImage = (values, newSaleItemId) => {

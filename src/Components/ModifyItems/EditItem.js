@@ -19,10 +19,12 @@ import { useLocation } from 'react-router';
 import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
 
 const EditItem = () => {
-  // const { isDirty } = useFormState();
   const { id } = useParams();
   const location = useLocation();
-  const { fileDataURL } = location.state;
+  const { fileDataURL } = location.state
+    ?
+    location.state
+    : [];
   const saleId = parseInt(id);
   const {
     loading: loadingSaleItem, error: errorSaleItem, data: dataSaleItem
@@ -48,9 +50,7 @@ const EditItem = () => {
 
   const handleEditItemSubmit = (saleItemData, e) => {
     const imagePromises = saveImages(e);
-     // if (isDirty) {
-      imagePromises.push(handleEditSaleItem(saleItemData));
-    // }
+    imagePromises.push(handleEditSaleItem(saleItemData));
     Promise.all(imagePromises).then(data => handleEditItemImage(data))
       .then(data => console.log(data));
   };
