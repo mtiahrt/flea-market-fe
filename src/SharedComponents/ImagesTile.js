@@ -1,8 +1,7 @@
 import { ImageList, ImageListItem } from '@mui/material';
-import * as React from 'react';
 import styled from 'styled-components';
 
-const ImagesTile = ({ fileDataURL, deleteHandler }) => {
+const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
   console.log('file urls Images Tile got was', fileDataURL);
   return (
     <ImageList cols={2} rowHeight={164}>
@@ -13,8 +12,9 @@ const ImagesTile = ({ fileDataURL, deleteHandler }) => {
             alt={'item' + index}
             loading='lazy'
           />
-          <StyledSpan data-public-id={item.publicId} itemID={item.id} onClick={deleteHandler}
-                      className='removeitem'>X</StyledSpan>
+          {allowDelete &&
+            <StyledA onClick={deleteHandler} href='#' className='close'>X</StyledA>
+          }
         </ImageListItem>
       ))}
     </ImageList>
@@ -23,11 +23,28 @@ const ImagesTile = ({ fileDataURL, deleteHandler }) => {
 
 export default ImagesTile;
 
-const StyledSpan = styled.span`
+const StyledA = styled.a`
   position: absolute;
-  top: 3%;
+  top: 1%;
   right: 2%;
-  color: aliceblue;
-  cursor: pointer;
-  display: block;
+  opacity: 0.4;
+  font-size: 25px;
+  color: #333;
+  &:hover{
+    opacity: 8;
+  }
+  &before, &after{
+    position: absolute;
+    left: 15px;
+    content: '';
+    width: 10px;
+    height: 20px;
+    background-color: #333;
+  }
+  &before{
+    transform: rotate(45deg);
+  }
+  &after{
+    transform: rotate(-45deg);
+  }
 `;

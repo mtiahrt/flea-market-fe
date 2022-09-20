@@ -57,7 +57,7 @@ const PreviewImages = ({fileDataURL: urls}) => {
                onChange={handleOnChangeForImages}
                multiple name='imageFile' />
       </p>
-      <ImagesTile deleteHandler={deleteImage} fileDataURL={fileDataURL} />
+      <ImagesTile allowDelete={true} deleteHandler={deleteImage} fileDataURL={fileDataURL} />
     </>
   );
 };
