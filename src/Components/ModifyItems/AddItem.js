@@ -12,8 +12,8 @@ import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
 import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
+  const [category, setCategory] = useState(-1);
+  const [subcategory, setSubcategory] = useState(-1);
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] = useMutation(ADD_ITEM_IMAGE);
@@ -31,10 +31,9 @@ export default function AddItem() {
   };
   const handleNewItemSubmit = (saleItemData, e) => {
     const savePromises = saveImages(e);
-    let newSaleItemId;
     savePromises.push(handleAddSaleItem(saleItemData));
     Promise.all(savePromises).then(data => {
-      newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
+      const newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
       const savePromises = handleAddItemImage(data, newSaleItemId);
       Promise.all(savePromises).then(data => {
         history.push({
@@ -48,7 +47,7 @@ export default function AddItem() {
   };
 
   const handleAddItemImage = (values, newSaleItemId) => {
-    if (values) {
+    if (values && newSaleItemId) {
       return saveItemImage(newSaleItemId, values, addItemImage);
     }
   };
@@ -58,13 +57,13 @@ export default function AddItem() {
   };
 
   const handleCategorySelectChange = e => {
-    const categoryId = e.target.value;
+    const categoryId = +e.target.value;
     setCategory(categoryId);
     getSubcategories({ variables: { categoryId: categoryId } });
   };
 
   const handleSubcategorySelectChange = e => {
-    setSubcategory(e.target.value);
+    setSubcategory(+e.target.value);
   };
   console.log('Add Item is rendering...');
   if (loadingCategories) return 'Loading...';
@@ -77,14 +76,13 @@ export default function AddItem() {
         {...register('name', { required: true })}
         id='name'
         label='Name'
-        // fullWidth
         autoComplete='name'
         variant='standard' />
       {errors.name?.type === 'required' && 'Name is required'}
       <TextField
         {...register('manufacturerName', { required: true })}
         id='manufacturerName'
-        label='Manufacturer Name'
+        label='Manufacturer'
         // fullWidth
         autoComplete='manufacturer-name'
         variant='standard'

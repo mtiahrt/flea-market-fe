@@ -10,14 +10,16 @@ import Modal from './SharedComponents/Modal';
 import Profile from './Components/Profile';
 import OauthRedirect from './Components/Logins/OauthRedirect';
 import NavItemProfile from './Nav/NavItemProfile';
-import { ReactComponent as MessengerIcon } from './icons/messenger.svg';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
+import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
+
 import { useState } from 'react';
 import { UserProfileContext } from './Contexts/LoginContext';
 import DetailedItem from './Components/DetailedItem';
 import AddItem from "./Components/ModifyItems/AddItem";
 import EditItem from './Components/ModifyItems/EditItem';
+import ShoppingCart from './Components/ShoppingCart';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -29,8 +31,8 @@ function App() {
         <UserProfileContext.Provider value={{ userProfile, setUserProfile, cartItems, setCartItems }}>
           <NavBar>
             <NavItemProfile imgURL={userProfile.picture} />
+            <NavItem url={"ShoppingCart"} icon={<ShoppingCartIcon />}></NavItem>
             <NavItem url={"AddItem"} icon={<PlusIcon />}></NavItem>
-            <NavItem icon={<MessengerIcon />}></NavItem>
             <NavItem icon={<CaretIcon />}>
               <DropdownMenu></DropdownMenu>
             </NavItem>
@@ -53,6 +55,7 @@ function App() {
             </Route>
             <Route path='/DetailedItem/:id' children={<DetailedItem />}></Route>
             <Route path="/AddItem" children={<AddItem />}></Route>
+            <Route path="/ShoppingCart" children={<ShoppingCart />}></Route>
             <Route path="/EditItem/:id" children={<EditItem />}></Route>
             <Route path='/oauth'>
               <OauthRedirect />
