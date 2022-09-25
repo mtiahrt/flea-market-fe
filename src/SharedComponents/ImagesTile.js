@@ -13,7 +13,7 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
             loading='lazy'
           />
           {allowDelete &&
-            <StyledA onClick={deleteHandler} href='#' className='close'>X</StyledA>
+            <StyledA data-item-Image-id={item.id} data-public-id={`my-uploads/${item.publicId}`} onClick={deleteHandler} href='#' className='close'>X</StyledA>
           }
         </ImageListItem>
       ))}

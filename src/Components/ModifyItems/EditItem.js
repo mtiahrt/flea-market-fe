@@ -40,6 +40,7 @@ const EditItem = () => {
     loading: loadingSaleItem, error: errorSaleItem, data: dataSaleItem
   } = useQuery(GET_SALE_ITEM_AND_CATEGORIES, { variables: { saleId } });
 
+  console.log('filedataURL is:', fileDataURL)
   const [categoryId, setCategoryId] = useState(dataSaleItem?.saleItem.subcategory.category.id);
   const [subcategory, setSubcategory] = useState(dataSaleItem?.saleItem.subcategory.id);
   const { register, formState: { errors }, handleSubmit } = useForm();
@@ -104,7 +105,6 @@ const EditItem = () => {
           defaultValue={dataSaleItem.saleItem.name}
           id='name'
           label='Name'
-          fullWidth
           autoComplete='name'
           variant='standard' />
         {errors.name?.type === 'required' && 'Name is required'}
@@ -113,14 +113,12 @@ const EditItem = () => {
           defaultValue={dataSaleItem.saleItem.manufacturerName}
           id='manufacturerName'
           label='Manufacturer'
-          fullWidth
           autoComplete='manufacturer-name'
           variant='standard'
         />
         {errors.manufacturerName?.type === 'required' && 'Manufacturer name is required'}
         <InputLabel id='category-select-label'>Category</InputLabel>
         <Select
-          fullWidth
           labelId='category-select-label'
           value={categoryId ? categoryId : dataSaleItem.saleItem.subcategory.category.id
           }
@@ -133,7 +131,6 @@ const EditItem = () => {
         <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
         <Select
           {...register('subcategoryId', { required: true })}
-          fullWidth
           labelId='subcategory-select-label'
           value={subcategory ? subcategory : dataSaleItem.saleItem.subcategory.id}
           label='Subcategory'

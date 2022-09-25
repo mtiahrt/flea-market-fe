@@ -17,7 +17,7 @@ function DetailedItem() {
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-
+  
   function updateCart(id) {
     isItemAlreadyInCart(id)
       ? setCartItems((prev) => prev.filter(item => item !== id))

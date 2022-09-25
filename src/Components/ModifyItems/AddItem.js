@@ -83,14 +83,12 @@ export default function AddItem() {
         {...register('manufacturerName', { required: true })}
         id='manufacturerName'
         label='Manufacturer'
-        // fullWidth
         autoComplete='manufacturer-name'
         variant='standard'
       />
       {errors.manufacturerName?.type === 'required' && 'Manufacturer name is required'}
       <InputLabel id='category-select-label'>Category</InputLabel>
       <Select
-        // fullWidth
         labelId='category-select-label'
         value={category}
         label='Category'
@@ -103,7 +101,6 @@ export default function AddItem() {
         <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
         <Select
           {...register('subcategoryId', { required: true })}
-          // fullWidth
           labelId='subcategory-select-label'
           value={subcategory}
           label='Subcategory'

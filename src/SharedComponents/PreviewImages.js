@@ -37,7 +37,7 @@ const PreviewImages = ({fileDataURL: urls}) => {
   }
 
   const deleteImage = e => {
-    const id = Number(e.target.getAttribute('itemid'));
+    const id = Number(e.target.getAttribute('data-item-image-id'));
     const publicId = e.target.getAttribute('data-public-id');
     const promises = [];
     promises.push(cloudinary.v2.uploader.destroy(publicId, function(error, result) {
