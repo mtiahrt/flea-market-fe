@@ -40,7 +40,6 @@ const EditItem = () => {
     loading: loadingSaleItem, error: errorSaleItem, data: dataSaleItem
   } = useQuery(GET_SALE_ITEM_AND_CATEGORIES, { variables: { saleId } });
 
-  console.log('filedataURL is:', fileDataURL)
   const [categoryId, setCategoryId] = useState(dataSaleItem?.saleItem.subcategory.category.id);
   const [subcategory, setSubcategory] = useState(dataSaleItem?.saleItem.subcategory.id);
   const { register, formState: { errors }, handleSubmit } = useForm();
@@ -161,7 +160,6 @@ const EditItem = () => {
           type='number'
           id='price'
           label='Price'
-          fullWidth
           autoComplete='price'
           variant='standard'
           InputProps={{
