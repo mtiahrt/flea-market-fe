@@ -86,92 +86,96 @@ const EditItem = () => {
 
   console.log('EditItem component is Rendering...');
   if (loadingSaleItem || loadingSubcategories || editedLoading || imageLoading) {
-    console.log('loading.......');
-    return <CircularProgress
-      style={{ display: 'flex' }}
-      color='info'
-      size='sm'
-      value={10} />
+  console.log('loading.......');
+  return(
+    <CircularProgress
+      style={{ position: 'fixed',
+        top: '40%',
+        left: '40%',
+        padding: '50px',
+        zIndex: 1 }}
+      color='primary'
+      size='10rem' />)
   }
 
   if (errorSaleItem) return `Error! ${errorSaleItem.message}`;
 
   return (
-      <StyledForm onSubmit={handleSubmit(handleEditItemSubmit, onError)}>
-        <Typography variant='h4' gutterBottom>Edit Sale Item</Typography>
-        <TextField
-          {...register('name', { required: true })}
-          defaultValue={dataSaleItem.saleItem.name}
-          id='name'
-          label='Name'
-          autoComplete='name'
-          variant='standard' />
-        {errors.name?.type === 'required' && 'Name is required'}
-        <TextField
-          {...register('manufacturerName', { required: true })}
-          defaultValue={dataSaleItem.saleItem.manufacturerName}
-          id='manufacturerName'
-          label='Manufacturer'
-          autoComplete='manufacturer-name'
-          variant='standard'
-        />
-        {errors.manufacturerName?.type === 'required' && 'Manufacturer name is required'}
-        <InputLabel id='category-select-label'>Category</InputLabel>
-        <Select
-          labelId='category-select-label'
-          value={categoryId ? categoryId : dataSaleItem.saleItem.subcategory.category.id
-          }
-          label='Category'
-          onChange={handleCategorySelectChange}
-        >
-          {dataSaleItem.categoriesList.map(category => (
-            <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>))}
-        </Select>
-        <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
-        <Select
-          {...register('subcategoryId', { required: true })}
-          labelId='subcategory-select-label'
-          value={subcategory ? subcategory : dataSaleItem.saleItem.subcategory.id}
-          label='Subcategory'
-          onChange={handleSubcategoryOnChange}
-        >
-          {dataSubcategories
-            ? dataSubcategories.category.subcategoriesList.map(sub => (
-              <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
-            : dataSaleItem.saleItem.subcategory.category.subcategoriesList?.map(sub => (
-              <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
-          }
-        </Select>
-        <TextareaAutosize
-          {...register('description')}
-          defaultValue={dataSaleItem.saleItem.description}
-          id='description'
-          label='Description'
-          autoComplete='description'
-          variant='standard'
-          aria-label='minimum height'
-          minRows={8}
-          placeholder='Item Description'
-          style={{ width: '100%' }}
-        />
-        <TextField
-          defaultValue={dataSaleItem.saleItem.price}
-          {...register('price', { required: true })}
-          type='number'
-          id='price'
-          label='Price'
-          autoComplete='price'
-          variant='standard'
-          InputProps={{
-            startAdornment: <InputAdornment position='start'>$</InputAdornment>
-          }}
-        />
-        {errors.price?.type === 'required' && 'Price is required'}
-        <PreviewImages fileDataURL={fileDataURL} />
-        <Button type='submit' variant='contained'>Submit</Button>
-        <Button onClick={() => history.push(`/DetailedItem/${saleId}`)} style={{ backgroundColor: '#B8BDBB' }}
-                variant='contained'>Cancel</Button>
-      </StyledForm>
+    <StyledForm onSubmit={handleSubmit(handleEditItemSubmit, onError)}>
+      <Typography variant='h4' gutterBottom>Edit Sale Item</Typography>
+      <TextField
+        {...register('name', { required: true })}
+        defaultValue={dataSaleItem.saleItem.name}
+        id='name'
+        label='Name'
+        autoComplete='name'
+        variant='standard' />
+      {errors.name?.type === 'required' && 'Name is required'}
+      <TextField
+        {...register('manufacturerName', { required: true })}
+        defaultValue={dataSaleItem.saleItem.manufacturerName}
+        id='manufacturerName'
+        label='Manufacturer'
+        autoComplete='manufacturer-name'
+        variant='standard'
+      />
+      {errors.manufacturerName?.type === 'required' && 'Manufacturer name is required'}
+      <InputLabel id='category-select-label'>Category</InputLabel>
+      <Select
+        labelId='category-select-label'
+        value={categoryId ? categoryId : dataSaleItem.saleItem.subcategory.category.id
+        }
+        label='Category'
+        onChange={handleCategorySelectChange}
+      >
+        {dataSaleItem.categoriesList.map(category => (
+          <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>))}
+      </Select>
+      <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
+      <Select
+        {...register('subcategoryId', { required: true })}
+        labelId='subcategory-select-label'
+        value={subcategory ? subcategory : dataSaleItem.saleItem.subcategory.id}
+        label='Subcategory'
+        onChange={handleSubcategoryOnChange}
+      >
+        {dataSubcategories
+          ? dataSubcategories.category.subcategoriesList.map(sub => (
+            <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
+          : dataSaleItem.saleItem.subcategory.category.subcategoriesList?.map(sub => (
+            <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
+        }
+      </Select>
+      <TextareaAutosize
+        {...register('description')}
+        defaultValue={dataSaleItem.saleItem.description}
+        id='description'
+        label='Description'
+        autoComplete='description'
+        variant='standard'
+        aria-label='minimum height'
+        minRows={8}
+        placeholder='Item Description'
+        style={{ width: '100%' }}
+      />
+      <TextField
+        defaultValue={dataSaleItem.saleItem.price}
+        {...register('price', { required: true })}
+        type='number'
+        id='price'
+        label='Price'
+        autoComplete='price'
+        variant='standard'
+        InputProps={{
+          startAdornment: <InputAdornment position='start'>$</InputAdornment>
+        }}
+      />
+      {errors.price?.type === 'required' && 'Price is required'}
+      <PreviewImages fileDataURL={fileDataURL} />
+      <Button type='submit' variant='contained'>Submit</Button>
+      <Button onClick={() => history.push(`/DetailedItem/${saleId}`)} style={{ backgroundColor: '#B8BDBB' }}
+              variant='contained'>Cancel</Button>
+    </StyledForm>
   );
 };
 const StyledForm = styled.form`
