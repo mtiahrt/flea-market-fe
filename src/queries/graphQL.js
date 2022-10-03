@@ -137,5 +137,20 @@ deleteItemImage($id: Int!){
     clientMutationId
   }
 }
+`;
 
+export const CARD_ITEM = gql`
+query {
+  saleItemsList {
+    id
+    description
+    manufacturerName
+    name
+    price
+    itemImagesList {
+      publicId
+      url
+    }
+  }
+}
 `;
