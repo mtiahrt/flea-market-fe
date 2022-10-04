@@ -6,10 +6,12 @@ import Card from '@mui/joy/Card';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
-import NoImage from '../assets/no-image-available.jpg'
+import NoImage from '../assets/no-image-available.jpg';
+import { Link } from 'react-router-dom';
 
-export default function BasicCard({ cardData }) {
-console.log('item is',cardData)
+export default function BasicCard({ cardData, link }) {
+  console.log('item is', cardData);
+  console.log('link is', link);
   return (
     <Card variant='outlined' sx={{ width: 320 }}>
       <Typography level='h2' fontSize='lg' fontWeight='lg' sx={{ mb: 0.5 }}>
@@ -26,12 +28,14 @@ console.log('item is',cardData)
         <BookmarkAdd />
       </IconButton>
       <AspectRatio minHeight='120px' maxHeight='200px' sx={{ my: 2 }}>
-        <img
-          src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x=>x).url : NoImage}
-          srcSet={`${cardData ? cardData.url : NoImage} 2x`}
-          loading='lazy'
-          alt=''
-        />
+        <Link to={link}>
+          <img
+            src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x => x).url : NoImage}
+            srcSet={`${cardData ? cardData.url : NoImage} 2x`}
+            loading='lazy'
+            alt=''
+          />
+        </Link>
       </AspectRatio>
       <Box sx={{ display: 'flex' }}>
         <div>

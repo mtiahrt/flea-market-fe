@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import BasicCard from './BasicCard';
 import { CARD_ITEM } from '../queries/graphQL';
 
@@ -11,17 +10,11 @@ const ItemList = () => {
   if (error) return <p>Error :(</p>;
 
   return (
-    <>
-      <StyledList className='item-list'>
-        {data.saleItemsList.map((item) => (
-          <Link key={item.id.toString()} to={`DetailedItem/${item.id}`}>
-            <BasicCard cardData={item}>
-            </BasicCard>
-          </Link>
-
-        ))}
-      </StyledList>
-    </>
+    <StyledList className='item-list'>
+      {data.saleItemsList.map((item) => (
+          <BasicCard link={`DetailedItem/${item.id}`} cardData={item}></BasicCard>
+      ))}
+    </StyledList>
   );
 };
 const StyledList = styled.div`
