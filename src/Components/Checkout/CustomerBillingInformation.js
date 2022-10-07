@@ -4,21 +4,44 @@ import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Button, InputLabel, Select, Checkbox, MenuItem } from '@mui/material';
+import axios from 'axios';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 
 export default function CustomerBillingInformation() {
   const { register, formState: { errors }, handleSubmit } = useForm();
-
-  const handlePaymentSubmit = (paymentData, e) => {
-    console.log('payment submitted....', paymentData)
+  const stripe = useStripe();
+  const elements = useElements();
+  const handlePaymentSubmit = async (paymentData, e) => {
+    const clientSecret = await axios.post('https://uvvhidm2fnw6kbmbivkx35tlc40ikmmv.lambda-url.us-east-1.on.aws/', { amount: 1000 }, {
+      headers: {
+        'content-type': 'text/plain'
+      }
+    }).then(response => response.data.paymentIntent.client_secret);
+    const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: 'Marky Mark'
+        }
+      }
+    });
+    if (paymentResult.error) {
+      alert(paymentResult.error);
+      return;
+    }
+    if (paymentResult.paymentIntent.status === 'succeeded') {
+      alert('payment is good!!!');
+    }
   };
-  const onError = () => {
-    console.error('Error in form submission');
+  const onError = (e) => {
+    console.error('Error in form submission', e.state);
   };
 
   function handleStateSelectChange() {
 
   }
+
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
   return (
@@ -62,11 +85,11 @@ export default function CustomerBillingInformation() {
       <InputLabel id='state-select-label'>State</InputLabel>
       <Select
         {...register('state', { required: true })}
-        labelId='statre-select-label'
+        labelId='state-select-label'
         label='State'
         onChange={handleStateSelectChange}
       >
-        <MenuItem value="CO">CO</MenuItem>
+        <MenuItem value='CO'>CO</MenuItem>
         {/*{dataSubs.category.subcategoriesList.map(sub => (*/}
         {/*  <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))*/}
         {/*}*/}
@@ -79,8 +102,14 @@ export default function CustomerBillingInformation() {
         variant='standard'
       />
       <Typography variant='h4' gutterBottom>Payment Info</Typography>
-      <p>Credit Card</p>
-      {/*Strip stuff here*/}
+      {/*<PaymentForm/>*/}
+      <StyledPaymentDiv>
+        <StyledPaymentForm>
+          <h2>Credit Card</h2>
+          <CardElement className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium css-sghohy-MuiButtonBase-root-MuiButton-root" />
+          <Button>Pay now</Button>
+        </StyledPaymentForm>
+      </StyledPaymentDiv>
       <label>Same as Shipping address</label>
       <Checkbox {...label} defaultChecked />
       <Typography variant='h4' gutterBottom>Billing Address</Typography>
@@ -119,7 +148,7 @@ export default function CustomerBillingInformation() {
         label='State'
         onChange={handleStateSelectChange}
       >
-        <MenuItem value="CO">CO</MenuItem>
+        <MenuItem value='CO'>CO</MenuItem>
         {/*{dataSubs.category.subcategoriesList.map(sub => (*/}
         {/*  <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))*/}
         {/*}*/}
@@ -142,4 +171,19 @@ const StyledForm = styled.form`
   flex-wrap: wrap;
   gap: 1rem;
   margin: 0 10%;
+`;
+
+
+const StyledPaymentDiv = styled.div`
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 10%;
+`;
+const StyledPaymentForm = styled.form`
+  height: 100px;
+  min-width: 500px;
 `;

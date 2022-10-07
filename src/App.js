@@ -1,15 +1,15 @@
 import './App.css';
 import ItemList from './Components/ItemList';
-import NavBar from './Nav/NavBar';
-import NavItem from './Nav/NavItem';
-import DropdownMenu from './Nav/DropdownMenu';
+import NavBar from './nav/NavBar';
+import NavItem from './nav/NavItem';
+import DropdownMenu from './nav/DropdownMenu';
 import Oauths from './Components/Logins/Oauths';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Modal from './SharedComponents/Modal';
 
 import Profile from './Components/Profile';
 import OauthRedirect from './Components/Logins/OauthRedirect';
-import NavItemProfile from './Nav/NavItemProfile';
+import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
