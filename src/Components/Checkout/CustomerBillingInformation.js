@@ -3,10 +3,10 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { Button, InputLabel, Select, Checkbox, MenuItem } from '@mui/material';
+import { Button, InputLabel, Select, Checkbox, MenuItem, FormControlLabel, FormControl } from '@mui/material';
 import axios from 'axios';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-
+import states from '../../assets/data/states.json'
 
 export default function CustomerBillingInformation() {
   const { register, formState: { errors }, handleSubmit } = useForm();
@@ -42,8 +42,12 @@ export default function CustomerBillingInformation() {
 
   }
 
+  const getStates = () => (states.map(state => (
+    <MenuItem key={state.id} value={state.id}>{state.name}</MenuItem>)))
+
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
+  console.log('states is', states);
   return (
     <>
       <Typography variant='h4' gutterBottom>Customer Information</Typography>
@@ -83,20 +87,19 @@ export default function CustomerBillingInformation() {
           autoComplete='city'
           variant='standard'
         />
-        {/*<InputLabel id='state-select-label'>State</InputLabel>*/}
-        <Select style={{flexGrow: '1', flexShrink: '1'}}
-          {...register('state', { required: true })}
-          labelId='state-select-label'
-          label='State'
-          onChange={handleStateSelectChange}
-        >
-
-          <MenuItem value='CO'>CO</MenuItem>
-          {/*{dataSubs.category.subcategoriesList.map(sub => (*/}
-          {/*  <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))*/}
-          {/*}*/}
-        </Select>
-
+        
+        <FormControl  style={{flexGrow: '1', flexShrink: '1'}}>
+          <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <Select
+              {...register('state', { required: true })}
+              labelId='state-select-label'
+              label='State'
+              onChange={handleStateSelectChange}
+            >
+            {states.map(state => (
+              <MenuItem key={state.id} value={state.id}>{state.name}</MenuItem>))}
+          </Select>
+        </FormControl>
         <TextField style={{flexGrow: '1', flexShrink: '1'}}
           {...register('zip', { required: true })}
           id='zip'
@@ -112,9 +115,7 @@ export default function CustomerBillingInformation() {
           </StyledPaymentForm>
         </StyledPaymentDiv>
         <Typography variant='h4' gutterBottom>Billing Address</Typography>
-          <label>Same as Shipping address</label>
-          <Checkbox {...label} defaultChecked />
-
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Same as Shipping address" />
           <TextField
             {...register('billingFirstName', { required: true })}
             id='billingFirstName'
@@ -143,18 +144,18 @@ export default function CustomerBillingInformation() {
             autoComplete='city'
             variant='standard'
           />
-          <InputLabel id='state-select-label'>State</InputLabel>
-          <Select
-            {...register('billingState', { required: true })}
-            labelId='billing-state-select-label'
+          <FormControl  style={{flexGrow: '1', flexShrink: '1'}}>
+            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <Select
+            {...register('state', { required: true })}
+            id='bullingState'
             label='State'
-            onChange={handleStateSelectChange}
-          >
-            <MenuItem value='CO'>CO</MenuItem>
-            {/*{dataSubs.category.subcategoriesList.map(sub => (*/}
-            {/*  <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))*/}
-            {/*}*/}
-          </Select>
+            // onChange={handleStateSelectChange}
+        >
+
+          <MenuItem value='CO'>CO</MenuItem>
+        </Select>
+        </FormControl>
           <TextField
             {...register('billingZip', { required: true })}
             id='billingzip'
