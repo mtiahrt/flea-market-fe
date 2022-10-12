@@ -1,4 +1,4 @@
-# Getting Started
+zz# Getting Started
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 To get started first install on the app using node.  Open a command line prompt and type:
 This Repo depends on the BE being set up already.  If you have not done so start there first.  
@@ -20,7 +20,8 @@ SSL_KEY_FILE=server.key
  Add Server.cert and server.key to the root of this project.  This should be a copy of the files you generated for the Backend project.  
  Next you will have to add the cert to the mac key chain of the development machine.  You will do this by going into 
  Chrome settings/Privacy and security/Security/Manage certificates.  This will bring up the keychain access.
-
+### Facebook and Google OAuth
+environment variables for firebase are in the env file.  Facebook appId and app secret are in Firebase under Authentication.  Facebook needs the redirect URI you get from Firebase.  This redirect from firebase has to be added in Facebook for developers site.  Click facebook login/settings under "Valid OAuth Redirect URIs"
 ### Mac cert install
 Open your keychain.  `cmd + space` type keychain access. In keychain access click 
 1. "login" on the left. 

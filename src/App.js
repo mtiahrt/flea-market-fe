@@ -3,12 +3,11 @@ import ItemList from './Components/ItemList';
 import NavBar from './nav/NavBar';
 import NavItem from './nav/NavItem';
 import DropdownMenu from './nav/DropdownMenu';
-import Oauths from './Components/Logins/Oauths';
+import Login from './Components/Logins/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Modal from './SharedComponents/Modal';
 
 import Profile from './Components/Profile';
-import OauthRedirect from './Components/Logins/OauthRedirect';
 import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
@@ -31,7 +30,7 @@ function App() {
       <Router>
         <UserProfileContext.Provider value={{ userProfile, setUserProfile, cartItems, setCartItems }}>
           <NavBar>
-            <NavItemProfile imgURL={userProfile.picture} />
+            <NavItemProfile imgURL={userProfile.photoURL} />
             <NavItem url={"CheckOut"} icon={<ShoppingCartIcon />}></NavItem>
             <NavItem url={"AddItem"} icon={<PlusIcon />}></NavItem>
             <NavItem icon={<CaretIcon />}>
@@ -48,7 +47,7 @@ function App() {
                 message='Please sign in'
                 isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
                 onClose={null}>
-                <Oauths />
+                <Login />
               </Modal>
             </Route>
             <Route path='/Profile'>
@@ -58,9 +57,6 @@ function App() {
             <Route path="/AddItem" children={<AddItem />}></Route>
             <Route path="/CheckOut" children={<CheckOut />}></Route>
             <Route path="/EditItem/:id" children={<EditItem />}></Route>
-            <Route path='/oauth'>
-              <OauthRedirect />
-            </Route>
           </Switch>
         </UserProfileContext.Provider>
       </Router>
