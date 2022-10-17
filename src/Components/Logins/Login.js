@@ -1,6 +1,7 @@
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillFacebook } from 'react-icons/ai';
-import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider, updateProfile } from 'firebase/auth';
+import { AiOutlineTwitter } from 'react-icons/ai'
+import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
@@ -30,6 +31,7 @@ export default function Login() {
       console.error(error);
     }
   };
+
   //sign in with Facebook
   const fbProvider = new FacebookAuthProvider();
   const facebookLogin = async () => {
@@ -39,15 +41,23 @@ export default function Login() {
     }catch (error){
       console.error(error);
     }
-
   }
 
-
+  const twitterLogin = async ()=> {
+    const twProvider = new TwitterAuthProvider();
+    try{
+      const result = await signInWithPopup(auth, twProvider);
+      mapMatches(result.user)
+    }catch (error){
+      console.error(error);
+    }
+  }
   return (
     <StyledDiv>
       <StyledDivButtons>
         <StyledButton onClick={googleLogin}><FcGoogle style={iconStyle} />Sign in with Google</StyledButton>
         <StyledButton onClick={facebookLogin}><AiFillFacebook style={{ ...iconStyle, color: 'blue' }} />Sign in with Facebook</StyledButton>
+        <StyledButton onClick={twitterLogin}><AiOutlineTwitter style={{ ...iconStyle, color: '#00acee' }} />Sign in with Twitter</StyledButton>
       </StyledDivButtons>
     </StyledDiv>
   );
