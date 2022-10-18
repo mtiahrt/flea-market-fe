@@ -27,6 +27,7 @@ const ItemList = () => {
     <StyledList className='item-list'>
       {data.saleItemsList.map((item) => (
         <BasicCard
+          key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
           link={`DetailedItem/${item.id}`} cardData={item}
           cartClickHandler={() => updateCart(item.id)}

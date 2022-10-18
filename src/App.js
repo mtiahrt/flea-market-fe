@@ -40,7 +40,7 @@ function App() {
           <Switch>
             <Route exact path='/'>
               <header>
-                <h1>Gretchenkelly Shop</h1>
+                <h1>Wild Heather Shop</h1>
               </header>
               <ItemList />
               <Modal
