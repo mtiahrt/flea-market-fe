@@ -10,6 +10,7 @@ import { UserProfileContext } from '../../Contexts/LoginContext';
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
   const keysForStateUpdate = ['displayName', 'photoURL', 'uid', 'email', 'accessToken'];
+
   const mapMatches = user => {
     const result = Object.entries(user)
       .filter(item => keysForStateUpdate.includes(item[0]))
@@ -21,43 +22,34 @@ export default function Login() {
         {});
     setUserProfile(result);
   }
-  //sign in with Google
-  const googleProvider = new GoogleAuthProvider();
-  const googleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      mapMatches(result.user)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //sign in with Facebook
-  const fbProvider = new FacebookAuthProvider();
-  const facebookLogin = async () => {
-    try{
-      const result = await signInWithPopup(auth, fbProvider);
-      mapMatches(result.user)
-    }catch (error){
-      console.error(error);
+  const loginProviderFactory = provider => {
+    if(provider === 'google'){
+      return new GoogleAuthProvider();
+    }else if (provider === 'facebook'){
+      return new FacebookAuthProvider();
+    }else if (provider === 'twitter'){
+      return new TwitterAuthProvider();
     }
   }
 
-  const twitterLogin = async ()=> {
-    const twProvider = new TwitterAuthProvider();
+  const login = async provider => {
+    const authProvider = loginProviderFactory(provider.currentTarget.value)
     try{
-      const result = await signInWithPopup(auth, twProvider);
+      const result = await signInWithPopup(auth, authProvider);
+      console.log(result.user);
       mapMatches(result.user)
     }catch (error){
-      console.error(error);
+      console.error(error)
     }
   }
+
+
   return (
     <StyledDiv>
       <StyledDivButtons>
-        <StyledButton onClick={googleLogin}><FcGoogle style={iconStyle} />Sign in with Google</StyledButton>
-        <StyledButton onClick={facebookLogin}><AiFillFacebook style={{ ...iconStyle, color: 'blue' }} />Sign in with Facebook</StyledButton>
-        <StyledButton onClick={twitterLogin}><AiOutlineTwitter style={{ ...iconStyle, color: '#00acee' }} />Sign in with Twitter</StyledButton>
+        <StyledButton value='google' onClick={login}><FcGoogle style={iconStyle} />Sign in with Google</StyledButton>
+        <StyledButton value='facebook' onClick={login}><AiFillFacebook style={{ ...iconStyle, color: 'blue' }} />Sign in with Facebook</StyledButton>
+        <StyledButton value='twitter' onClick={login}><AiOutlineTwitter style={{ ...iconStyle, color: '#00acee' }} />Sign in with Twitter</StyledButton>
       </StyledDivButtons>
     </StyledDiv>
   );

@@ -154,3 +154,20 @@ query {
   }
 }
 `;
+
+export const GET_CART_ITEMS = gql `
+query ($user_id: String) {
+  cartsList(condition: {userid: $user_id}) {
+    id
+    saleItemId
+    userid
+    saleItem {
+      description
+      name
+      price
+      manufacturerName
+    }
+  }
+}
+
+`;
