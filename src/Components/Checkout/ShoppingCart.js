@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Divider, InputLabel, MenuItem, Select } from '@mui/material';
+import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
 
@@ -12,34 +12,64 @@ export default function ShoppingCart() {
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
   return (
-    <StyledDiv>
-      <h1 style={{width: '100%'}}>Current Cart</h1>
+    <StyledContainerDiv>
+      <h1>Current Cart</h1>
       {dataCartItems.cartsList.map(item => (
-        <div>
-          <h3>{item.saleItem.manufacturerName}</h3>
-          <p>{item.saleItem.description}</p>
-          <h4>{item.saleItem.price}</h4>
-        </div>
+        <React.Fragment key={item.id}>
+          <StyledCartItemDiv>
+            <h3>{item.saleItem.manufacturerName}</h3>
+            <h4>${item.saleItem.price}</h4>
+          </StyledCartItemDiv>
+          <StyledParagraph>{item.saleItem.description}</StyledParagraph>
+        </React.Fragment>
       ))}
-      <h1>Shipping Options</h1>
-      <InputLabel>Select Shipping Option</InputLabel>
-      <Select>
-        <MenuItem value='Ground'>Ground</MenuItem>
-        <MenuItem value='Air'>Air</MenuItem>
-      </Select>
-      <h1>Cart Total</h1>
-      <h2>$20.84</h2>
-    </StyledDiv>
+      <Divider style={dividerStyle}>Shipping
+        Options</Divider>
+      <FormControl style={{ flexGrow: '1', flexShrink: '1', width: '90%' }}>
+        <InputLabel>Select Shipping Option</InputLabel>
+        <Select label='Select Shipping Option'>
+          <MenuItem value='Ground'>Ground $15.32</MenuItem>
+          <MenuItem value='Air'>Air $32.50</MenuItem>
+        </Select>
+      </FormControl>
+      <Divider style={dividerStyle}>Cart
+        Total</Divider>
+      <h2 style={{ margin: 0 }}>$20.84</h2>
+    </StyledContainerDiv>
   );
 }
-
-
-const StyledDiv = styled.div`
-  border: black solid;
+const StyledContainerDiv = styled.div`
+  border: #4285F4 solid;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+`;
+
+const dividerStyle = {
+  fontSize: '1.3em',
+  margin: '3% 0 2% 0',
+  flexGrow: '1',
+  flexShrink: '1',
+  width: '100%'
+};
+const StyledParagraph = styled.p`
+  margin: 0 0 .5em 6%;
+  font-size: .9em;
+  align-self: flex-start;
+`;
+
+const StyledCartItemDiv = styled.div`
+  h3 {
+    margin: 0;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  display: flex;
+  justify-content: space-between;
   flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem;
-  //margin: 0 20%;
+  width: 90%;
 `;
