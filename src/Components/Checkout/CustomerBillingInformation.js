@@ -50,8 +50,8 @@ export default function CustomerBillingInformation() {
 
   return (
     <>
-      <Typography variant='h4' gutterBottom>Customer Information</Typography>
       <StyledForm onSubmit={handleSubmit(handlePaymentSubmit, onError)}>
+        <Typography variant='h4' gutterBottom>Customer Information</Typography>
         <TextField style={{ flexGrow: '1', flexShrink: '1' }}
                    {...register('firstName', { required: true })}
                    id='firstName'
@@ -109,7 +109,7 @@ export default function CustomerBillingInformation() {
         <Divider style={{ marginTop: '3%', flexGrow: '1', flexShrink: '1', width: '100%'}} />
         <StyledPaymentDiv>
           <StyledPaymentForm>
-            <h2>Credit Card</h2>
+            <Typography style={{ margin: '10px 0px 10px 0px', width: '100%'}} variant='h4' gutterBottom>Credit Card</Typography>
             <CardElement />
             <Button>Pay now</Button>
           </StyledPaymentForm>

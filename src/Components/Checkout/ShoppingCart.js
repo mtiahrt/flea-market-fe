@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useQuery } from '@apollo/client';
@@ -8,9 +8,11 @@ export default function ShoppingCart() {
   const {
     loading: loadingCartItems, error: errorCartItems, data: dataCartItems
   } = useQuery(GET_CART_ITEMS);
-
+  const { cartTotal, setCartTotal } = useState(0.00);
+  
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
+
   return (
     <StyledContainerDiv>
       <h1>Current Cart</h1>
@@ -25,7 +27,7 @@ export default function ShoppingCart() {
       ))}
       <Divider style={dividerStyle}>Shipping
         Options</Divider>
-      <FormControl style={{ flexGrow: '1', flexShrink: '1', width: '90%' }}>
+      <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
         <InputLabel>Select Shipping Option</InputLabel>
         <Select label='Select Shipping Option'>
           <MenuItem value='Ground'>Ground $15.32</MenuItem>
@@ -34,22 +36,29 @@ export default function ShoppingCart() {
       </FormControl>
       <Divider style={dividerStyle}>Cart
         Total</Divider>
-      <h2 style={{ margin: 0 }}>$20.84</h2>
+      <h2 style={{ margin: '0', marginBottom: '3%' }}>${cartTotal}</h2>
     </StyledContainerDiv>
   );
 }
 const StyledContainerDiv = styled.div`
-  border: #4285F4 solid;
+  border: .1rem solid rgba(0, 0, 0, 0.12);
+  box-shadow: -1px 1px rgba(0, 0, 0, 0.12),
+  -2px 2px rgba(0, 0, 0, 0.12),
+  -3px 3px rgba(0, 0, 0, 0.12),
+  -4px 4px rgba(0, 0, 0, 0.12),
+  -5px 5px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 3%;
   width: 60%;
+  height: 50%;
 `;
 
 const dividerStyle = {
   fontSize: '1.3em',
   margin: '3% 0 2% 0',
-  flexGrow: '1',
+  flexGrow: '0',
   flexShrink: '1',
   width: '100%'
 };
