@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useQuery } from '@apollo/client';
@@ -8,11 +8,13 @@ export default function ShoppingCart() {
   const {
     loading: loadingCartItems, error: errorCartItems, data: dataCartItems
   } = useQuery(GET_CART_ITEMS);
-  const { cartTotal, setCartTotal } = useState(0.00);
-  
+
+  function sumOfCart(){
+    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.saleItem.price, 0)
+  }
+
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
-
   return (
     <StyledContainerDiv>
       <h1>Current Cart</h1>
@@ -36,17 +38,17 @@ export default function ShoppingCart() {
       </FormControl>
       <Divider style={dividerStyle}>Cart
         Total</Divider>
-      <h2 style={{ margin: '0', marginBottom: '3%' }}>${cartTotal}</h2>
+      <h2 style={{ margin: '0', marginBottom: '3%' }}>${sumOfCart()}</h2>
     </StyledContainerDiv>
   );
 }
 const StyledContainerDiv = styled.div`
-  border: .1rem solid rgba(0, 0, 0, 0.12);
-  box-shadow: -1px 1px rgba(0, 0, 0, 0.12),
-  -2px 2px rgba(0, 0, 0, 0.12),
-  -3px 3px rgba(0, 0, 0, 0.12),
-  -4px 4px rgba(0, 0, 0, 0.12),
-  -5px 5px rgba(0, 0, 0, 0.12);
+  border: .1rem solid rgba(0, 0, 0, .06);
+  box-shadow: -1px 1px rgba(0, 0, 0, .06),
+  -2px 2px rgba(0, 0, 0, .06),
+  -3px 3px rgba(0, 0, 0, .06),
+  -4px 4px rgba(0, 0, 0, .06),
+  -5px 5px rgba(0, 0, 0, .06);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,7 +66,7 @@ const dividerStyle = {
 };
 const StyledParagraph = styled.p`
   margin: 0 0 .5em 6%;
-  font-size: .9em;
+  font-size: .06em;
   align-self: flex-start;
 `;
 
