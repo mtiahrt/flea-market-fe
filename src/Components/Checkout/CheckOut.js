@@ -16,6 +16,6 @@ export default function CheckOut() {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 5%;
-  width: 100%;
+  margin: 2rem;
+  gap: 2rem;
 `;

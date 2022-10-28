@@ -49,9 +49,8 @@ export default function CustomerBillingInformation() {
   );
 
   return (
-    <>
       <StyledForm onSubmit={handleSubmit(handlePaymentSubmit, onError)}>
-        <Typography variant='h4' gutterBottom>Customer Information</Typography>
+        <Typography style={{ width: '100%'}} variant='h4' >Customer Information</Typography>
         <TextField style={{ flexGrow: '1', flexShrink: '1' }}
                    {...register('firstName', { required: true })}
                    id='firstName'
@@ -106,10 +105,10 @@ export default function CustomerBillingInformation() {
                    autoComplete='zip'
                    variant='standard'
         />
-        <Divider style={{ marginTop: '3%', flexGrow: '1', flexShrink: '1', width: '100%'}} />
+        <Divider style={{ width: '100%'}} />
         <StyledPaymentDiv>
           <StyledPaymentForm>
-            <Typography style={{ margin: '10px 0px 10px 0px', width: '100%'}} variant='h4' gutterBottom>Credit Card</Typography>
+            <Typography  variant='h4' gutterBottom>Credit Card</Typography>
             <CardElement />
             <Button>Pay now</Button>
           </StyledPaymentForm>
@@ -164,22 +163,24 @@ export default function CustomerBillingInformation() {
           autoComplete='zip'
           variant='standard'
         />
+                <Divider style={{ width: '100%'}} />
+
         <Button type='submit' variant='contained'>Complete Payment</Button>
       </StyledForm>
-    </>
   );
 }
 
 const StyledForm = styled.form`
   //border: solid #32a1ce;
-  padding: 5px;
+  // padding: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 55%;
   flex-wrap: wrap;
   gap: 1rem;
-  margin: 0 5%;
+  flex: 1 1 20rem;
+  padding: 0.5rem;
+  border: 2px solid #e3e5e8;
 `;
 
 const StyledFieldEqualSize = styled.input`
@@ -191,7 +192,10 @@ const StyledPaymentDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  width: 100%;
 `;
 const StyledPaymentForm = styled.form`
-  min-width: 500px;
+  // flex: 1 1 20em;
+  //width: 100%
+  // min-width: 500px;
 `;
