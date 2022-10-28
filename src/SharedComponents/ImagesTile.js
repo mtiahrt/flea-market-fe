@@ -1,13 +1,12 @@
-import { ImageList, ImageListItem } from '@mui/material';
 import styled from 'styled-components';
 
 const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
   console.log('file urls Images Tile got was', fileDataURL);
   return (
-    <ImageList cols={2} rowHeight={164}>
+    <StyledDivContainer className="image-container">
       {fileDataURL?.map((item, index) => (
-        <ImageListItem key={`${item.publicId}`}>
-          <img
+        <StyledDivColumn className='image-column' key={`${item.publicId}`}>
+          <StyledImg
             src={item.url ? item.url : item}
             alt={'item' + index}
             loading='lazy'
@@ -15,13 +14,43 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
           {allowDelete &&
             <StyledA data-item-image-id={item.id} data-public-id={`my-uploads/${item.publicId}`} onClick={deleteHandler} href='#' className='close'>X</StyledA>
           }
-        </ImageListItem>
+        </StyledDivColumn>
       ))}
-    </ImageList>
+    </StyledDivContainer>
   );
 };
 
 export default ImagesTile;
+const StyledDivContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+  
+  @media (max-width: 768px) {
+    flex: 50%;
+    max-width: 50%;
+  }
+  @media (max-width: 425px){
+    flex: 100%;
+    max-width: 100%;
+  }
+`
+
+const StyledDivColumn = styled.div`
+  flex: 25%;
+  max-width: 25%;
+  padding: 0 4px;
+`
+
+const StyledImg = styled.img `
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+`
+
+
+
+
 
 const StyledA = styled.a`
   position: absolute;

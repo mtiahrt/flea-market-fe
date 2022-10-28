@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import { GET_SALE_ITEM } from '../queries/graphQL';
 import styled from 'styled-components';
-import Grid from '@mui/material/Grid';
+import { Button } from '@mui/material';
 
 function DetailedItem() {
+  const history = useHistory();
   const { cartItems, setCartItems } = useContext(UserProfileContext);
   const { id } = useParams();
   const saleId = parseInt(id);
@@ -17,7 +18,7 @@ function DetailedItem() {
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-  
+
   function updateCart(id) {
     isItemAlreadyInCart(id)
       ? setCartItems((prev) => prev.filter(item => item !== id))
@@ -31,6 +32,21 @@ function DetailedItem() {
   }
 
   console.log('detailItem component is rendering');
+
+  function navigateToEditItem(id) {
+    debugger;
+    history.push({
+      pathname: `/EditItem/${id}`,
+        state: {
+          fileDataURL: data.saleItem.itemImagesList
+        }
+    })
+  }
+
+  function navigateToBuyNow() {
+
+  }
+
   return (
     <StyledDiv>
       <h2>Item Details</h2>
@@ -38,34 +54,26 @@ function DetailedItem() {
       <h4>Manufacturer Name: {data.saleItem.manufacturerName}</h4>
       <h4>Description: {data.saleItem.description}</h4>
       <h4>Price: {data.saleItem.price}</h4>
-      <Grid item style={{ marginTop: '5%' }} xs={12}>
-        <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
-      </Grid>
-      <Link to={`/`}>
-        <button>Return to Home</button>
-      </Link>
-      <button onClick={() => updateCart(data.saleItem.id)}>
+      <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
+      <Button style={buttonStyles} onClick={() => updateCart(data.saleItem.id)} variant='contained'>
         {isItemAlreadyInCart(data.saleItem.id)
           ? 'Remove from cart'
           : 'Add to Cart'}
-      </button>
-      <Link to={{
-        pathname:`/EditItem/${data.saleItem.id}`,
-        state: {
-          fileDataURL: data.saleItem.itemImagesList,
-        },
-      }}
-      >
-        <button>Edit Item</button>
-      </Link>
-      <Link to={`/BuyNow`}>
-        <button>Buy Now</button>
-      </Link>
+      </Button>
+      <Button onClick={() => navigateToEditItem(data.saleItem.id)} variant='contained' style={buttonStyles}>Edit
+        Item</Button>
+      <Button onClick={navigateToBuyNow} variant='contained' style={buttonStyles}>Buy Now</Button>
     </StyledDiv>
   );
 }
 
 export default DetailedItem;
+
+const buttonStyles = {
+  width: '50%',
+  margin: '.5% 0 .5% 0'
+};
+
 
 const StyledDiv = styled.div`
   display: flex;

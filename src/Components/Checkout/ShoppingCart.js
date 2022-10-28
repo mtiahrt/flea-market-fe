@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
+import Typography from '@mui/material/Typography';
 
 export default function ShoppingCart() {
   const {
@@ -17,60 +18,75 @@ export default function ShoppingCart() {
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
   return (
     <StyledContainerDiv>
-      <h1>Current Cart</h1>
-      {dataCartItems.cartsList.map(item => (
-        <React.Fragment key={item.id}>
-          <StyledCartItemDiv>
-            <h3>{item.saleItem.manufacturerName}</h3>
-            <h4>${item.saleItem.price}</h4>
-          </StyledCartItemDiv>
-          <StyledParagraph>{item.saleItem.description}</StyledParagraph>
-        </React.Fragment>
-      ))}
-      <Divider style={dividerStyle}>Shipping
-        Options</Divider>
-      <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
-        <InputLabel>Select Shipping Option</InputLabel>
-        <Select label='Select Shipping Option'>
-          <MenuItem value='Ground'>Ground $15.32</MenuItem>
-          <MenuItem value='Air'>Air $32.50</MenuItem>
-        </Select>
-      </FormControl>
-      <Divider style={dividerStyle}>Cart
-        Total</Divider>
-      <h2 style={{ margin: '0', marginBottom: '3%' }}>${sumOfCart()}</h2>
+      <Typography variant='h4' gutterBottom>Cart Items</Typography>
+      <StyledCartItems>
+        {dataCartItems.cartsList.map(item => (
+          <React.Fragment key={item.id}>
+            <StyledCartItem>
+              <StyledCartItemBasics>
+                <h3>{item.saleItem.manufacturerName}</h3>
+                <h4>${item.saleItem.price}</h4>
+              </StyledCartItemBasics>
+              <StyledCartItemDetails>{item.saleItem.description}</StyledCartItemDetails>
+            </StyledCartItem>
+          </React.Fragment>
+        ))}
+      </StyledCartItems>
+      <Divider style={dividerStyle}></Divider>
+
+      <StyledShipping>
+        <Typography variant='h5' gutterBottom>Shipping Options</Typography>
+        <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%'}}>
+          <InputLabel>Select Shipping Option</InputLabel>
+          <Select label='Select Shipping Option'>
+            <MenuItem value='Ground'>Ground $15.32</MenuItem>
+            <MenuItem value='Air'>Air $32.50</MenuItem>
+          </Select>
+        </FormControl>
+      </StyledShipping>
+
+      <StyledSummation>
+        <Typography variant='h5' gutterBottom>Cart Total</Typography>
+        <h2 style={{ margin: '0', marginBottom: '3%' }}>${sumOfCart()}</h2>
+      </StyledSummation>
     </StyledContainerDiv>
   );
 }
+
+const StyledShipping = styled.div`
+  margin: 1rem 0;
+`;
+
+const StyledSummation = styled.div`
+  margin: 1rem 0;
+`;
+
+const StyledCartItems = styled.div`
+`;
+
+const StyledCartItem = styled.div`
+  padding: 1rem;
+`;
+
 const StyledContainerDiv = styled.div`
-  border: .1rem solid rgba(0, 0, 0, .06);
-  box-shadow: -1px 1px rgba(0, 0, 0, .06),
-  -2px 2px rgba(0, 0, 0, .06),
-  -3px 3px rgba(0, 0, 0, .06),
-  -4px 4px rgba(0, 0, 0, .06),
-  -5px 5px rgba(0, 0, 0, .06);
   display: flex;
+  flex: 1 1 20em;
   flex-direction: column;
-  align-items: center;
-  margin-right: 3%;
-  width: 60%;
-  height: 50%;
+  padding: 0.5rem;
+  border: 2px solid #e3e5e8;
+  height: 100%;
 `;
 
 const dividerStyle = {
-  fontSize: '1.3em',
-  margin: '3% 0 2% 0',
-  flexGrow: '0',
-  flexShrink: '1',
   width: '100%'
 };
-const StyledParagraph = styled.p`
-  margin: 0 0 .5em 6%;
-  font-size: .06em;
-  align-self: flex-start;
+const StyledCartItemDetails = styled.p`
+  margin: 0.5rem 0 .5rem 0.5rem;
+  font-size: .9em;
+  //align-self: flex-start;
 `;
 
-const StyledCartItemDiv = styled.div`
+const StyledCartItemBasics = styled.div`
   h3 {
     margin: 0;
   }

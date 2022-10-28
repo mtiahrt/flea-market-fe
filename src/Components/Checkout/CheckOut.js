@@ -7,8 +7,8 @@ import styled from 'styled-components';
 export default function CheckOut() {
   return (
     <StyledDiv>
-      <CustomerBillingInformation />
-      <ShoppingCart />
+      <CustomerBillingInformation style={{flexShrink: 3}} />
+      <ShoppingCart style={{flexShrink: 1}} />
     </StyledDiv>
   );
 }
@@ -16,6 +16,15 @@ export default function CheckOut() {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 5%;
-  width: 100%;
+  //flex-wrap: nowrap;
+  margin: 2rem;
+  gap: 2rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const StyledBilling = styled.div`
+`;
+const StyledCart = styled.div`
 `;
