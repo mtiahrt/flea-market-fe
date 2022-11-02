@@ -20,13 +20,13 @@ export default function BasicCard({ cardData, link, iconColor, cartClickHandler 
         variant='plain'
         color='neutral'
         size='sm'
-        sx={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
+        sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
       >
         <ShoppingCart onClick={cartClickHandler} color={iconColor} />
       </IconButton>
       <AspectRatio minHeight='120px' maxHeight='200px' sx={{ my: 2 }}>
         <Link to={link}>
-          <img
+          <img style={{ width: '85%'}}
             src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x => x).url : NoImage}
             srcSet={`${cardData ? cardData.url : NoImage} 2x`}
             loading='lazy'
