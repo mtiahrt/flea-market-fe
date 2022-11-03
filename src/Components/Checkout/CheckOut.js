@@ -16,15 +16,9 @@ export default function CheckOut() {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: row;
-  //flex-wrap: nowrap;
   margin: 2rem;
   gap: 2rem;
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const StyledBilling = styled.div`
-`;
-const StyledCart = styled.div`
 `;

@@ -13,6 +13,9 @@
 
 img {
     max-width: 100%;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 h4 {
     margin: .5rem;
@@ -22,7 +25,14 @@ h4 {
     /* make a flex container to vertically and horizontally center*/
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+}
+
+a {
+    font-size: 30px;
+    color: firebrick;
+    position: relative;
+    right: 1.5rem;
 }
 
 /* Responsive layout -stack on top of each other instead of next to each other */
