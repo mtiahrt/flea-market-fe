@@ -7,12 +7,12 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
     <div className='image-container'>
       {fileDataURL.map(item => {
         return (
-          <article className="image-item">
+          <article key={`imageKey${item.id}`} className='image-item'>
             <img src={item.url} alt='something' />
             {allowDelete &&
               <a data-item-image-id={item.id} data-public-id={`my-uploads/${item.publicId}`}
-                       onClick={deleteHandler}
-                       href='#' className='close'>X</a>
+                 onClick={deleteHandler}
+                 href='#' className='close image-delete'>X</a>
             }
           </article>
         );

@@ -85,16 +85,18 @@ const EditItem = () => {
 
   console.log('EditItem component is Rendering...');
   if (loadingSaleItem || loadingSubcategories || editedLoading || imageLoading) {
-  console.log('loading.......');
-  return(
-    <CircularProgress
-      style={{ position: 'fixed',
-        top: '40%',
-        left: '40%',
-        padding: '50px',
-        zIndex: 1 }}
-      color='primary'
-      size='10rem' />)
+    console.log('loading.......');
+    return (
+      <CircularProgress
+        style={{
+          position: 'fixed',
+          top: '40%',
+          left: '40%',
+          padding: '50px',
+          zIndex: 1
+        }}
+        color='primary'
+        size='10rem' />);
   }
 
   if (errorSaleItem) return `Error! ${errorSaleItem.message}`;
@@ -171,9 +173,11 @@ const EditItem = () => {
       />
       {errors.price?.type === 'required' && 'Price is required'}
       <PreviewImages fileDataURL={fileDataURL} />
-      <Button type='submit' variant='contained'>Submit</Button>
-      <Button onClick={() => history.push(`/DetailedItem/${saleId}`)} style={{ backgroundColor: '#B8BDBB' }}
-              variant='contained'>Cancel</Button>
+      <StyledButtonDiv>
+        <Button type='submit' variant='contained'>Submit</Button>
+        <Button onClick={() => history.push(`/DetailedItem/${saleId}`)} style={{ backgroundColor: '#B8BDBB' }}
+                variant='contained'>Cancel</Button>
+      </StyledButtonDiv>
     </StyledForm>
   );
 };
@@ -183,4 +187,21 @@ const StyledForm = styled.form`
   gap: 1rem;
   margin: 0 20%;
 `;
+
+const StyledButtonDiv = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  button{
+    width: 48%;
+  }
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: .4rem;
+    button{
+      width: 100%;
+    }
+  }
+`
+
 export default EditItem;

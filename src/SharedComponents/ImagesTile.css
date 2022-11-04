@@ -24,11 +24,11 @@ h4 {
     max-width: 48%;
     /* make a flex container to vertically and horizontally center*/
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
 }
 
-a {
+.image-delete {
     font-size: 30px;
     color: firebrick;
     position: relative;
@@ -39,7 +39,7 @@ a {
 @media screen and (max-width: 700px) {
     .image-container {
         flex-direction: column;
-        max-width: 82%;
+        max-width: 100%;
         flex-wrap: nowrap;
         align-items: center;
     }

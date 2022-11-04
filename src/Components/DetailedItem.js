@@ -43,10 +43,6 @@ function DetailedItem() {
     });
   }
 
-  function navigateToBuyNow() {
-
-  }
-
   return (
     <div className='container'>
       <h2>Item Details</h2>
@@ -55,15 +51,16 @@ function DetailedItem() {
       <h4>Description: {data.saleItem.description}</h4>
       <h4>Price: {data.saleItem.price}</h4>
       <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
-      <Button onClick={() => updateCart(data.saleItem.id)} variant='contained'>
-        {isItemAlreadyInCart(data.saleItem.id)
-          ? 'Remove from cart'
-          : 'Add to Cart'}
-      </Button>
-      <Button  onClick={() => navigateToEditItem(data.saleItem.id)}
-              variant='contained'>Edit
-        Item</Button>
-      <Button onClick={navigateToBuyNow} variant='contained'>Buy Now</Button>
+      <div className="buttons">
+        <Button onClick={() => updateCart(data.saleItem.id)} variant='contained'>
+          {isItemAlreadyInCart(data.saleItem.id)
+            ? 'Remove from cart'
+            : 'Add to Cart'}
+        </Button>
+        <Button onClick={() => navigateToEditItem(data.saleItem.id)}
+                variant='contained'>Edit
+          Item</Button>
+      </div>
     </div>
   );
 }
