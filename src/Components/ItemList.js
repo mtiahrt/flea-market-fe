@@ -8,7 +8,7 @@ import { UserProfileContext } from '../Contexts/LoginContext';
 const ItemList = () => {
   const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
   const { loading, error, data } = useQuery(CARD_ITEM, {
-    variables: {userId: userProfile.uid}
+    variables: { userId: userProfile.uid }
   });
   const [deleteCartItem, {
     loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem
@@ -19,19 +19,20 @@ const ItemList = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('data is :', data);
+
   function isItemAlreadyInCart(id) {
     if (cartItems && cartItems.includes(id)) {
       return true;
     }
   }
 
-  function updateCart(id) {
+  function updateCart(e, id) {
     isItemAlreadyInCart(id)
-      ? removeItemFromCart(id)
+      ? removeItemFromCart(id,e)
       : addItemToCart(+id);
   }
 
-  function addItemToCart(saleItemId) {
+  function addItemToCart(saleItemId, e) {
     addCartItem({
       variables: {
         saleItemId,
@@ -40,12 +41,13 @@ const ItemList = () => {
     }).then(setCartItems((prev) => [...prev, saleItemId]));
   }
 
-  function removeItemFromCart(id) {
+  function removeItemFromCart(id,e) {
+    const cartId = +e.currentTarget.parentElement.parentElement.getAttribute('data-cart-id');
     deleteCartItem({
-      variables:{
-
+      variables: {
+        id: cartId
       }
-    })
+    });
     setCartItems((prev) => prev.filter(item => item !== id));
   }
 
@@ -57,7 +59,7 @@ const ItemList = () => {
           key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
           link={`DetailedItem/${item.id}`} cardData={item}
-          cartClickHandler={() => updateCart(item.id)}
+          cartClickHandler={e => updateCart(e, item.id)}
         >
         </BasicCard>
       ))}
