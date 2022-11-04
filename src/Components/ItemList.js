@@ -1,16 +1,24 @@
 import React, { useContext } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import { CARD_ITEM } from '../queries/graphQL';
+import { CARD_ITEM, DELETE_CART_ITEM, ADD_CART_ITEM } from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/LoginContext';
 
 const ItemList = () => {
-  const { cartItems, setCartItems } = useContext(UserProfileContext);
-  const { loading, error, data } = useQuery(CARD_ITEM);
+  const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
+  const { loading, error, data } = useQuery(CARD_ITEM, {
+    variables: {userId: userProfile.uid}
+  });
+  const [deleteCartItem, {
+    loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem
+  }] = useMutation(DELETE_CART_ITEM);
+  const [addCartItem, {
+    loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
+  }] = useMutation(ADD_CART_ITEM);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-
+  console.log('data is :', data);
   function isItemAlreadyInCart(id) {
     if (cartItems && cartItems.includes(id)) {
       return true;
@@ -19,14 +27,33 @@ const ItemList = () => {
 
   function updateCart(id) {
     isItemAlreadyInCart(id)
-      ? setCartItems((prev) => prev.filter(item => item !== id))
-      : setCartItems((prev) => [...prev, id]);
+      ? removeItemFromCart(id)
+      : addItemToCart(+id);
+  }
+
+  function addItemToCart(saleItemId) {
+    addCartItem({
+      variables: {
+        saleItemId,
+        userId: userProfile.uid
+      }
+    }).then(setCartItems((prev) => [...prev, saleItemId]));
+  }
+
+  function removeItemFromCart(id) {
+    deleteCartItem({
+      variables:{
+
+      }
+    })
+    setCartItems((prev) => prev.filter(item => item !== id));
   }
 
   return (
     <StyledList className='item-list'>
       {data.saleItemsList.map((item) => (
         <BasicCard
+          cartId={item.cartsList[0]?.id}
           key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
           link={`DetailedItem/${item.id}`} cardData={item}

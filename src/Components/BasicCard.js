@@ -8,9 +8,9 @@ import { ShoppingCart } from '@mui/icons-material';
 import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
 
-export default function BasicCard({ cardData, link, iconColor, cartClickHandler }) {
+export default function BasicCard({ cardData, link, iconColor, cartClickHandler, cartId }) {
   return (
-    <Card variant='outlined' sx={{ width: 320 }}>
+    <Card data-cart-id={cartId} variant='outlined' sx={{ width: 320 }}>
       <Typography level='h2' fontSize='lg' fontWeight='lg' sx={{ mb: 0.5 }}>
         {cardData.manufacturerName}
       </Typography>
@@ -26,11 +26,11 @@ export default function BasicCard({ cardData, link, iconColor, cartClickHandler 
       </IconButton>
       <AspectRatio minHeight='120px' maxHeight='200px' sx={{ my: 2 }}>
         <Link to={link}>
-          <img style={{ width: '85%'}}
-            src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x => x).url : NoImage}
-            srcSet={`${cardData ? cardData.url : NoImage} 2x`}
-            loading='lazy'
-            alt=''
+          <img style={{ width: '85%' }}
+               src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x => x).url : NoImage}
+               srcSet={`${cardData ? cardData.url : NoImage} 2x`}
+               loading='lazy'
+               alt=''
           />
         </Link>
       </AspectRatio>

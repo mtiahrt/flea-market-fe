@@ -51,6 +51,16 @@ export const ADD_ITEM_IMAGE = gql`
 }
 `;
 
+export const ADD_CART_ITEM = gql `
+mutation createCartItem($saleItemId: Int!, $userId: String!) {
+  createCart(input: {cart: {userid: $userId, saleItemId: $saleItemId}}) {
+    cart{
+      id
+    }
+  }
+}
+`
+
 export const GET_SALE_ITEM = gql`
 query($saleId: Int!) {
     saleItem(id: $saleId) {
@@ -138,9 +148,17 @@ deleteItemImage($id: Int!){
   }
 }
 `;
+export const DELETE_CART_ITEM = gql`
+mutation 
+deleteCart($id: Int!){
+  deleteCart(input: {id: $id}) {
+    clientMutationId
+  }
+}
+`;
 
 export const CARD_ITEM = gql`
-query {
+query salesItemsListWithCartId($userId: String){
   saleItemsList {
     id
     description
@@ -151,11 +169,16 @@ query {
       publicId
       url
     }
+    cartsList(condition: {userid: $userId}) {
+      id
+      saleItemId
+      userid
+    }
   }
 }
 `;
 
-export const GET_CART_ITEMS = gql `
+export const GET_CART_ITEMS = gql`
 query ($user_id: String) {
   cartsList(condition: {userid: $user_id}) {
     id
