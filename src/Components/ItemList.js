@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
@@ -7,7 +7,7 @@ import { UserProfileContext } from '../Contexts/LoginContext';
 
 const ItemList = () => {
   const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
-  const { loading, error, data } = useQuery(CARD_ITEM, {
+  const { loading, error, data, refetch } = useQuery(CARD_ITEM, {
     variables: { userId: userProfile.uid }
   });
   const [deleteCartItem, {
@@ -16,6 +16,16 @@ const ItemList = () => {
   const [addCartItem, {
     loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
   }] = useMutation(ADD_CART_ITEM);
+
+  useEffect(() => {
+    console.log('use effect fired...');
+
+    if (data?.saleItemsList && userProfile.isLoggedIn) {
+      const inventoryInCart = data?.saleItemsList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].saleItemId);
+      setCartItems((prev) => [...new Set([...prev, ...inventoryInCart])]);
+    }
+  }, [userProfile.isLoggedIn, data]);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('data is :', data);
@@ -26,40 +36,43 @@ const ItemList = () => {
     }
   }
 
-  function updateCart(e, id) {
-    isItemAlreadyInCart(id)
-      ? removeItemFromCart(id,e)
-      : addItemToCart(+id);
+  function updateCart(cartItemId, inventoryId) {
+    isItemAlreadyInCart(inventoryId)
+      ? removeItemFromCart(cartItemId, inventoryId)
+      : addItemToCart(+inventoryId);
   }
 
-  function addItemToCart(saleItemId, e) {
+  function addItemToCart(inventoryId) {
     addCartItem({
       variables: {
-        saleItemId,
+        saleItemId: inventoryId,
         userId: userProfile.uid
       }
-    }).then(setCartItems((prev) => [...prev, saleItemId]));
+    }).then(cartId => {
+        refetch().then(() => console.log('re-fetch complete', data));
+        console.log(cartId);
+      }
+    );
   }
 
-  function removeItemFromCart(id,e) {
-    const cartId = +e.currentTarget.parentElement.parentElement.getAttribute('data-cart-id');
+  function removeItemFromCart(cartItemId, inventoryId) {
     deleteCartItem({
       variables: {
-        id: cartId
+        id: cartItemId
       }
     });
-    setCartItems((prev) => prev.filter(item => item !== id));
+    setCartItems((prev) => prev.filter(item => item !== inventoryId));
   }
 
   return (
     <StyledList className='item-list'>
       {data.saleItemsList.map((item) => (
         <BasicCard
-          cartId={item.cartsList[0]?.id}
           key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
-          link={`DetailedItem/${item.id}`} cardData={item}
-          cartClickHandler={e => updateCart(e, item.id)}
+          link={`DetailedItem/${item.id}`}
+          cartItem={item}
+          cartClickHandler={updateCart}
         >
         </BasicCard>
       ))}

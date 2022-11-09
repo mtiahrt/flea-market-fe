@@ -8,27 +8,28 @@ import { ShoppingCart } from '@mui/icons-material';
 import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
 
-export default function BasicCard({ cardData, link, iconColor, cartClickHandler, cartId }) {
+export default function BasicCard({ cartItem, link, iconColor, cartClickHandler }) {
+  const cartItemId = cartItem.cartsList[0]?.id
   return (
-    <Card data-cart-id={cartId} variant='outlined' sx={{ width: 320 }}>
+    <Card data-cart-id={cartItemId} variant='outlined' sx={{ width: 320 }}>
       <Typography level='h2' fontSize='lg' fontWeight='lg' sx={{ mb: 0.5 }}>
-        {cardData.manufacturerName}
+        {cartItem.manufacturerName}
       </Typography>
-      <Typography level='body2'>{cardData.name}</Typography>
+      <Typography level='body2'>{cartItem.name}</Typography>
       <IconButton
-        aria-label={cardData.manufacturerName}
+        aria-label={cartItem.manufacturerName}
         variant='plain'
         color='neutral'
         size='sm'
         sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
       >
-        <ShoppingCart onClick={cartClickHandler} color={iconColor} />
+        <ShoppingCart color={iconColor} onClick={() => cartClickHandler(cartItemId, cartItem.id)} />
       </IconButton>
       <AspectRatio minHeight='120px' maxHeight='200px' sx={{ my: 2 }}>
         <Link to={link}>
           <img style={{ width: '85%' }}
-               src={cardData.itemImagesList.length > 0 ? cardData.itemImagesList.find(x => x).url : NoImage}
-               srcSet={`${cardData ? cardData.url : NoImage} 2x`}
+               src={cartItem.itemImagesList.length > 0 ? cartItem.itemImagesList.find(x => x).url : NoImage}
+               srcSet={`${cartItem ? cartItem.url : NoImage} 2x`}
                loading='lazy'
                alt=''
           />
@@ -38,7 +39,7 @@ export default function BasicCard({ cardData, link, iconColor, cartClickHandler,
         <div>
           <Typography level='body3'>Total price:</Typography>
           <Typography fontSize='lg' fontWeight='lg'>
-            ${cardData.price}
+            ${cartItem.price}
           </Typography>
         </div>
       </Box>

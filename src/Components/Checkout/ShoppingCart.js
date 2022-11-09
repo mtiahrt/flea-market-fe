@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
+import { UserProfileContext } from '../../Contexts/LoginContext';
 
 export default function ShoppingCart() {
+  const { userProfile } = useContext(UserProfileContext);
+
   const {
     loading: loadingCartItems, error: errorCartItems, data: dataCartItems
-  } = useQuery(GET_CART_ITEMS);
+  } = useQuery(GET_CART_ITEMS, {
+    variables: {
+      user_id: userProfile.uid
+    },
+    fetchPolicy: 'cache-and-network'
+  });
 
-  function sumOfCart(){
-    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.saleItem.price, 0)
+  function sumOfCart() {
+    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.saleItem.price, 0).toFixed(2);
   }
 
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
+  console.log('data cart items is', dataCartItems);
+
   return (
     <StyledContainerDiv>
       <Typography variant='h4' gutterBottom>Cart Items</Typography>
@@ -36,7 +46,7 @@ export default function ShoppingCart() {
 
       <StyledShipping>
         <Typography variant='h5' gutterBottom>Shipping Options</Typography>
-        <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%'}}>
+        <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
           <InputLabel>Select Shipping Option</InputLabel>
           <Select label='Select Shipping Option'>
             <MenuItem value='Ground'>Ground $15.32</MenuItem>
