@@ -17,9 +17,11 @@ const ItemList = () => {
     loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
   }] = useMutation(ADD_CART_ITEM);
 
-  useEffect(() => {
-    console.log('use effect fired...');
+  console.log('Item List is Rendering...');
+  console.log('Item List data is :', data);
 
+  useEffect(() => {
+    console.log('Item List use effect fired...');
     if (data?.saleItemsList && userProfile.isLoggedIn) {
       const inventoryInCart = data?.saleItemsList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].saleItemId);
       setCartItems((prev) => [...new Set([...prev, ...inventoryInCart])]);
@@ -28,7 +30,6 @@ const ItemList = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log('data is :', data);
 
   function isItemAlreadyInCart(id) {
     if (cartItems && cartItems.includes(id)) {
@@ -50,7 +51,6 @@ const ItemList = () => {
       }
     }).then(cartId => {
         refetch().then(() => console.log('re-fetch complete', data));
-        console.log(cartId);
       }
     );
   }
@@ -84,5 +84,6 @@ const StyledList = styled.div`
   margin: 25px;
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  justify-items: center;
 `;
 export default ItemList;

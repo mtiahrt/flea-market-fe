@@ -11,14 +11,14 @@ cloudinary.config({
   api_secret: process.env.REACT_APP_CLOUDINARY_API_SECRET
 });
 
-const PreviewImages = ({fileDataURL: urls}) => {
+const PreviewImages = ({ fileDataURL: urls }) => {
   const [deleteItemImage, { deleteImageData, deleteImageLoading, deleteImageError }] = useMutation(DELETE_ITEM_IMAGE);
 
   useEffect(() => {
-    if(urls){
-      setFileDataURL(urls)
+    if (urls) {
+      setFileDataURL(urls);
     }
-  },[]);
+  }, [urls]);
   const [fileDataURL, setFileDataURL] = useState([]);
 
   function handleOnChangeForImages(changeEvent) {
@@ -26,8 +26,8 @@ const PreviewImages = ({fileDataURL: urls}) => {
       Array.from(changeEvent.target.files).forEach(file => {
         const fileReader = new FileReader();
         fileReader.onload = e => {
-          const { result } = e.target;
-          if (result) {
+          const result = { url: e.target.result };
+          if (result.url) {
             setFileDataURL(prev => [...prev, result]);
           }
         };
@@ -46,7 +46,7 @@ const PreviewImages = ({fileDataURL: urls}) => {
     promises.push(deleteItemImage({
       variables: { id }
     }));
-    Promise.all(promises).then(setFileDataURL(prev => prev.filter(item => item.id !== id)))
+    Promise.all(promises).then(setFileDataURL(prev => prev.filter(item => item.id !== id)));
   };
 
   return (

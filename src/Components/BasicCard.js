@@ -9,7 +9,7 @@ import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
 
 export default function BasicCard({ cartItem, link, iconColor, cartClickHandler }) {
-  const cartItemId = cartItem.cartsList[0]?.id
+  const cartItemId = cartItem.cartsList[0]?.id;
   return (
     <Card data-cart-id={cartItemId} variant='outlined' sx={{ width: 320 }}>
       <Typography level='h2' fontSize='lg' fontWeight='lg' sx={{ mb: 0.5 }}>
@@ -17,6 +17,7 @@ export default function BasicCard({ cartItem, link, iconColor, cartClickHandler 
       </Typography>
       <Typography level='body2'>{cartItem.name}</Typography>
       <IconButton
+        style={buttonStyles}
         aria-label={cartItem.manufacturerName}
         variant='plain'
         color='neutral'
@@ -46,3 +47,9 @@ export default function BasicCard({ cartItem, link, iconColor, cartClickHandler 
     </Card>
   );
 }
+
+const buttonStyles = {
+  width: '48%',
+  margin: '.5% 0 .5% 0 !important',
+  alignSelf: 'center'
+};

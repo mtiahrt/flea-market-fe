@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
 import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import { GET_SALE_ITEM } from '../queries/graphQL';
 import { Button } from '@mui/material';
-import './DetailedItem.css';
-
 
 function DetailedItem() {
   const history = useHistory();
@@ -44,14 +43,14 @@ function DetailedItem() {
   }
 
   return (
-    <div className='container'>
-      <h2>Item Details</h2>
-      <h4>Name: {data.saleItem.name}</h4>
-      <h4>Manufacturer Name: {data.saleItem.manufacturerName}</h4>
-      <h4>Description: {data.saleItem.description}</h4>
-      <h4>Price: {data.saleItem.price}</h4>
+    <StyledDiv className='container'>
+      <StyledH2>Item Details</StyledH2>
+      <StyledH4>Name: {data.saleItem.name}</StyledH4>
+      <StyledH4>Manufacturer Name: {data.saleItem.manufacturerName}</StyledH4>
+      <StyledH4>Description: {data.saleItem.description}</StyledH4>
+      <StyledH4>Price: {data.saleItem.price}</StyledH4>
       <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
-      <div className="buttons">
+      <StyledButtonsDiv className="buttons">
         <Button onClick={() => updateCart(data.saleItem.id)} variant='contained'>
           {isItemAlreadyInCart(data.saleItem.id)
             ? 'Remove from cart'
@@ -60,9 +59,57 @@ function DetailedItem() {
         <Button onClick={() => navigateToEditItem(data.saleItem.id)}
                 variant='contained'>Edit
           Item</Button>
-      </div>
-    </div>
+      </StyledButtonsDiv>
+    </StyledDiv>
   );
 }
 
 export default DetailedItem;
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 20%;
+  gap: .2rem;
+  @media screen and (max-width: 700px) {
+    .container {
+      align-items: center;
+    }
+
+    h2, h4 {
+      align-self: flex-start;
+    }
+
+    .buttons{
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    button {
+      width: 100%
+    }
+  }
+`
+const StyledH2 = styled.h2`
+  margin: .5rem;
+`
+const StyledH4 = styled.h4`
+  margin: .5rem;
+`
+
+const StyledButtonsDiv= styled.div `
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: .6rem;
+  button{
+    width: 48%;
+  }
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: .4rem;
+    button{
+      width: 100%;
+    }
+  }
+`
