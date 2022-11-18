@@ -1,19 +1,22 @@
-export const saveImages = e => {
-  const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
-  return [...fileInputs.files].map(file => {
-    const formData = new FormData();
-    formData.append('upload_preset', 'my-uploads');
-    formData.append('file', file);
-    return fetch('https://api.cloudinary.com/v1_1/flea-market/image/upload', {
-      method: 'POST', body: formData
-    }).then(response => response.json());
+export const postImage = (async (image) => {
+  const { url } = await getSecureURL();
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    body: image
   });
+});
+
+export const getSecureURL = async () => {
+  return await fetch('https://localhost:8080/secureImageURL').then(res => res.json());
 };
 
 export const saveItemImage = (saleId, values, saveFunction) => {
-  const imageURLs = values.filter(x => x.secure_url).map(item => ({
-    imageURL: item.secure_url,
-    publicId: item.public_id.substring(item.public_id.indexOf('/') + 1)
+  const imageURLs = values.filter(x => x.url).map(item => ({
+    imageURL: item.url.split('?')[0],
+    publicId: item.url.split('?')[0].split('aws.com/')[1]
   }));
   return imageURLs.map(item => {
     return saveFunction({

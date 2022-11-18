@@ -13,21 +13,23 @@ cloudinary.config({
 
 const PreviewImages = ({ fileDataURL: urls }) => {
   const [deleteItemImage, { deleteImageData, deleteImageLoading, deleteImageError }] = useMutation(DELETE_ITEM_IMAGE);
+  const [fileDataURL, setFileDataURL] = useState([]);
 
   useEffect(() => {
     if (urls) {
       setFileDataURL(urls);
     }
   }, [urls]);
-  const [fileDataURL, setFileDataURL] = useState([]);
 
   function handleOnChangeForImages(changeEvent) {
     if (changeEvent.target.files.length) {
-      Array.from(changeEvent.target.files).forEach(file => {
+      const maxId = fileDataURL.length ? Math.max(...fileDataURL.map(i => i.id)) : 0;
+      Array.from(changeEvent.target.files).forEach((file, index) => {
         const fileReader = new FileReader();
         fileReader.onload = e => {
           const result = { url: e.target.result };
           if (result.url) {
+            result.id = maxId + ++index;
             setFileDataURL(prev => [...prev, result]);
           }
         };
@@ -58,8 +60,7 @@ const PreviewImages = ({ fileDataURL: urls }) => {
                multiple name='imageFile' />
       </p>
       <ImagesTile allowDelete={true} deleteHandler={deleteImage} fileDataURL={fileDataURL} />
-    </>
-  );
+    </>);
 };
 
 export default PreviewImages;

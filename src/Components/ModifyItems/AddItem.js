@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
-import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
+import { postImage, saveItemImage, saveSaleItem } from './Utilities';
 import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {
@@ -30,12 +30,16 @@ export default function AddItem() {
     console.error('Error in form submission');
   };
   const handleNewItemSubmit = (saleItemData, e) => {
-    const savePromises = saveImages(e);
-    savePromises.push(handleAddSaleItem(saleItemData));
-    Promise.all(savePromises).then(data => {
+    const promises = []
+    promises.push(handleAddSaleItem(saleItemData));
+    const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
+    [...fileInputs.files].map(async file => {
+      promises.push(postImage(file));
+    });
+    Promise.all(promises).then(data => {
       const newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
-      const savePromises = handleAddItemImage(data, newSaleItemId);
-      Promise.all(savePromises).then(data => {
+      const promises = handleAddItemImage(data, newSaleItemId);
+      Promise.all(promises).then(data => {
         history.push({
           pathname: `/EditItem/${newSaleItemId}`,
           state: {

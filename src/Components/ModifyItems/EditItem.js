@@ -24,7 +24,7 @@ import {
 } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
 import { useLocation } from 'react-router';
-import { saveImages, saveItemImage, saveSaleItem } from './Utilities';
+import { postImage, saveItemImage, saveSaleItem } from './Utilities';
 
 const EditItem = () => {
   const history = useHistory();
@@ -57,10 +57,15 @@ const EditItem = () => {
   const onError = () => {
   };
 
-  const handleEditItemSubmit = (saleItemData, e) => {
-    const imagePromises = saveImages(e);
-    imagePromises.push(handleEditSaleItem(saleItemData));
-    Promise.all(imagePromises).then(data => handleEditItemImage(data))
+  const handleEditItemSubmit = async (saleItemData, e) => {
+    const promises = [];
+    promises.push(handleEditSaleItem(saleItemData));
+    const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
+    [...fileInputs.files].map(async file => {
+      promises.push(postImage(file));
+    });
+
+    Promise.all(promises).then(data => handleEditItemImage(data))
       .then(data => console.log(data));
   };
 
