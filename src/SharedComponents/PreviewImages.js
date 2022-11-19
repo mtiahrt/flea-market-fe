@@ -1,15 +1,9 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
-import cloudinary from 'cloudinary/lib/cloudinary';
 import { useMutation } from '@apollo/client';
 import { DELETE_ITEM_IMAGE } from '../queries/graphQL';
-
-cloudinary.config({
-  cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.REACT_APP_CLOUDINARY_API_KEY,
-  api_secret: process.env.REACT_APP_CLOUDINARY_API_SECRET
-});
+import { deleteImageFromS3 } from '../Components/ModifyItems/Utilities';
 
 const PreviewImages = ({ fileDataURL: urls }) => {
   const [deleteItemImage, { deleteImageData, deleteImageLoading, deleteImageError }] = useMutation(DELETE_ITEM_IMAGE);
@@ -38,17 +32,13 @@ const PreviewImages = ({ fileDataURL: urls }) => {
     }
   }
 
-  const deleteImage = e => {
-    const id = Number(e.target.getAttribute('data-item-image-id'));
-    const publicId = e.target.getAttribute('data-public-id');
+  const deleteImage = (publicId, imageId) => {
     const promises = [];
-    promises.push(cloudinary.v2.uploader.destroy(publicId, function(error, result) {
-      console.log(result, error);
-    }));
+    promises.push(deleteImageFromS3(publicId));
     promises.push(deleteItemImage({
-      variables: { id }
+      variables: { id: imageId }
     }));
-    Promise.all(promises).then(setFileDataURL(prev => prev.filter(item => item.id !== id)));
+    Promise.all(promises).then(setFileDataURL(prev => prev.filter(item => item.id !== imageId)));
   };
 
   return (
