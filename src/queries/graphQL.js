@@ -23,9 +23,9 @@ query($categoryId: Int!) {
 `;
 
 export const ADD_SALE_ITEM = gql`
-    mutation createSaleItem($name: String!, $description: String, $manufacturerName: String, $price: BigFloat, $subcategoryId: Int){
-        createSaleItem(
-         input: { saleItem: 
+    mutation createInventory($name: String!, $description: String, $manufacturerName: String, $price: BigFloat, $subcategoryId: Int){
+        createInventory(
+         input: { inventory: 
           {name: $name
             description: $description
             manufacturerName: $manufacturerName
@@ -33,7 +33,7 @@ export const ADD_SALE_ITEM = gql`
             subcategoryId: $subcategoryId
           }}
         ) {
-          saleItem {
+          inventory {
             id
           }
         }
@@ -41,7 +41,7 @@ export const ADD_SALE_ITEM = gql`
 
 export const ADD_ITEM_IMAGE = gql`
   mutation createItemImage($id: Int!, $imageURL: String!, $publicId: String!) {
-  createItemImage(input: {itemImage: {saleItemId: $id, url: $imageURL, publicId: $publicId}}) {
+  createItemImage(input: {itemImage: {inventoryId: $id, url: $imageURL, publicId: $publicId}}) {
     itemImage {
       id
       url
@@ -52,8 +52,8 @@ export const ADD_ITEM_IMAGE = gql`
 `;
 
 export const ADD_CART_ITEM = gql `
-mutation createCartItem($saleItemId: Int!, $userId: String!) {
-  createCart(input: {cart: {userid: $userId, saleItemId: $saleItemId}}) {
+mutation createCartItem($inventoryId: Int!, $userId: String!) {
+  createCart(input: {cart: {userid: $userId, inventoryId: $inventoryId}}) {
     cart{
       id
     }
@@ -63,7 +63,7 @@ mutation createCartItem($saleItemId: Int!, $userId: String!) {
 
 export const GET_SALE_ITEM = gql`
 query($saleId: Int!) {
-    saleItem(id: $saleId) {
+    inventory(id: $saleId) {
       id
       description
       manufacturerName
@@ -83,8 +83,8 @@ query($saleId: Int!) {
 `;
 
 export const GET_SALE_ITEM_AND_CATEGORIES = gql`
-query saleItemData($saleId: Int!) {
-  saleItem(id: $saleId) {
+query inventoryData($saleId: Int!) {
+  inventory(id: $saleId) {
     description
     id
     name
@@ -116,8 +116,8 @@ query saleItemData($saleId: Int!) {
 `;
 
 export const UPDATE_SALE_ITEM = gql`
-mutation updateSaleItem($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $subcategoryId: Int!) {
-  updateSaleItem(
+mutation updateInventory($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $subcategoryId: Int!) {
+  updateInventory(
     input: {
       id: $id
     patch: { 
@@ -129,7 +129,7 @@ mutation updateSaleItem($id: Int!, $manufacturerName: String, $description: Stri
     }
   }
 ) {
-    saleItem {
+    inventory {
       id
       manufacturerName
       name
@@ -158,8 +158,8 @@ deleteCart($id: Int!){
 `;
 
 export const CARD_ITEM = gql`
-query salesItemsListWithCartId($userId: String){
-  saleItemsList {
+query inventoryListWithCartId($userId: String){
+  inventoriesList {
     id
     description
     manufacturerName
@@ -171,7 +171,7 @@ query salesItemsListWithCartId($userId: String){
     }
     cartsList(condition: {userid: $userId}) {
       id
-      saleItemId
+      inventoryId
       userid
     }
   }
@@ -182,9 +182,9 @@ export const GET_CART_ITEMS = gql`
 query ($user_id: String) {
   cartsList(condition: {userid: $user_id}) {
     id
-    saleItemId
+    inventoryId
     userid
-    saleItem {
+    inventory {
       description
       name
       price

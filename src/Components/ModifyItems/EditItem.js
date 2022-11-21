@@ -24,7 +24,7 @@ import {
 } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
 import { useLocation } from 'react-router';
-import { postImage, saveItemImage, saveSaleItem } from './Utilities';
+import { postImage, saveItemImage, saveinventory } from './Utilities';
 
 const EditItem = () => {
   const history = useHistory();
@@ -36,13 +36,13 @@ const EditItem = () => {
     : [];
   const saleId = +id;
   const {
-    loading: loadingSaleItem, error: errorSaleItem, data: dataSaleItem
+    loading: loadinginventory, error: errorinventory, data: datainventory
   } = useQuery(GET_SALE_ITEM_AND_CATEGORIES, { variables: { saleId } });
 
-  const [categoryId, setCategoryId] = useState(dataSaleItem?.saleItem.subcategory.category.id);
-  const [subcategory, setSubcategory] = useState(dataSaleItem?.saleItem.subcategory.id);
+  const [categoryId, setCategoryId] = useState(datainventory?.inventory.subcategory.category.id);
+  const [subcategory, setSubcategory] = useState(datainventory?.inventory.subcategory.id);
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const [editSaleItem, { editedData, editedLoading, editedError }] = useMutation(UPDATE_SALE_ITEM);
+  const [editinventory, { editedData, editedLoading, editedError }] = useMutation(UPDATE_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] = useMutation(ADD_ITEM_IMAGE);
   const [getSubcategories, {
     loading: loadingSubcategories, error: errorSubcategories, data: dataSubcategories
@@ -57,9 +57,9 @@ const EditItem = () => {
   const onError = () => {
   };
 
-  const handleEditItemSubmit = async (saleItemData, e) => {
+  const handleEditItemSubmit = async (inventoryData, e) => {
     const promises = [];
-    promises.push(handleEditSaleItem(saleItemData));
+    promises.push(handleEditinventory(inventoryData));
     const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
     [...fileInputs.files].map(async file => {
       promises.push(postImage(file));
@@ -75,8 +75,8 @@ const EditItem = () => {
     }
   };
 
-  const handleEditSaleItem = (data) => {
-    return saveSaleItem(saleId, data, editSaleItem);
+  const handleEditinventory = (data) => {
+    return saveinventory(saleId, data, editinventory);
   };
 
   const handleCategorySelectChange = e => {
@@ -89,7 +89,7 @@ const EditItem = () => {
   };
 
   console.log('EditItem component is Rendering...');
-  if (loadingSaleItem || loadingSubcategories || editedLoading || imageLoading) {
+  if (loadinginventory || loadingSubcategories || editedLoading || imageLoading) {
     console.log('loading.......');
     return (
       <CircularProgress
@@ -104,14 +104,14 @@ const EditItem = () => {
         size='10rem' />);
   }
 
-  if (errorSaleItem) return `Error! ${errorSaleItem.message}`;
+  if (errorinventory) return `Error! ${errorinventory.message}`;
 
   return (
     <StyledForm onSubmit={handleSubmit(handleEditItemSubmit, onError)}>
       <Typography variant='h4' gutterBottom>Edit Sale Item</Typography>
       <TextField
         {...register('name', { required: true })}
-        defaultValue={dataSaleItem.saleItem.name}
+        defaultValue={datainventory.inventory.name}
         id='name'
         label='Name'
         autoComplete='name'
@@ -119,7 +119,7 @@ const EditItem = () => {
       {errors.name?.type === 'required' && 'Name is required'}
       <TextField
         {...register('manufacturerName', { required: true })}
-        defaultValue={dataSaleItem.saleItem.manufacturerName}
+        defaultValue={datainventory.inventory.manufacturerName}
         id='manufacturerName'
         label='Manufacturer'
         autoComplete='manufacturer-name'
@@ -129,32 +129,32 @@ const EditItem = () => {
       <InputLabel id='category-select-label'>Category</InputLabel>
       <Select
         labelId='category-select-label'
-        value={categoryId ? categoryId : dataSaleItem.saleItem.subcategory.category.id
+        value={categoryId ? categoryId : datainventory.inventory.subcategory.category.id
         }
         label='Category'
         onChange={handleCategorySelectChange}
       >
-        {dataSaleItem.categoriesList.map(category => (
+        {datainventory.categoriesList.map(category => (
           <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>))}
       </Select>
       <InputLabel id='subcategory-select-label'>Subcategory</InputLabel>
       <Select
         {...register('subcategoryId', { required: true })}
         labelId='subcategory-select-label'
-        value={subcategory ? subcategory : dataSaleItem.saleItem.subcategory.id}
+        value={subcategory ? subcategory : datainventory.inventory.subcategory.id}
         label='Subcategory'
         onChange={handleSubcategoryOnChange}
       >
         {dataSubcategories
           ? dataSubcategories.category.subcategoriesList.map(sub => (
             <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
-          : dataSaleItem.saleItem.subcategory.category.subcategoriesList?.map(sub => (
+          : datainventory.inventory.subcategory.category.subcategoriesList?.map(sub => (
             <MenuItem key={sub.id} value={sub.id}>{sub.name}</MenuItem>))
         }
       </Select>
       <TextareaAutosize
         {...register('description')}
-        defaultValue={dataSaleItem.saleItem.description}
+        defaultValue={datainventory.inventory.description}
         id='description'
         label='Description'
         autoComplete='description'
@@ -165,7 +165,7 @@ const EditItem = () => {
         style={{ width: '100%' }}
       />
       <TextField
-        defaultValue={dataSaleItem.saleItem.price}
+        defaultValue={datainventory.inventory.price}
         {...register('price', { required: true })}
         type='number'
         id='price'

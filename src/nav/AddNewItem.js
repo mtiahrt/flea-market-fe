@@ -4,7 +4,7 @@ import { ADD_SALE_ITEM } from '../queries/graphQL';
 
 const AddNewItem = () => {
     //hooks
-    const [addSaleItem, {loading, error, data}] = useMutation(ADD_SALE_ITEM);
+    const [addinventory, {loading, error, data}] = useMutation(ADD_SALE_ITEM);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const [values, setValues] = useState({title: '',
         itemName: '',
@@ -24,7 +24,7 @@ const AddNewItem = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        addSaleItem({variables: 
+        addinventory({variables: 
                         {name: values.itemName,
                         description: values.description,
                         manufacturerName: values.title,
@@ -58,7 +58,7 @@ const AddNewItem = () => {
     }
         
     if (data){
-        return <h4>{data.createSaleItem.saleItem.manufacturerName} was added successfully</h4>
+        return <h4>{data.createInventory.inventory.manufacturerName} was added successfully</h4>
     }
   
     return (

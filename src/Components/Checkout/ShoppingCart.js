@@ -19,7 +19,7 @@ export default function ShoppingCart() {
   });
 
   function sumOfCart() {
-    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.saleItem.price, 0).toFixed(2);
+    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.inventory.price, 0).toFixed(2);
   }
 
   if (loadingCartItems) return 'Loading...';
@@ -34,10 +34,10 @@ export default function ShoppingCart() {
           <React.Fragment key={item.id}>
             <StyledCartItem>
               <StyledCartItemBasics>
-                <h3>{item.saleItem.manufacturerName}</h3>
-                <h4>${item.saleItem.price}</h4>
+                <h3>{item.inventory.manufacturerName}</h3>
+                <h4>${item.inventory.price}</h4>
               </StyledCartItemBasics>
-              <StyledCartItemDetails>{item.saleItem.description}</StyledCartItemDetails>
+              <StyledCartItemDetails>{item.inventory.description}</StyledCartItemDetails>
             </StyledCartItem>
           </React.Fragment>
         ))}

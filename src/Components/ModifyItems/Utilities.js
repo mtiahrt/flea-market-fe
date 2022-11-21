@@ -44,7 +44,7 @@ export const saveItemImage = (saleId, values, saveFunction) => {
   });
 };
 
-export const saveSaleItem = (saleId, {
+export const saveinventory = (saleId, {
   name, manufacturerName, subcategoryId, description, price
 }, saveFunction) => {
   return saveFunction({

@@ -5,9 +5,9 @@ import styled from "styled-components";
 
 const mySubscription = gql`
   subscription {
-    listen(topic: "saleItemInsertHappen") {
+    listen(topic: "inventoryInsertHappen") {
       relatedNode {
-        ... on SaleItem {
+        ... on inventory {
           id
           name
           manufacturerName

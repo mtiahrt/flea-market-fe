@@ -28,8 +28,8 @@ const mocks = [
     },
     result: {
       data: {
-        createSaleItem: {
-          saleItem: {
+        createInventory: {
+          inventory: {
             id: 51,
             name: "Used a parameter2",
             description: "parameter description2",

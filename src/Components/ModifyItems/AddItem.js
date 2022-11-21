@@ -8,14 +8,14 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
-import { postImage, saveItemImage, saveSaleItem } from './Utilities';
+import { postImage, saveItemImage, saveinventory } from './Utilities';
 import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {
   const [category, setCategory] = useState(-1);
   const [subcategory, setSubcategory] = useState(-1);
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const [addSaleItem, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
+  const [addinventory, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] = useMutation(ADD_ITEM_IMAGE);
   const history = useHistory();
   const {
@@ -29,19 +29,19 @@ export default function AddItem() {
   const onError = () => {
     console.error('Error in form submission');
   };
-  const handleNewItemSubmit = (saleItemData, e) => {
+  const handleNewItemSubmit = (inventoryData, e) => {
     const promises = []
-    promises.push(handleAddSaleItem(saleItemData));
+    promises.push(handleAddinventory(inventoryData));
     const fileInputs = Array.from(e.target.elements).find(({ name }) => name === 'imageFile');
     [...fileInputs.files].map(async file => {
       promises.push(postImage(file));
     });
     Promise.all(promises).then(data => {
-      const newSaleItemId = data.find(x => x.data?.createSaleItem.saleItem.id)?.data.createSaleItem.saleItem.id;
-      const promises = handleAddItemImage(data, newSaleItemId);
+      const newinventoryId = data.find(x => x.data?.createInventory.inventory.id)?.data.createInventory.inventory.id;
+      const promises = handleAddItemImage(data, newinventoryId);
       Promise.all(promises).then(data => {
         history.push({
-          pathname: `/EditItem/${newSaleItemId}`,
+          pathname: `/EditItem/${newinventoryId}`,
           state: {
             fileDataURL: data?.map(item => item.data.createItemImage.itemImage)
           }
@@ -50,14 +50,14 @@ export default function AddItem() {
     });
   };
 
-  const handleAddItemImage = (values, newSaleItemId) => {
-    if (values && newSaleItemId) {
-      return saveItemImage(newSaleItemId, values, addItemImage);
+  const handleAddItemImage = (values, newinventoryId) => {
+    if (values && newinventoryId) {
+      return saveItemImage(newinventoryId, values, addItemImage);
     }
   };
 
-  const handleAddSaleItem = (data) => {
-    return saveSaleItem(null, data, addSaleItem);
+  const handleAddinventory = (data) => {
+    return saveinventory(null, data, addinventory);
   };
 
   const handleCategorySelectChange = e => {

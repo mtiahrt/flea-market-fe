@@ -37,7 +37,7 @@ function DetailedItem() {
     history.push({
       pathname: `/EditItem/${id}`,
       state: {
-        fileDataURL: data.saleItem.itemImagesList
+        fileDataURL: data.inventory.itemImagesList
       }
     });
   }
@@ -45,18 +45,18 @@ function DetailedItem() {
   return (
     <StyledDiv className='container'>
       <StyledH2>Item Details</StyledH2>
-      <StyledH4>Name: {data.saleItem.name}</StyledH4>
-      <StyledH4>Manufacturer Name: {data.saleItem.manufacturerName}</StyledH4>
-      <StyledH4>Description: {data.saleItem.description}</StyledH4>
-      <StyledH4>Price: {data.saleItem.price}</StyledH4>
-      <ImagesTile fileDataURL={data.saleItem.itemImagesList} />
+      <StyledH4>Name: {data.inventory.name}</StyledH4>
+      <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
+      <StyledH4>Description: {data.inventory.description}</StyledH4>
+      <StyledH4>Price: {data.inventory.price}</StyledH4>
+      <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
-        <Button onClick={() => updateCart(data.saleItem.id)} variant='contained'>
-          {isItemAlreadyInCart(data.saleItem.id)
+        <Button onClick={() => updateCart(data.inventory.id)} variant='contained'>
+          {isItemAlreadyInCart(data.inventory.id)
             ? 'Remove from cart'
             : 'Add to Cart'}
         </Button>
-        <Button onClick={() => navigateToEditItem(data.saleItem.id)}
+        <Button onClick={() => navigateToEditItem(data.inventory.id)}
                 variant='contained'>Edit
           Item</Button>
       </StyledButtonsDiv>

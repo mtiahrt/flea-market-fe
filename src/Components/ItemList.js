@@ -22,8 +22,8 @@ const ItemList = () => {
 
   useEffect(() => {
     console.log('Item List use effect fired...');
-    if (data?.saleItemsList && userProfile.isLoggedIn) {
-      const inventoryInCart = data?.saleItemsList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].saleItemId);
+    if (data?.inventoriesList && userProfile.isLoggedIn) {
+      const inventoryInCart = data?.inventoriesList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].inventoryId);
       setCartItems((prev) => [...new Set([...prev, ...inventoryInCart])]);
     }
   }, [userProfile.isLoggedIn, data]);
@@ -46,7 +46,7 @@ const ItemList = () => {
   function addItemToCart(inventoryId) {
     addCartItem({
       variables: {
-        saleItemId: inventoryId,
+        inventoryId: inventoryId,
         userId: userProfile.uid
       }
     }).then(cartId => {
@@ -66,7 +66,7 @@ const ItemList = () => {
 
   return (
     <StyledList className='item-list'>
-      {data.saleItemsList.map((item) => (
+      {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
