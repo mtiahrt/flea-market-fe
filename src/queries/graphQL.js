@@ -78,6 +78,9 @@ query($saleId: Int!) {
         description
         name
       }
+      cartsList {
+      id
+      }
     }
   }
 `;

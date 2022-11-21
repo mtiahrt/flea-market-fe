@@ -1,28 +1,55 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
 import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
-import { GET_SALE_ITEM } from '../queries/graphQL';
+import { ADD_CART_ITEM, DELETE_CART_ITEM, GET_SALE_ITEM } from '../queries/graphQL';
 import { Button } from '@mui/material';
 
 function DetailedItem() {
   const history = useHistory();
-  const { cartItems, setCartItems } = useContext(UserProfileContext);
+  const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
   const { id } = useParams();
   const saleId = parseInt(id);
-  const { loading, error, data } = useQuery(GET_SALE_ITEM, {
+  const [deleteCartItem, {
+    loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem
+  }] = useMutation(DELETE_CART_ITEM);
+  const [addCartItem, {
+    loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
+  }] = useMutation(ADD_CART_ITEM);
+  const { loading, error, data, refetch } = useQuery(GET_SALE_ITEM, {
     variables: { saleId }
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
-  function updateCart(id) {
-    isItemAlreadyInCart(id)
-      ? setCartItems((prev) => prev.filter(item => item !== id))
-      : setCartItems((prev) => [...prev, id]);
+  function updateCart(cartItemId, inventoryId) {
+    isItemAlreadyInCart(+inventoryId)
+      ? removeItemFromCart(cartItemId, +inventoryId)
+      : addItemToCart(+inventoryId);
+  }
+
+  function addItemToCart(inventoryId) {
+    addCartItem({
+      variables: {
+        inventoryId: inventoryId,
+        userId: userProfile.uid
+      }
+    }).then(() => {
+        refetch().then(() => console.log('re-fetch complete', data));
+      }
+    );
+  }
+
+  function removeItemFromCart(cartItemId, inventoryId) {
+    deleteCartItem({
+      variables: {
+        id: cartItemId
+      }
+    });
+    setCartItems((prev) => prev.filter(item => item !== inventoryId));
   }
 
   function isItemAlreadyInCart(id) {
@@ -41,7 +68,7 @@ function DetailedItem() {
       }
     });
   }
-
+  console.log('data in detail item is', data)
   return (
     <StyledDiv className='container'>
       <StyledH2>Item Details</StyledH2>
@@ -51,12 +78,12 @@ function DetailedItem() {
       <StyledH4>Price: {data.inventory.price}</StyledH4>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
-        <Button onClick={() => updateCart(data.inventory.id)} variant='contained'>
+        <Button onClick={() => updateCart(data.inventory.cartsList[0]?.id, id)} variant='contained'>
           {isItemAlreadyInCart(data.inventory.id)
             ? 'Remove from cart'
             : 'Add to Cart'}
         </Button>
-        <Button onClick={() => navigateToEditItem(data.inventory.id)}
+        <Button onClick={() => navigateToEditItem(id, data.inventory.id)}
                 variant='contained'>Edit
           Item</Button>
       </StyledButtonsDiv>

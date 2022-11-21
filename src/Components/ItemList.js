@@ -49,7 +49,7 @@ const ItemList = () => {
         inventoryId: inventoryId,
         userId: userProfile.uid
       }
-    }).then(cartId => {
+    }).then(() => {
         refetch().then(() => console.log('re-fetch complete', data));
       }
     );
