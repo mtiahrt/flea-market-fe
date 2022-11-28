@@ -8,7 +8,10 @@ import { UserProfileContext } from '../Contexts/LoginContext';
 const ItemList = () => {
   const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
   const { loading, error, data, refetch } = useQuery(CARD_ITEM, {
-    variables: { userId: userProfile.uid }
+    variables: {
+      userId: userProfile.uid
+    },
+    fetchPolicy: 'cache-and-network'
   });
   const [deleteCartItem, {
     loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem

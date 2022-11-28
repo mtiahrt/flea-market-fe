@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import { ADD_CART_ITEM, DELETE_CART_ITEM, GET_SALE_ITEM } from '../queries/graphQL';
 import { Button } from '@mui/material';
+import { CustomTextbox } from './Textbox/CustomTextbox';
 
 function DetailedItem() {
   const history = useHistory();
@@ -38,7 +39,7 @@ function DetailedItem() {
         userId: userProfile.uid
       }
     }).then(() => {
-        refetch().then(() => console.log('re-fetch complete', data));
+        setCartItems((prev) => [...prev, inventoryId]);
       }
     );
   }
@@ -68,7 +69,8 @@ function DetailedItem() {
       }
     });
   }
-  console.log('data in detail item is', data)
+
+  console.log('data in detail item is', data);
   return (
     <StyledDiv className='container'>
       <StyledH2>Item Details</StyledH2>
@@ -107,7 +109,7 @@ const StyledDiv = styled.div`
       align-self: flex-start;
     }
 
-    .buttons{
+    .buttons {
       flex-direction: column;
       gap: .4rem;
     }
@@ -116,27 +118,29 @@ const StyledDiv = styled.div`
       width: 100%
     }
   }
-`
+`;
 const StyledH2 = styled.h2`
   margin: .5rem;
-`
+`;
 const StyledH4 = styled.h4`
   margin: .5rem;
-`
+`;
 
-const StyledButtonsDiv= styled.div `
+const StyledButtonsDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-evenly;
   margin-top: .6rem;
-  button{
+
+  button {
     width: 48%;
   }
+
   @media (max-width: 700px) {
     flex-direction: column;
     gap: .4rem;
-    button{
+    button {
       width: 100%;
     }
   }
-`
+`;

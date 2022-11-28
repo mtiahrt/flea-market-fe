@@ -8,6 +8,7 @@ import axios from 'axios';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import states from '../../assets/data/states.json';
 import { useState } from 'react';
+import { CustomTextbox } from '../Textbox/CustomTextbox';
 
 export default function CustomerBillingInformation() {
   const { register, formState: { errors }, handleSubmit } = useForm();
@@ -58,13 +59,16 @@ export default function CustomerBillingInformation() {
                autoComplete='last-name'
                variant='standard'
     />
-    <TextField style={textFieldStyles}
-               {...register('email', { required: true })}
-               id='email'
-               label='Email'
-               autoComplete='email'
-               variant='standard'
+    {/*First usage of CustomTextbox */}
+    <CustomTextbox style={{ width: '100%' }}
+                   {...register('email', { required: true })}
     />
+    {/*<TextField style={textFieldStyles}*/}
+    {/*           id='email'*/}
+    {/*           label='Email'*/}
+    {/*           autoComplete='email'*/}
+    {/*           variant='standard'*/}
+    {/*/>*/}
     <TextField style={{ ...textFieldStyles, width: '100%' }}
                {...register('address', { required: true })}
                id='address'
@@ -72,7 +76,7 @@ export default function CustomerBillingInformation() {
                autoComplete='address'
                variant='standard'
     />
-    <TextField style={textFieldStyles}
+    <TextField style={{ ...textFieldStyles }}
                {...register('city', { required: true })}
                id='city'
                label='City'
