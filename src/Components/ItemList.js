@@ -20,20 +20,16 @@ const ItemList = () => {
     loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
   }] = useMutation(ADD_CART_ITEM);
 
-  console.log('Item List is Rendering...');
-  console.log('Item List data is :', data);
-
   useEffect(() => {
     console.log('Item List use effect fired...');
     if (data?.inventoriesList && userProfile.isLoggedIn) {
-      const inventoryInCart = data?.inventoriesList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].inventoryId);
-      setCartItems((prev) => [...new Set([...prev, ...inventoryInCart])]);
+      setCartItems(data?.inventoriesList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].inventoryId));
     }
   }, [userProfile.isLoggedIn, data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-
+  console.log('Item List data is :', data);
   function isItemAlreadyInCart(id) {
     if (cartItems && cartItems.includes(id)) {
       return true;

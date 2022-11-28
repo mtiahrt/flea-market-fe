@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import { ADD_CART_ITEM, DELETE_CART_ITEM, GET_SALE_ITEM } from '../queries/graphQL';
 import { Button } from '@mui/material';
-import { CustomTextbox } from './Textbox/CustomTextbox';
 
 function DetailedItem() {
   const history = useHistory();
@@ -21,10 +20,12 @@ function DetailedItem() {
     loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
   }] = useMutation(ADD_CART_ITEM);
   const { loading, error, data, refetch } = useQuery(GET_SALE_ITEM, {
-    variables: { saleId }
+    variables: { saleId },
+    fetchPolicy: 'cache-and-network'
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
+  console.log('data in detailed item is:', data);
 
   function updateCart(cartItemId, inventoryId) {
     isItemAlreadyInCart(+inventoryId)
