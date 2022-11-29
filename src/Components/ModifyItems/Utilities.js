@@ -44,8 +44,8 @@ export const saveItemImage = (saleId, values, saveFunction) => {
   });
 };
 
-export const saveinventory = (saleId, {
-  name, manufacturerName, subcategoryId, description, price
+export const saveInventory = (saleId, {
+  name, manufacturerName, subcategoryId, description, price, quantity
 }, saveFunction) => {
   return saveFunction({
     variables: getSaleIdParameter(saleId, {
@@ -53,7 +53,8 @@ export const saveinventory = (saleId, {
       manufacturerName: manufacturerName,
       subcategoryId: Number(subcategoryId),
       description: description,
-      price: price
+      price: price,
+      quantity: +quantity
     })
   }).then(data => data)
     .catch(reason => console.error(reason));

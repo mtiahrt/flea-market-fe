@@ -23,13 +23,14 @@ query($categoryId: Int!) {
 `;
 
 export const ADD_SALE_ITEM = gql`
-    mutation createInventory($name: String!, $description: String, $manufacturerName: String, $price: BigFloat, $subcategoryId: Int){
+    mutation createInventory($name: String!, $description: String, $manufacturerName: String, $price: BigFloat, $quantity: Int, $subcategoryId: Int){
         createInventory(
          input: { inventory: 
           {name: $name
             description: $description
             manufacturerName: $manufacturerName
             price: $price
+            quantity: $quantity
             subcategoryId: $subcategoryId
           }}
         ) {
@@ -69,6 +70,7 @@ query($saleId: Int!) {
       manufacturerName
       name
       price
+      quantity
       itemImagesList {
         id
         publicId
@@ -93,6 +95,7 @@ query inventoryData($saleId: Int!) {
     name
     manufacturerName
     price
+    quantity
     itemImagesList {
       url
       id
@@ -119,7 +122,7 @@ query inventoryData($saleId: Int!) {
 `;
 
 export const UPDATE_SALE_ITEM = gql`
-mutation updateInventory($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $subcategoryId: Int!) {
+mutation updateInventory($id: Int!, $manufacturerName: String, $description: String, $name: String, $price: BigFloat, $quantity: Int, $subcategoryId: Int!) {
   updateInventory(
     input: {
       id: $id
@@ -128,6 +131,7 @@ mutation updateInventory($id: Int!, $manufacturerName: String, $description: Str
       description: $description,
       name: $name,
       price: $price,
+      quantity: $quantity,
       subcategoryId: $subcategoryId
     }
   }
@@ -191,6 +195,7 @@ query ($user_id: String) {
       description
       name
       price
+      quantity
       manufacturerName
     }
   }

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { GET_CATEGORIES, GET_SUBCATEGORIES, ADD_SALE_ITEM, ADD_ITEM_IMAGE } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
-import { postImage, saveItemImage, saveinventory } from './Utilities';
+import { postImage, saveItemImage, saveInventory } from './Utilities';
 import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {
@@ -57,7 +57,7 @@ export default function AddItem() {
   };
 
   const handleAddinventory = (data) => {
-    return saveinventory(null, data, addinventory);
+    return saveInventory(null, data, addinventory);
   };
 
   const handleCategorySelectChange = e => {
@@ -137,6 +137,14 @@ export default function AddItem() {
         }}
       />
       {errors.price?.type === 'required' && 'Price is required'}
+
+      <TextField
+        {...register('quantity')}
+        type='number'
+        label="Quantity"
+        id='quantity'
+        variant='standard'/>
+
       <PreviewImages />
       <Button type='submit' variant='contained'>Submit</Button>
       <Button onClick={() => history.push(`/`)} style={{ backgroundColor: '#B8BDBB' }}

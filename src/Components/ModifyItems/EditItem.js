@@ -24,7 +24,7 @@ import {
 } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
 import { useLocation } from 'react-router';
-import { postImage, saveItemImage, saveinventory } from './Utilities';
+import { postImage, saveItemImage, saveInventory } from './Utilities';
 
 const EditItem = () => {
   const history = useHistory();
@@ -76,7 +76,7 @@ const EditItem = () => {
   };
 
   const handleEditinventory = (data) => {
-    return saveinventory(saleId, data, editinventory);
+    return saveInventory(saleId, data, editinventory);
   };
 
   const handleCategorySelectChange = e => {
@@ -177,6 +177,14 @@ const EditItem = () => {
         }}
       />
       {errors.price?.type === 'required' && 'Price is required'}
+
+      <TextField
+        defaultValue={datainventory.inventory.quantity}
+        {...register('quantity')}
+        type='number'
+        label="Quantity"
+        id='quantity'
+        variant='standard'/>
       <PreviewImages fileDataURL={fileDataURL} />
       <StyledButtonDiv>
         <Button type='submit' variant='contained'>Submit</Button>

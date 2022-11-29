@@ -26,6 +26,13 @@ export default function ShoppingCart() {
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
   console.log('data cart items is', dataCartItems);
 
+  const getQuantity = item => (
+    [1,2,3,4,5,6,7,8].map(item => (<MenuItem key={`quantityKey${item}`} value={item}>{item}</MenuItem>)));
+
+  function handleQuantitySelectChange() {
+
+  }
+
   return (
     <StyledContainerDiv>
       <Typography variant='h4' gutterBottom>Cart Items</Typography>
@@ -35,7 +42,17 @@ export default function ShoppingCart() {
             <StyledCartItem>
               <StyledCartItemBasics>
                 <h3>{item.inventory.manufacturerName}</h3>
-                <h4>${item.inventory.price}</h4>
+                <h4>${item.inventory.price} @ <FormControl style={quantitySelectStyles}>
+                  <InputLabel id='quantity-select-label'>Qtl</InputLabel>
+                  <Select
+                    labelId='quantity-select-label'
+                    label='Quantity'
+                    onChange={handleQuantitySelectChange}
+                  >
+                    {getQuantity()}
+                  </Select>
+                </FormControl>${item.inventory.price * 1}</h4>
+
               </StyledCartItemBasics>
               <StyledCartItemDetails>{item.inventory.description}</StyledCartItemDetails>
             </StyledCartItem>
@@ -63,6 +80,9 @@ export default function ShoppingCart() {
   );
 }
 
+const  quantitySelectStyles = {
+  width: '40%',
+};
 const StyledShipping = styled.div`
   margin: 1rem 0;
 `;
@@ -93,7 +113,6 @@ const dividerStyle = {
 const StyledCartItemDetails = styled.p`
   margin: 0.5rem 0 .5rem 0.5rem;
   font-size: .9em;
-  //align-self: flex-start;
 `;
 
 const StyledCartItemBasics = styled.div`

@@ -79,6 +79,7 @@ function DetailedItem() {
       <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
       <StyledH4>Description: {data.inventory.description}</StyledH4>
       <StyledH4>Price: {data.inventory.price}</StyledH4>
+      <StyledH4>Quantity Available: {data.inventory.quantity}</StyledH4>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
         <Button onClick={() => updateCart(data.inventory.cartsList[0]?.id, id)} variant='contained'>
