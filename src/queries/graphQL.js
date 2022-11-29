@@ -52,7 +52,7 @@ export const ADD_ITEM_IMAGE = gql`
 }
 `;
 
-export const ADD_CART_ITEM = gql `
+export const ADD_CART_ITEM = gql`
 mutation createCartItem($inventoryId: Int!, $userId: String!) {
   createCart(input: {cart: {userid: $userId, inventoryId: $inventoryId}}) {
     cart{
@@ -60,7 +60,7 @@ mutation createCartItem($inventoryId: Int!, $userId: String!) {
     }
   }
 }
-`
+`;
 
 export const GET_SALE_ITEM = gql`
 query($saleId: Int!) {
@@ -146,6 +146,15 @@ mutation updateInventory($id: Int!, $manufacturerName: String, $description: Str
   }
 }
 `;
+
+export const DELETE_INVENTORY_ITEM = gql`
+mutation deleteInventory($id: Int!) {
+  deleteInventory(input: {id: $id}) {
+    deletedInventoryNodeId
+  }
+}
+`;
+
 
 export const DELETE_ITEM_IMAGE = gql`
 mutation

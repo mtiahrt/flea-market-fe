@@ -1,5 +1,5 @@
 
-//TODO Looking to scaling images down to lower resulation before uploading to S3...
+//TODO Looking to scaling images down to lower resolution before uploading to S3...
 export const postImage = (async (image) => {
   const { url } = await getSecureURL();
   return fetch(url, {
@@ -46,8 +46,8 @@ export const saveItemImage = (saleId, values, saveFunction) => {
 
 export const saveInventory = (saleId, {
   name, manufacturerName, subcategoryId, description, price, quantity
-}, saveFunction) => {
-  return saveFunction({
+}, fn) => {
+  return fn({
     variables: getSaleIdParameter(saleId, {
       name: name,
       manufacturerName: manufacturerName,

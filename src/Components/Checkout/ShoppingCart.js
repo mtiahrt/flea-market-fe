@@ -42,7 +42,7 @@ export default function ShoppingCart() {
             <StyledCartItem>
               <StyledCartItemBasics>
                 <h3>{item.inventory.manufacturerName}</h3>
-                <h4>${item.inventory.price} @ <FormControl style={quantitySelectStyles}>
+                <h4>${item.inventory.price} X <FormControl style={quantitySelectStyles}>
                   <InputLabel id='quantity-select-label'>Qtl</InputLabel>
                   <Select
                     labelId='quantity-select-label'
