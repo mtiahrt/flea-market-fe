@@ -1,13 +1,13 @@
-import React from "react";
-import Heart from "../SharedComponents/Heart.js";
+import React from 'react';
+import Heart from '../SharedComponents/Heart.js';
 import {
   CardWrapper,
   CardHeader,
   CardHeading,
   CardBody,
   CardFieldset,
-  CardOptionsNote
-} from "../SharedComponents/Card";
+  CardOptionsNote,
+} from '../SharedComponents/Card';
 
 console.log('Item component is rendering');
 

@@ -11,14 +11,14 @@ import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from './utils/stripe/stripe.utils';
 
 const httpLink = new HttpLink({
-  uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_END_POINT_URI`]
+  uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_END_POINT_URI`],
 });
 
 const wsLink = new WebSocketLink({
   uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_WEB_SOCKET_URI`],
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 });
 
 const splitLink = split(
@@ -35,7 +35,7 @@ const splitLink = split(
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink
+  link: splitLink,
 });
 
 ReactDOM.render(

@@ -6,24 +6,39 @@ import { CARD_ITEM, DELETE_CART_ITEM, ADD_CART_ITEM } from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/LoginContext';
 
 const ItemList = () => {
-  const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
+  const { cartItems, setCartItems, userProfile } =
+    useContext(UserProfileContext);
   const { loading, error, data, refetch } = useQuery(CARD_ITEM, {
     variables: {
-      userId: userProfile.uid
+      userId: userProfile.uid,
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   });
-  const [deleteCartItem, {
-    loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem
-  }] = useMutation(DELETE_CART_ITEM);
-  const [addCartItem, {
-    loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
-  }] = useMutation(ADD_CART_ITEM);
+  const [
+    deleteCartItem,
+    {
+      loading: loadingDeleteCartItem,
+      error: errorDeleteCartItem,
+      data: dataDeleteCartItem,
+    },
+  ] = useMutation(DELETE_CART_ITEM);
+  const [
+    addCartItem,
+    {
+      loading: loadingAddCartItem,
+      error: errorAddCartItem,
+      data: dataAddCartItem,
+    },
+  ] = useMutation(ADD_CART_ITEM);
 
   useEffect(() => {
     console.log('Item List use effect fired...');
     if (data?.inventoriesList && userProfile.isLoggedIn) {
-      setCartItems(data?.inventoriesList?.filter(item => item.cartsList.length).map(item => item.cartsList[0].inventoryId));
+      setCartItems(
+        data?.inventoriesList
+          ?.filter((item) => item.cartsList.length)
+          .map((item) => item.cartsList[0].inventoryId)
+      );
     }
   }, [userProfile.isLoggedIn, data]);
 
@@ -46,25 +61,24 @@ const ItemList = () => {
     addCartItem({
       variables: {
         inventoryId: inventoryId,
-        userId: userProfile.uid
-      }
+        userId: userProfile.uid,
+      },
     }).then(() => {
-        refetch().then(() => console.log('re-fetch complete', data));
-      }
-    );
+      refetch().then(() => console.log('re-fetch complete', data));
+    });
   }
 
   function removeItemFromCart(cartItemId, inventoryId) {
     deleteCartItem({
       variables: {
-        id: cartItemId
-      }
+        id: cartItemId,
+      },
     });
-    setCartItems((prev) => prev.filter(item => item !== inventoryId));
+    setCartItems((prev) => prev.filter((item) => item !== inventoryId));
   }
 
   return (
-    <StyledList className='item-list'>
+    <StyledList className="item-list">
       {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}
@@ -72,8 +86,7 @@ const ItemList = () => {
           link={`DetailedItem/${item.id}`}
           cartItem={item}
           cartClickHandler={updateCart}
-        >
-        </BasicCard>
+        ></BasicCard>
       ))}
     </StyledList>
   );

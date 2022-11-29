@@ -6,16 +6,20 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
   console.log('file urls Images Tile got was...', fileDataURL);
 
   return (
-    <div className='image-container'>
-      {fileDataURL.map(item => {
+    <div className="image-container">
+      {fileDataURL.map((item) => {
         return (
-          <article key={`imageKey${item.id}`} className='image-item'>
-            <StyledImg src={item.url} alt='something' />
-            {allowDelete &&
+          <article key={`imageKey${item.id}`} className="image-item">
+            <StyledImg src={item.url} alt="something" />
+            {allowDelete && (
               <a
                 onClick={() => deleteHandler(item.publicId, item.id)}
-                href='#' className='close image-delete'>X</a>
-            }
+                href="#"
+                className="close image-delete"
+              >
+                X
+              </a>
+            )}
           </article>
         );
       })}

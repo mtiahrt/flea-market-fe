@@ -3,12 +3,11 @@ import ShoppingCart from './ShoppingCart';
 import CustomerBillingInformation from './CustomerBillingInformation';
 import styled from 'styled-components';
 
-
 export default function CheckOut() {
   return (
     <StyledDiv>
-      <CustomerBillingInformation style={{flexShrink: 3}} />
-      <ShoppingCart style={{flexShrink: 1}} />
+      <CustomerBillingInformation style={{ flexShrink: 3 }} />
+      <ShoppingCart style={{ flexShrink: 1 }} />
     </StyledDiv>
   );
 }

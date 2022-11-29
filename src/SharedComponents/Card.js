@@ -1,5 +1,5 @@
 //code pen https://codesandbox.io/s/nwjmr73vl?file=/src/index.js
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const CardWrapper = styled.div`
   overflow: hidden;
@@ -72,11 +72,11 @@ export const CardInput = styled.input`
 export const CardIcon = styled.span`
   color: #666;
   cursor: pointer;
-  opacity: .25;
-  transition: opacity .25s ease-in;
+  opacity: 0.25;
+  transition: opacity 0.25s ease-in;
 
   &:hover {
-    opacity: .95;
+    opacity: 0.95;
   }
 
   ${(props) =>

@@ -5,23 +5,38 @@ import { useMutation, useQuery } from '@apollo/client';
 import { UserProfileContext } from '../Contexts/LoginContext';
 import { useHistory } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
-import { ADD_CART_ITEM, DELETE_CART_ITEM, GET_SALE_ITEM } from '../queries/graphQL';
+import {
+  ADD_CART_ITEM,
+  DELETE_CART_ITEM,
+  GET_SALE_ITEM,
+} from '../queries/graphQL';
 import { Button } from '@mui/material';
 
 function DetailedItem() {
   const history = useHistory();
-  const { cartItems, setCartItems, userProfile } = useContext(UserProfileContext);
+  const { cartItems, setCartItems, userProfile } =
+    useContext(UserProfileContext);
   const { id } = useParams();
   const saleId = parseInt(id);
-  const [deleteCartItem, {
-    loading: loadingDeleteCartItem, error: errorDeleteCartItem, data: dataDeleteCartItem
-  }] = useMutation(DELETE_CART_ITEM);
-  const [addCartItem, {
-    loading: loadingAddCartItem, error: errorAddCartItem, data: dataAddCartItem
-  }] = useMutation(ADD_CART_ITEM);
+  const [
+    deleteCartItem,
+    {
+      loading: loadingDeleteCartItem,
+      error: errorDeleteCartItem,
+      data: dataDeleteCartItem,
+    },
+  ] = useMutation(DELETE_CART_ITEM);
+  const [
+    addCartItem,
+    {
+      loading: loadingAddCartItem,
+      error: errorAddCartItem,
+      data: dataAddCartItem,
+    },
+  ] = useMutation(ADD_CART_ITEM);
   const { loading, error, data, refetch } = useQuery(GET_SALE_ITEM, {
     variables: { saleId },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
@@ -37,21 +52,20 @@ function DetailedItem() {
     addCartItem({
       variables: {
         inventoryId: inventoryId,
-        userId: userProfile.uid
-      }
+        userId: userProfile.uid,
+      },
     }).then(() => {
-        setCartItems((prev) => [...prev, inventoryId]);
-      }
-    );
+      setCartItems((prev) => [...prev, inventoryId]);
+    });
   }
 
   function removeItemFromCart(cartItemId, inventoryId) {
     deleteCartItem({
       variables: {
-        id: cartItemId
-      }
+        id: cartItemId,
+      },
     });
-    setCartItems((prev) => prev.filter(item => item !== inventoryId));
+    setCartItems((prev) => prev.filter((item) => item !== inventoryId));
   }
 
   function isItemAlreadyInCart(id) {
@@ -66,14 +80,14 @@ function DetailedItem() {
     history.push({
       pathname: `/EditItem/${id}`,
       state: {
-        fileDataURL: data.inventory.itemImagesList
-      }
+        fileDataURL: data.inventory.itemImagesList,
+      },
     });
   }
 
   console.log('data in detail item is', data);
   return (
-    <StyledDiv className='container'>
+    <StyledDiv className="container">
       <StyledH2>Item Details</StyledH2>
       <StyledH4>Name: {data.inventory.name}</StyledH4>
       <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
@@ -82,14 +96,20 @@ function DetailedItem() {
       <StyledH4>Quantity Available: {data.inventory.quantity}</StyledH4>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
-        <Button onClick={() => updateCart(data.inventory.cartsList[0]?.id, id)} variant='contained'>
+        <Button
+          onClick={() => updateCart(data.inventory.cartsList[0]?.id, id)}
+          variant="contained"
+        >
           {isItemAlreadyInCart(data.inventory.id)
             ? 'Remove from cart'
             : 'Add to Cart'}
         </Button>
-        <Button onClick={() => navigateToEditItem(id, data.inventory.id)}
-                variant='contained'>Edit
-          Item</Button>
+        <Button
+          onClick={() => navigateToEditItem(id, data.inventory.id)}
+          variant="contained"
+        >
+          Edit Item
+        </Button>
       </StyledButtonsDiv>
     </StyledDiv>
   );
@@ -101,38 +121,39 @@ const StyledDiv = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin: 0 20%;
-  gap: .2rem;
+  gap: 0.2rem;
   @media screen and (max-width: 700px) {
     .container {
       align-items: center;
     }
 
-    h2, h4 {
+    h2,
+    h4 {
       align-self: flex-start;
     }
 
     .buttons {
       flex-direction: column;
-      gap: .4rem;
+      gap: 0.4rem;
     }
 
     button {
-      width: 100%
+      width: 100%;
     }
   }
 `;
 const StyledH2 = styled.h2`
-  margin: .5rem;
+  margin: 0.5rem;
 `;
 const StyledH4 = styled.h4`
-  margin: .5rem;
+  margin: 0.5rem;
 `;
 
 const StyledButtonsDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-evenly;
-  margin-top: .6rem;
+  margin-top: 0.6rem;
 
   button {
     width: 48%;
@@ -140,7 +161,7 @@ const StyledButtonsDiv = styled.div`
 
   @media (max-width: 700px) {
     flex-direction: column;
-    gap: .4rem;
+    gap: 0.4rem;
     button {
       width: 100%;
     }

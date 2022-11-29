@@ -9,15 +9,18 @@ export const CustomTextbox = ({ style }) => {
   };
 
   return (
-    <div style={{ ...style, flexGrow: '1', flexShrink: '1' }} className='ad-textbox'>
+    <div
+      style={{ ...style, flexGrow: '1', flexShrink: '1' }}
+      className="ad-textbox"
+    >
       <input
         onChange={handleChange}
         className={`${value ? 'has-value' : ''}`}
-        id='textbox'
-        type='text'
+        id="textbox"
+        type="text"
       />
-      <label htmlFor='textbox'>Email Address</label>
-      <div className='underline' />
+      <label htmlFor="textbox">Email Address</label>
+      <div className="underline" />
     </div>
   );
 };

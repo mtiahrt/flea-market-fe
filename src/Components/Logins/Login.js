@@ -1,7 +1,12 @@
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillFacebook } from 'react-icons/ai';
-import { AiOutlineTwitter } from 'react-icons/ai'
-import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth';
+import { AiOutlineTwitter } from 'react-icons/ai';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  FacebookAuthProvider,
+  TwitterAuthProvider,
+} from 'firebase/auth';
 import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
@@ -9,47 +14,60 @@ import { UserProfileContext } from '../../Contexts/LoginContext';
 
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
-  const keysForStateUpdate = ['displayName', 'photoURL', 'uid', 'email', 'accessToken'];
+  const keysForStateUpdate = [
+    'displayName',
+    'photoURL',
+    'uid',
+    'email',
+    'accessToken',
+  ];
 
-  const mapMatches = user => {
+  const mapMatches = (user) => {
     const result = Object.entries(user)
-      .filter(item => keysForStateUpdate.includes(item[0]))
+      .filter((item) => keysForStateUpdate.includes(item[0]))
       .reduce((prev, current) => {
-          const curObj = {};
-          curObj[current[0]] = current[1];
-          return { ...prev, ...curObj, ...{ isLoggedIn: true } };
-        },
-        {});
+        const curObj = {};
+        curObj[current[0]] = current[1];
+        return { ...prev, ...curObj, ...{ isLoggedIn: true } };
+      }, {});
     setUserProfile(result);
-  }
-  const loginProviderFactory = provider => {
-    if(provider === 'google'){
+  };
+  const loginProviderFactory = (provider) => {
+    if (provider === 'google') {
       return new GoogleAuthProvider();
-    }else if (provider === 'facebook'){
+    } else if (provider === 'facebook') {
       return new FacebookAuthProvider();
-    }else if (provider === 'twitter'){
+    } else if (provider === 'twitter') {
       return new TwitterAuthProvider();
     }
-  }
+  };
 
-  const login = async provider => {
-    const authProvider = loginProviderFactory(provider.currentTarget.value)
-    try{
+  const login = async (provider) => {
+    const authProvider = loginProviderFactory(provider.currentTarget.value);
+    try {
       const result = await signInWithPopup(auth, authProvider);
       console.log(result.user);
-      mapMatches(result.user)
-    }catch (error){
-      console.error(error)
+      mapMatches(result.user);
+    } catch (error) {
+      console.error(error);
     }
-  }
-
+  };
 
   return (
     <StyledDiv>
       <StyledDivButtons>
-        <StyledButton value='google' onClick={login}><FcGoogle style={iconStyle} />Sign in with Google</StyledButton>
-        <StyledButton value='facebook' onClick={login}><AiFillFacebook style={{ ...iconStyle, color: 'blue' }} />Sign in with Facebook</StyledButton>
-        <StyledButton value='twitter' onClick={login}><AiOutlineTwitter style={{ ...iconStyle, color: '#00acee' }} />Sign in with Twitter</StyledButton>
+        <StyledButton value="google" onClick={login}>
+          <FcGoogle style={iconStyle} />
+          Sign in with Google
+        </StyledButton>
+        <StyledButton value="facebook" onClick={login}>
+          <AiFillFacebook style={{ ...iconStyle, color: 'blue' }} />
+          Sign in with Facebook
+        </StyledButton>
+        <StyledButton value="twitter" onClick={login}>
+          <AiOutlineTwitter style={{ ...iconStyle, color: '#00acee' }} />
+          Sign in with Twitter
+        </StyledButton>
       </StyledDivButtons>
     </StyledDiv>
   );
@@ -69,7 +87,7 @@ const StyledDivButtons = styled.div`
 `;
 
 const iconStyle = {
-  fontSize: '2rem'
+  fontSize: '2rem',
 };
 
 const StyledButton = styled.button`
@@ -77,7 +95,7 @@ const StyledButton = styled.button`
   gap: 1rem;
   vertical-align: middle;
   color: black;
-  background-color: rgb(249 250 251);;
+  background-color: rgb(249 250 251);
   padding: 4px;
   width: 100%;
   font-weight: 500;

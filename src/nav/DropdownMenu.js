@@ -1,19 +1,19 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
-import { ReactComponent as CogIcon } from "../icons/cog.svg";
-import { ReactComponent as ChevronIcon } from "../icons/chevron.svg";
-import { ReactComponent as ArrowIcon } from "../icons/arrow.svg";
-import { ReactComponent as BoltIcon } from "../icons/bolt.svg";
-import { CSSTransition } from "react-transition-group";
+import React, { useState, useRef, useLayoutEffect } from 'react';
+import { ReactComponent as CogIcon } from '../icons/cog.svg';
+import { ReactComponent as ChevronIcon } from '../icons/chevron.svg';
+import { ReactComponent as ArrowIcon } from '../icons/arrow.svg';
+import { ReactComponent as BoltIcon } from '../icons/bolt.svg';
+import { CSSTransition } from 'react-transition-group';
 
 const DropdownMenu = () => {
-  const [activeMenu, setActiveMenu] = useState(""); //for setting what menu to show
+  const [activeMenu, setActiveMenu] = useState(''); //for setting what menu to show
   const [menuHeight, setMenuHeight] = useState(0); // state for the menu height
   const dropdownRef = useRef(null);
 
   useLayoutEffect(() => {
-    setActiveMenu("main");
+    setActiveMenu('main');
     return () => {
-      setActiveMenu("");
+      setActiveMenu('');
       setMenuHeight(0);
     };
   }, []);
@@ -43,7 +43,7 @@ const DropdownMenu = () => {
       ref={dropdownRef}
     >
       <CSSTransition
-        in={activeMenu === "main"}
+        in={activeMenu === 'main'}
         unmountOnExit
         timeout={500}
         classNames="menu-primary"
@@ -70,7 +70,7 @@ const DropdownMenu = () => {
       </CSSTransition>
 
       <CSSTransition
-        in={activeMenu === "clothingApperal"}
+        in={activeMenu === 'clothingApperal'}
         unmountOnExit
         timeout={500}
         classNames="menu-secondary"
@@ -92,7 +92,7 @@ const DropdownMenu = () => {
         </div>
       </CSSTransition>
       <CSSTransition
-        in={activeMenu === "animals"}
+        in={activeMenu === 'animals'}
         timeout={500}
         classNames="menu-secondary"
         unmountOnExit

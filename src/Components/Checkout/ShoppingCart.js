@@ -1,6 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
@@ -10,51 +16,64 @@ export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);
 
   const {
-    loading: loadingCartItems, error: errorCartItems, data: dataCartItems
+    loading: loadingCartItems,
+    error: errorCartItems,
+    data: dataCartItems,
   } = useQuery(GET_CART_ITEMS, {
     variables: {
-      user_id: userProfile.uid
+      user_id: userProfile.uid,
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   });
 
   function sumOfCart() {
-    return dataCartItems.cartsList.reduce((prev, current) => prev += +current.inventory.price, 0).toFixed(2);
+    return dataCartItems.cartsList
+      .reduce((prev, current) => (prev += +current.inventory.price), 0)
+      .toFixed(2);
   }
 
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
   console.log('data cart items is', dataCartItems);
 
-  const getQuantity = item => (
-    [1,2,3,4,5,6,7,8].map(item => (<MenuItem key={`quantityKey${item}`} value={item}>{item}</MenuItem>)));
+  const getQuantity = (item) =>
+    [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+      <MenuItem key={`quantityKey${item}`} value={item}>
+        {item}
+      </MenuItem>
+    ));
 
-  function handleQuantitySelectChange() {
-
-  }
+  function handleQuantitySelectChange() {}
 
   return (
     <StyledContainerDiv>
-      <Typography variant='h4' gutterBottom>Cart Items</Typography>
+      <Typography variant="h4" gutterBottom>
+        Cart Items
+      </Typography>
       <StyledCartItems>
-        {dataCartItems.cartsList.map(item => (
+        {dataCartItems.cartsList.map((item) => (
           <React.Fragment key={item.id}>
             <StyledCartItem>
               <StyledCartItemBasics>
                 <h3>{item.inventory.manufacturerName}</h3>
-                <h4>${item.inventory.price} X <FormControl style={quantitySelectStyles}>
-                  <InputLabel id='quantity-select-label'>Qtl</InputLabel>
-                  <Select
-                    labelId='quantity-select-label'
-                    label='Quantity'
-                    onChange={handleQuantitySelectChange}
-                  >
-                    {getQuantity()}
-                  </Select>
-                </FormControl>${item.inventory.price * 1}</h4>
-
+                <h4>
+                  ${item.inventory.price} X{' '}
+                  <FormControl style={quantitySelectStyles}>
+                    <InputLabel id="quantity-select-label">Qtl</InputLabel>
+                    <Select
+                      labelId="quantity-select-label"
+                      label="Quantity"
+                      onChange={handleQuantitySelectChange}
+                    >
+                      {getQuantity()}
+                    </Select>
+                  </FormControl>
+                  ${item.inventory.price * 1}
+                </h4>
               </StyledCartItemBasics>
-              <StyledCartItemDetails>{item.inventory.description}</StyledCartItemDetails>
+              <StyledCartItemDetails>
+                {item.inventory.description}
+              </StyledCartItemDetails>
             </StyledCartItem>
           </React.Fragment>
         ))}
@@ -62,25 +81,29 @@ export default function ShoppingCart() {
       <Divider style={dividerStyle}></Divider>
 
       <StyledShipping>
-        <Typography variant='h5' gutterBottom>Shipping Options</Typography>
+        <Typography variant="h5" gutterBottom>
+          Shipping Options
+        </Typography>
         <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
           <InputLabel>Select Shipping Option</InputLabel>
-          <Select label='Select Shipping Option'>
-            <MenuItem value='Ground'>Ground $15.32</MenuItem>
-            <MenuItem value='Air'>Air $32.50</MenuItem>
+          <Select label="Select Shipping Option">
+            <MenuItem value="Ground">Ground $15.32</MenuItem>
+            <MenuItem value="Air">Air $32.50</MenuItem>
           </Select>
         </FormControl>
       </StyledShipping>
 
       <StyledSummation>
-        <Typography variant='h5' gutterBottom>Cart Total</Typography>
+        <Typography variant="h5" gutterBottom>
+          Cart Total
+        </Typography>
         <h2 style={{ margin: '0', marginBottom: '3%' }}>${sumOfCart()}</h2>
       </StyledSummation>
     </StyledContainerDiv>
   );
 }
 
-const  quantitySelectStyles = {
+const quantitySelectStyles = {
   width: '40%',
 };
 const StyledShipping = styled.div`
@@ -91,8 +114,7 @@ const StyledSummation = styled.div`
   margin: 1rem 0;
 `;
 
-const StyledCartItems = styled.div`
-`;
+const StyledCartItems = styled.div``;
 
 const StyledCartItem = styled.div`
   padding: 1rem;
@@ -108,11 +130,11 @@ const StyledContainerDiv = styled.div`
 `;
 
 const dividerStyle = {
-  width: '100%'
+  width: '100%',
 };
 const StyledCartItemDetails = styled.p`
-  margin: 0.5rem 0 .5rem 0.5rem;
-  font-size: .9em;
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  font-size: 0.9em;
 `;
 
 const StyledCartItemBasics = styled.div`
