@@ -53,6 +53,7 @@ export default function CustomerBillingInformation() {
       return;
     }
     if (paymentResult.paymentIntent.status === 'succeeded') {
+      //TODO: update inventory and purchased tables
       alert('payment is good!!!');
     }
   };

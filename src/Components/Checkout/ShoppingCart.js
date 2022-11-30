@@ -36,12 +36,17 @@ export default function ShoppingCart() {
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
   console.log('data cart items is', dataCartItems);
 
-  const getQuantity = (item) =>
-    [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-      <MenuItem key={`quantityKey${item}`} value={item}>
-        {item}
-      </MenuItem>
-    ));
+  const getQuantity = (quantity) => {
+    let returnValue = [];
+    for (let i = 1; quantity >= i; i++) {
+      returnValue.push(
+        <MenuItem key={`quantityKey${i}`} value={i}>
+          {i}
+        </MenuItem>
+      );
+    }
+    return returnValue;
+  };
 
   function handleQuantitySelectChange() {}
 
@@ -65,7 +70,7 @@ export default function ShoppingCart() {
                       label="Quantity"
                       onChange={handleQuantitySelectChange}
                     >
-                      {getQuantity()}
+                      {getQuantity(item.inventory.quantity)}
                     </Select>
                   </FormControl>
                   ${item.inventory.price * 1}

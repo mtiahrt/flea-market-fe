@@ -31,7 +31,7 @@ export default function AddItem() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [addinventory, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
+  const [addInventory, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] =
     useMutation(ADD_ITEM_IMAGE);
   const history = useHistory();
@@ -51,7 +51,7 @@ export default function AddItem() {
   };
   const handleNewItemSubmit = (inventoryData, e) => {
     const promises = [];
-    promises.push(handleAddinventory(inventoryData));
+    promises.push(handleAddInventory(inventoryData));
     const fileInputs = Array.from(e.target.elements).find(
       ({ name }) => name === 'imageFile'
     );
@@ -59,13 +59,12 @@ export default function AddItem() {
       promises.push(postImage(file));
     });
     Promise.all(promises).then((data) => {
-      const newinventoryId = data.find(
-        (x) => x.data?.createInventory.inventory.id
-      )?.data.createInventory.inventory.id;
-      const promises = handleAddItemImage(data, newinventoryId);
+      const inventoryId = data.find((x) => x.data?.createInventory.inventory.id)
+        ?.data.createInventory.inventory.id;
+      const promises = handleAddItemImage(data, inventoryId);
       Promise.all(promises).then((data) => {
         history.push({
-          pathname: `/EditItem/${newinventoryId}`,
+          pathname: `/EditItem/${inventoryId}`,
           state: {
             fileDataURL: data?.map(
               (item) => item.data.createItemImage.itemImage
@@ -76,14 +75,14 @@ export default function AddItem() {
     });
   };
 
-  const handleAddItemImage = (values, newinventoryId) => {
-    if (values && newinventoryId) {
-      return saveItemImage(newinventoryId, values, addItemImage);
+  const handleAddItemImage = (values, newInventoryId) => {
+    if (values && newInventoryId) {
+      return saveItemImage(newInventoryId, values, addItemImage);
     }
   };
 
-  const handleAddinventory = (data) => {
-    return saveInventory(null, data, addinventory);
+  const handleAddInventory = (data) => {
+    return saveInventory(null, data, addInventory);
   };
 
   const handleCategorySelectChange = (e) => {

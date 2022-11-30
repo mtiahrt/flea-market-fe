@@ -10,7 +10,15 @@ import {
   DELETE_CART_ITEM,
   GET_SALE_ITEM,
 } from '../queries/graphQL';
-import { Button } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
+
+function handleQuantitySelectChange() {}
 
 function DetailedItem() {
   const history = useHistory();
@@ -41,6 +49,18 @@ function DetailedItem() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
   console.log('data in detailed item is:', data);
+
+  const getQuantity = (quantity) => {
+    let returnValue = [];
+    for (let i = 1; quantity >= i; i++) {
+      returnValue.push(
+        <MenuItem key={`quantityKey${i}`} value={i}>
+          {i}
+        </MenuItem>
+      );
+    }
+    return returnValue;
+  };
 
   function updateCart(cartItemId, inventoryId) {
     isItemAlreadyInCart(+inventoryId)
@@ -93,7 +113,18 @@ function DetailedItem() {
       <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
       <StyledH4>Description: {data.inventory.description}</StyledH4>
       <StyledH4>Price: {data.inventory.price}</StyledH4>
-      <StyledH4>Quantity Available: {data.inventory.quantity}</StyledH4>
+      <FormControl style={quantitySelectStyles}>
+        <InputLabel id="quantity-select-label">Quantity</InputLabel>
+        <Select
+          labelId="quantity-select-label"
+          value="1"
+          label="Quantity"
+          disabled={data.inventory.quantity < 2}
+          onChange={handleQuantitySelectChange}
+        >
+          {getQuantity(data.inventory.quantity)}
+        </Select>
+      </FormControl>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
         <Button
@@ -148,6 +179,10 @@ const StyledH2 = styled.h2`
 const StyledH4 = styled.h4`
   margin: 0.5rem;
 `;
+const quantitySelectStyles = {
+  width: '25%',
+  margin: '.4em 0 .4em 0',
+};
 
 const StyledButtonsDiv = styled.div`
   display: flex;
