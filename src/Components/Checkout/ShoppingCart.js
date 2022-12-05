@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Divider,
@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../Contexts/LoginContext';
 
 export default function ShoppingCart() {
+  const [cartItems, setCartItems] = useState();
+  const [cartQuantities, setCartQuantities] = useState();
   const { userProfile } = useContext(UserProfileContext);
-
   const {
     loading: loadingCartItems,
     error: errorCartItems,
@@ -25,21 +26,38 @@ export default function ShoppingCart() {
     },
     fetchPolicy: 'cache-and-network',
   });
-
-  function sumOfCart() {
-    return dataCartItems.cartsList
-      .reduce((prev, current) => (prev += +current.inventory.price), 0)
-      .toFixed(2);
-  }
+  useEffect(() => {
+    if (dataCartItems) {
+      const newStateValue = dataCartItems?.cartsList.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        price: +item.inventory.price,
+        totalPrice: +item.inventory.price * item.quantity,
+      }));
+      setCartItems(newStateValue);
+    }
+  }, [dataCartItems]);
 
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
+
+  function sumOfCart() {
+    return dataCartItems.cartsList
+      .reduce(
+        (prev, current) =>
+          (prev += +current.inventory.price * current.inventory.quantity),
+        0
+      )
+      .toFixed(2);
+  }
   console.log('data cart items is', dataCartItems);
 
   const getQuantity = (quantity) => {
+    console.log('Quantity drowdown populating');
     let returnValue = [];
     for (let i = 1; quantity >= i; i++) {
       returnValue.push(
+        // <option value={i}>{i}</option>
         <MenuItem key={`quantityKey${i}`} value={i}>
           {i}
         </MenuItem>
@@ -48,7 +66,27 @@ export default function ShoppingCart() {
     return returnValue;
   };
 
-  function handleQuantitySelectChange() {}
+  function handleQuantitySelectChange(e, id) {
+    const newQuantity = e.target.value;
+    const itemToChangeIndex = [...cartItems].findIndex(
+      (item) => item.id === id
+    );
+    const updatedChange = {
+      ...cartItems[itemToChangeIndex],
+      quantity: newQuantity,
+      unitPrice: 24.0,
+    };
+    const newCartItems = [...cartItems];
+    newCartItems[itemToChangeIndex] = updatedChange;
+    setCartItems(newCartItems);
+  }
+
+  function getCartItem(id) {
+    if (cartItems) {
+      const theCartItemIs = cartItems?.find((x) => x.id === id);
+      return theCartItemIs.quantity;
+    }
+  }
 
   return (
     <StyledContainerDiv>
@@ -56,7 +94,7 @@ export default function ShoppingCart() {
         Cart Items
       </Typography>
       <StyledCartItems>
-        {dataCartItems.cartsList.map((item) => (
+        {dataCartItems.cartsList.map((item, index) => (
           <React.Fragment key={item.id}>
             <StyledCartItem>
               <StyledCartItemBasics>
@@ -66,14 +104,17 @@ export default function ShoppingCart() {
                   <FormControl style={quantitySelectStyles}>
                     <InputLabel id="quantity-select-label">Qtl</InputLabel>
                     <Select
+                      value={cartItems ? getCartItem(item.id) : item.quantity}
                       labelId="quantity-select-label"
                       label="Quantity"
-                      onChange={handleQuantitySelectChange}
+                      onChange={(e, id) =>
+                        handleQuantitySelectChange(e, item.id)
+                      }
                     >
                       {getQuantity(item.inventory.quantity)}
                     </Select>
                   </FormControl>
-                  ${item.inventory.price * 1}
+                  {cartItems?.find((x) => x.id === item.id).totalPrice}
                 </h4>
               </StyledCartItemBasics>
               <StyledCartItemDetails>

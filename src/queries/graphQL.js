@@ -67,9 +67,19 @@ export const ADD_ITEM_IMAGE = gql`
 `;
 
 export const ADD_CART_ITEM = gql`
-  mutation createCartItem($inventoryId: Int!, $userId: String!) {
+  mutation createCartItem(
+    $inventoryId: Int!
+    $quantity: Int
+    $userId: String!
+  ) {
     createCart(
-      input: { cart: { userid: $userId, inventoryId: $inventoryId } }
+      input: {
+        cart: {
+          userid: $userId
+          inventoryId: $inventoryId
+          quantity: $quantity
+        }
+      }
     ) {
       cart {
         id
@@ -78,7 +88,7 @@ export const ADD_CART_ITEM = gql`
   }
 `;
 
-export const GET_SALE_ITEM = gql`
+export const GET_INVENTORY_ITEM = gql`
   query ($saleId: Int!) {
     inventory(id: $saleId) {
       id
@@ -194,9 +204,9 @@ export const DELETE_CART_ITEM = gql`
   }
 `;
 
-export const CARD_ITEM = gql`
+export const INVENTORY_LIST = gql`
   query inventoryListWithCartId($userId: String) {
-    inventoriesList {
+    inventoriesList(condition: { inStock: true }) {
       id
       description
       manufacturerName
@@ -221,6 +231,7 @@ export const GET_CART_ITEMS = gql`
       id
       inventoryId
       userid
+      quantity
       inventory {
         description
         name

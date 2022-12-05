@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
@@ -8,7 +8,7 @@ import ImagesTile from '../SharedComponents/ImagesTile';
 import {
   ADD_CART_ITEM,
   DELETE_CART_ITEM,
-  GET_SALE_ITEM,
+  GET_INVENTORY_ITEM,
 } from '../queries/graphQL';
 import {
   Button,
@@ -18,12 +18,12 @@ import {
   Select,
 } from '@mui/material';
 
-function handleQuantitySelectChange() {}
-
 function DetailedItem() {
   const history = useHistory();
   const { cartItems, setCartItems, userProfile } =
     useContext(UserProfileContext);
+  const [quantity, setQuantity] = useState(1);
+
   const { id } = useParams();
   const saleId = parseInt(id);
   const [
@@ -42,7 +42,7 @@ function DetailedItem() {
       data: dataAddCartItem,
     },
   ] = useMutation(ADD_CART_ITEM);
-  const { loading, error, data, refetch } = useQuery(GET_SALE_ITEM, {
+  const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { saleId },
     fetchPolicy: 'cache-and-network',
   });
@@ -50,6 +50,9 @@ function DetailedItem() {
   if (error) return <p>{error.message}</p>;
   console.log('data in detailed item is:', data);
 
+  const handleQuantitySelectChange = (e) => {
+    setQuantity(+e.target.value);
+  };
   const getQuantity = (quantity) => {
     let returnValue = [];
     for (let i = 1; quantity >= i; i++) {
@@ -71,7 +74,8 @@ function DetailedItem() {
   function addItemToCart(inventoryId) {
     addCartItem({
       variables: {
-        inventoryId: inventoryId,
+        inventoryId,
+        quantity,
         userId: userProfile.uid,
       },
     }).then(() => {
@@ -117,7 +121,7 @@ function DetailedItem() {
         <InputLabel id="quantity-select-label">Quantity</InputLabel>
         <Select
           labelId="quantity-select-label"
-          value="1"
+          value={quantity}
           label="Quantity"
           disabled={data.inventory.quantity < 2}
           onChange={handleQuantitySelectChange}

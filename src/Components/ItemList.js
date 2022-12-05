@@ -1,14 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import { CARD_ITEM, DELETE_CART_ITEM, ADD_CART_ITEM } from '../queries/graphQL';
+import {
+  INVENTORY_LIST,
+  DELETE_CART_ITEM,
+  ADD_CART_ITEM,
+} from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/LoginContext';
 
 const ItemList = () => {
   const { cartItems, setCartItems, userProfile } =
     useContext(UserProfileContext);
-  const { loading, error, data, refetch } = useQuery(CARD_ITEM, {
+  const { loading, error, data, refetch } = useQuery(INVENTORY_LIST, {
     variables: {
       userId: userProfile.uid,
     },
@@ -61,6 +65,7 @@ const ItemList = () => {
     addCartItem({
       variables: {
         inventoryId: inventoryId,
+        quantity: 1,
         userId: userProfile.uid,
       },
     }).then(() => {
