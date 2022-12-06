@@ -32,7 +32,7 @@ export default function ShoppingCart() {
         id: item.id,
         quantity: item.quantity,
         price: +item.inventory.price,
-        totalPrice: +item.inventory.price * item.quantity,
+        totalPrice: +(item.inventory.price * item.quantity).toFixed(2),
       }));
       setCartItems(newStateValue);
     }
@@ -74,7 +74,9 @@ export default function ShoppingCart() {
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
       quantity: newQuantity,
-      unitPrice: 24.0,
+      totalPrice: +(cartItems[itemToChangeIndex].price * newQuantity).toFixed(
+        2
+      ),
     };
     const newCartItems = [...cartItems];
     newCartItems[itemToChangeIndex] = updatedChange;
@@ -94,27 +96,28 @@ export default function ShoppingCart() {
         Cart Items
       </Typography>
       <StyledCartItems>
-        {dataCartItems.cartsList.map((item, index) => (
+        {dataCartItems.cartsList.map((item) => (
           <React.Fragment key={item.id}>
             <StyledCartItem>
               <StyledCartItemBasics>
                 <h3>{item.inventory.manufacturerName}</h3>
-                <h4>
-                  ${item.inventory.price} X{' '}
-                  <FormControl style={quantitySelectStyles}>
-                    <InputLabel id="quantity-select-label">Qtl</InputLabel>
-                    <Select
-                      value={cartItems ? getCartItem(item.id) : item.quantity}
-                      labelId="quantity-select-label"
-                      label="Quantity"
-                      onChange={(e, id) =>
-                        handleQuantitySelectChange(e, item.id)
-                      }
-                    >
-                      {getQuantity(item.inventory.quantity)}
-                    </Select>
-                  </FormControl>
-                  {cartItems?.find((x) => x.id === item.id).totalPrice}
+                <h4>${item.inventory.price}</h4>
+                <FormControl style={quantitySelectStyles}>
+                  <InputLabel id="quantity-select-label">Quantity</InputLabel>
+                  <Select
+                    value={cartItems ? getCartItem(item.id) : item.quantity}
+                    labelId="quantity-select-label"
+                    label="Quantity"
+                    onChange={(e, id) => handleQuantitySelectChange(e, item.id)}
+                  >
+                    {getQuantity(item.inventory.quantity)}
+                  </Select>
+                </FormControl>
+                <h4 style={{ marginRight: '2em' }}>
+                  $
+                  {cartItems
+                    ?.find((x) => x.id === item.id)
+                    .totalPrice.toFixed(2)}
                 </h4>
               </StyledCartItemBasics>
               <StyledCartItemDetails>
@@ -150,7 +153,7 @@ export default function ShoppingCart() {
 }
 
 const quantitySelectStyles = {
-  width: '40%',
+  width: '20%',
 };
 const StyledShipping = styled.div`
   margin: 1rem 0;
@@ -162,9 +165,7 @@ const StyledSummation = styled.div`
 
 const StyledCartItems = styled.div``;
 
-const StyledCartItem = styled.div`
-  padding: 1rem;
-`;
+const StyledCartItem = styled.div``;
 
 const StyledContainerDiv = styled.div`
   display: flex;
@@ -180,20 +181,28 @@ const dividerStyle = {
 };
 const StyledCartItemDetails = styled.p`
   margin: 0.5rem 0 0.5rem 0.5rem;
-  font-size: 0.9em;
+  font-weight: 100;
+  font-size: 80%;
 `;
 
 const StyledCartItemBasics = styled.div`
+  //gap: 2em;
   h3 {
     margin: 0;
+    align-self: center;
+    font-weight: 100;
+    font-size: 100%;
   }
 
   h4 {
     margin: 0;
+    align-self: center;
+    font-weight: 100;
+    font-size: 100%;
   }
 
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 90%;
+  width: 100%;
 `;
