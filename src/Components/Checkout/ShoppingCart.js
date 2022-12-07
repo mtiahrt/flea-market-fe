@@ -11,10 +11,10 @@ import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../Contexts/LoginContext';
+import ShoppingCartItems from './ShoppingCartItems';
 
 export default function ShoppingCart() {
   const [cartItems, setCartItems] = useState();
-  const [cartQuantities, setCartQuantities] = useState();
   const { userProfile } = useContext(UserProfileContext);
   const {
     loading: loadingCartItems,
@@ -40,32 +40,6 @@ export default function ShoppingCart() {
 
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
-
-  function sumOfCart() {
-    return dataCartItems.cartsList
-      .reduce(
-        (prev, current) =>
-          (prev += +current.inventory.price * current.inventory.quantity),
-        0
-      )
-      .toFixed(2);
-  }
-  console.log('data cart items is', dataCartItems);
-
-  const getQuantity = (quantity) => {
-    console.log('Quantity drowdown populating');
-    let returnValue = [];
-    for (let i = 1; quantity >= i; i++) {
-      returnValue.push(
-        // <option value={i}>{i}</option>
-        <MenuItem key={`quantityKey${i}`} value={i}>
-          {i}
-        </MenuItem>
-      );
-    }
-    return returnValue;
-  };
-
   function handleQuantitySelectChange(e, id) {
     const newQuantity = e.target.value;
     const itemToChangeIndex = [...cartItems].findIndex(
@@ -89,6 +63,29 @@ export default function ShoppingCart() {
       return theCartItemIs.quantity;
     }
   }
+  const getQuantity = (quantity) => {
+    console.log('Quantity drowdown populating');
+    let returnValue = [];
+    for (let i = 1; quantity >= i; i++) {
+      returnValue.push(
+        // <option value={i}>{i}</option>
+        <MenuItem key={`quantityKey${i}`} value={i}>
+          {i}
+        </MenuItem>
+      );
+    }
+    return returnValue;
+  };
+  function sumOfCart() {
+    return dataCartItems.cartsList
+      .reduce(
+        (prev, current) =>
+          (prev += +current.inventory.price * current.inventory.quantity),
+        0
+      )
+      .toFixed(2);
+  }
+  console.log('data cart items is', dataCartItems);
 
   return (
     <StyledContainerDiv>
@@ -98,13 +95,14 @@ export default function ShoppingCart() {
       <StyledCartItems>
         {dataCartItems.cartsList.map((item) => (
           <React.Fragment key={item.id}>
-            <StyledCartItem>
+            <div>
               <StyledCartItemBasics>
                 <h3>{item.inventory.manufacturerName}</h3>
                 <h4>${item.inventory.price}</h4>
                 <FormControl style={quantitySelectStyles}>
                   <InputLabel id="quantity-select-label">Quantity</InputLabel>
                   <Select
+                    style={{ height: '2.5em' }}
                     value={cartItems ? getCartItem(item.id) : item.quantity}
                     labelId="quantity-select-label"
                     label="Quantity"
@@ -123,7 +121,7 @@ export default function ShoppingCart() {
               <StyledCartItemDetails>
                 {item.inventory.description}
               </StyledCartItemDetails>
-            </StyledCartItem>
+            </div>
           </React.Fragment>
         ))}
       </StyledCartItems>
@@ -152,9 +150,6 @@ export default function ShoppingCart() {
   );
 }
 
-const quantitySelectStyles = {
-  width: '20%',
-};
 const StyledShipping = styled.div`
   margin: 1rem 0;
 `;
@@ -164,8 +159,6 @@ const StyledSummation = styled.div`
 `;
 
 const StyledCartItems = styled.div``;
-
-const StyledCartItem = styled.div``;
 
 const StyledContainerDiv = styled.div`
   display: flex;
@@ -179,14 +172,15 @@ const StyledContainerDiv = styled.div`
 const dividerStyle = {
   width: '100%',
 };
+const quantitySelectStyles = {
+  width: '15%',
+};
 const StyledCartItemDetails = styled.p`
   margin: 0.5rem 0 0.5rem 0.5rem;
   font-weight: 100;
   font-size: 80%;
 `;
-
 const StyledCartItemBasics = styled.div`
-  //gap: 2em;
   h3 {
     margin: 0;
     align-self: center;
