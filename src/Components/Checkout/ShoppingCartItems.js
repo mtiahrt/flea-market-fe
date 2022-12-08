@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 
-const ShoppingCartItems = ({ shoppingCartItems }) => {
+const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const [cartItems, setCartItems] = useState();
-
   useEffect(() => {
     const newStateValue = shoppingCartItems.map((item) => ({
       id: item.id,
@@ -30,6 +29,9 @@ const ShoppingCartItems = ({ shoppingCartItems }) => {
     const newCartItems = [...cartItems];
     newCartItems[itemToChangeIndex] = updatedChange;
     setCartItems(newCartItems);
+    setCartTotal(
+      newCartItems.reduce((acc, current) => acc + current.totalPrice, 0)
+    );
   };
 
   function getCartItem(id) {
@@ -49,14 +51,15 @@ const ShoppingCartItems = ({ shoppingCartItems }) => {
     }
     return returnValue;
   };
+
   return (
     <div>
       {shoppingCartItems?.map((item) => (
-        <div key={item.id}>
-          <StyledCartItemBasics>
+        <React.Fragment key={item.id}>
+          <StyledCartRowItemDiv>
             <h3>{item.inventory.manufacturerName}</h3>
             <h4>${item.inventory.price}</h4>
-            <FormControl style={quantitySelectStyles}>
+            <FormControl>
               <InputLabel id="quantity-select-label">Quantity</InputLabel>
               <Select
                 style={{ height: '2.5em' }}
@@ -68,45 +71,33 @@ const ShoppingCartItems = ({ shoppingCartItems }) => {
                 {getQuantity(item.inventory.quantity)}
               </Select>
             </FormControl>
-            <h4 style={{ marginRight: '2em' }}>
+            <h4 style={{ marginRight: '1em' }}>
               ${cartItems?.find((x) => x.id === item.id).totalPrice.toFixed(2)}
             </h4>
-          </StyledCartItemBasics>
-          <StyledCartItemDetails>
-            {item.inventory.description}
-          </StyledCartItemDetails>
-        </div>
+          </StyledCartRowItemDiv>
+        </React.Fragment>
       ))}
     </div>
   );
 };
 
 export default ShoppingCartItems;
-const quantitySelectStyles = {
-  width: '15%',
-};
-const StyledCartItemDetails = styled.p`
-  margin: 0.5rem 0 0.5rem 0.5rem;
-  font-weight: 100;
-  font-size: 80%;
-`;
-const StyledCartItemBasics = styled.div`
+const StyledCartRowItemDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1.2fr 0.4fr 0.4fr 0.4fr;
+  grid-gap: 1em;
+  align-items: center;
+  margin-bottom: 1em;
   h3 {
     margin: 0;
-    align-self: center;
     font-weight: 100;
     font-size: 100%;
   }
 
   h4 {
     margin: 0;
-    align-self: center;
+    justify-self: end;
     font-weight: 100;
     font-size: 100%;
   }
-
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
 `;

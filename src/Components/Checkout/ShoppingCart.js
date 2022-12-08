@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Divider,
@@ -15,6 +15,7 @@ import ShoppingCartItems from './ShoppingCartItems';
 
 export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);
+  const [cartTotal, setCartTotal] = useState(0);
   const {
     loading: loadingCartItems,
     error: errorCartItems,
@@ -25,18 +26,20 @@ export default function ShoppingCart() {
     },
     fetchPolicy: 'cache-and-network',
   });
-
+  useEffect(() => sumOfCart(), [dataCartItems]);
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
 
   function sumOfCart() {
-    return dataCartItems.cartsList
-      .reduce(
-        (prev, current) =>
-          (prev += +current.inventory.price * current.inventory.quantity),
-        0
-      )
-      .toFixed(2);
+    setCartTotal(
+      dataCartItems?.cartsList
+        .reduce(
+          (prev, current) =>
+            (prev += +current.inventory.price * current.inventory.quantity),
+          0
+        )
+        .toFixed(2)
+    );
   }
 
   console.log('data cart items is', dataCartItems);
@@ -47,6 +50,7 @@ export default function ShoppingCart() {
       </Typography>
       <ShoppingCartItems
         shoppingCartItems={dataCartItems.cartsList}
+        setCartTotal={setCartTotal}
       ></ShoppingCartItems>
       <Divider style={dividerStyle}></Divider>
       <StyledShipping>
@@ -66,7 +70,7 @@ export default function ShoppingCart() {
         <Typography variant="h5" gutterBottom>
           Cart Total
         </Typography>
-        <h2 style={{ margin: '0', marginBottom: '3%' }}>${sumOfCart()}</h2>
+        <h2 style={{ margin: '0', marginBottom: '3%' }}>${cartTotal}</h2>
       </StyledSummation>
     </StyledContainerDiv>
   );
