@@ -25,7 +25,11 @@ import {
 } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
 import { useLocation } from 'react-router';
-import { postImage, saveItemImage, saveInventory } from './Utilities';
+import {
+  postImage,
+  saveItemImage,
+  saveInventory,
+} from '../../SharedUtilities/images';
 
 const EditItem = () => {
   const history = useHistory();

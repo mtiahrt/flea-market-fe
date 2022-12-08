@@ -20,7 +20,11 @@ import {
   ADD_ITEM_IMAGE,
 } from '../../queries/graphQL';
 import PreviewImages from '../../SharedComponents/PreviewImages';
-import { postImage, saveItemImage, saveInventory } from './Utilities';
+import {
+  postImage,
+  saveItemImage,
+  saveInventory,
+} from '../../SharedUtilities/images';
 import { useHistory } from 'react-router-dom';
 
 export default function AddItem() {

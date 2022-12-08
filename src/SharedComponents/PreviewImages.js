@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
 import { useMutation } from '@apollo/client';
 import { DELETE_ITEM_IMAGE } from '../queries/graphQL';
-import { deleteImageFromS3 } from '../Components/ModifyItems/Utilities';
+import { deleteImageFromS3 } from '../SharedUtilities/images';
 
 const PreviewImages = ({ fileDataURL: urls }) => {
   const [

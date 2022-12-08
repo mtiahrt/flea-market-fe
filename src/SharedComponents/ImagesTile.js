@@ -1,6 +1,6 @@
 import './ImagesTile.css';
 import styled from 'styled-components';
-import { getSecureDeleteURL } from '../Components/ModifyItems/Utilities';
+import { getSecureDeleteURL } from '../SharedUtilities/images';
 
 const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
   console.log('file urls Images Tile got was...', fileDataURL);

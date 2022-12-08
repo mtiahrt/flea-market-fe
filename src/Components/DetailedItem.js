@@ -187,7 +187,6 @@ const quantitySelectStyles = {
   width: '25%',
   margin: '.4em 0 .4em 0',
 };
-
 const StyledButtonsDiv = styled.div`
   display: flex;
   width: 100%;
