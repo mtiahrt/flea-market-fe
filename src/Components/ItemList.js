@@ -55,33 +55,6 @@ const ItemList = () => {
     }
   }
 
-  function updateCart(cartItemId, inventoryId) {
-    isItemAlreadyInCart(inventoryId)
-      ? removeItemFromCart(cartItemId, inventoryId)
-      : addItemToCart(+inventoryId);
-  }
-
-  function addItemToCart(inventoryId) {
-    addCartItem({
-      variables: {
-        inventoryId: inventoryId,
-        quantity: 1,
-        userId: userProfile.uid,
-      },
-    }).then(() => {
-      refetch().then(() => console.log('re-fetch complete', data));
-    });
-  }
-
-  function removeItemFromCart(cartItemId, inventoryId) {
-    deleteCartItem({
-      variables: {
-        id: cartItemId,
-      },
-    });
-    setCartItems((prev) => prev.filter((item) => item !== inventoryId));
-  }
-
   return (
     <StyledList className="item-list">
       {data.inventoriesList.map((item) => (
@@ -89,8 +62,7 @@ const ItemList = () => {
           key={`card${item.id.toString()}`}
           iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
           link={`DetailedItem/${item.id}`}
-          cartItem={item}
-          cartClickHandler={updateCart}
+          inventoryItem={item}
         ></BasicCard>
       ))}
     </StyledList>

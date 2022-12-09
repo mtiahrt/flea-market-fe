@@ -7,23 +7,20 @@ import Typography from '@mui/joy/Typography';
 import { ShoppingCart } from '@mui/icons-material';
 import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
+import useCart from '../CustomHooks/useCart';
 
-export default function BasicCard({
-  cartItem,
-  link,
-  iconColor,
-  cartClickHandler,
-}) {
-  const cartItemId = cartItem.cartsList[0]?.id;
+export default function BasicCard({ inventoryItem, link, iconColor }) {
+  const cartItemId = inventoryItem.cartsList[0]?.id;
+  const [setCartItem] = useCart(inventoryItem.id);
   return (
     <Card data-cart-id={cartItemId} variant="outlined" sx={{ width: 320 }}>
       <Typography level="h2" fontSize="lg" fontWeight="lg" sx={{ mb: 0.5 }}>
-        {cartItem.manufacturerName}
+        {inventoryItem.manufacturerName}
       </Typography>
-      <Typography level="body2">{cartItem.name}</Typography>
+      <Typography level="body2">{inventoryItem.name}</Typography>
       <IconButton
         style={buttonStyles}
-        aria-label={cartItem.manufacturerName}
+        aria-label={inventoryItem.manufacturerName}
         variant="plain"
         color="neutral"
         size="sm"
@@ -31,7 +28,7 @@ export default function BasicCard({
       >
         <ShoppingCart
           color={iconColor}
-          onClick={() => cartClickHandler(cartItemId, cartItem.id)}
+          onClick={() => setCartItem(inventoryItem.id, cartItemId)}
         />
       </IconButton>
       <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
@@ -39,11 +36,11 @@ export default function BasicCard({
           <img
             style={{ width: '85%' }}
             src={
-              cartItem.itemImagesList.length > 0
-                ? cartItem.itemImagesList.find((x) => x).url
+              inventoryItem.itemImagesList.length > 0
+                ? inventoryItem.itemImagesList.find((x) => x).url
                 : NoImage
             }
-            srcSet={`${cartItem ? cartItem.url : NoImage} 2x`}
+            srcSet={`${inventoryItem ? inventoryItem.url : NoImage} 2x`}
             loading="lazy"
             alt=""
           />
@@ -53,7 +50,7 @@ export default function BasicCard({
         <div>
           <Typography level="body3">Total price:</Typography>
           <Typography fontSize="lg" fontWeight="lg">
-            ${cartItem.price}
+            ${inventoryItem.price}
           </Typography>
         </div>
       </Box>
