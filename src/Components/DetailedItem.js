@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useMutation, useQuery } from '@apollo/client';
-import { UserProfileContext } from '../Contexts/LoginContext';
-import { useHistory } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { useHistory, useLocation } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
+import useCart from '../CustomHooks/useCart';
 import {
-  ADD_CART_ITEM,
-  DELETE_CART_ITEM,
   GET_INVENTORY_ITEM,
 } from '../queries/graphQL';
 import {
@@ -20,36 +18,21 @@ import {
 
 function DetailedItem() {
   const history = useHistory();
-  const { cartItems, setCartItems, userProfile } =
-    useContext(UserProfileContext);
+  const location = useLocation();
   const [quantity, setQuantity] = useState(1);
-
+  const [isInCart, setisInCart] = useState(location.state.isInCart)
   const { id } = useParams();
-  const saleId = parseInt(id);
-  const [
-    deleteCartItem,
-    {
-      loading: loadingDeleteCartItem,
-      error: errorDeleteCartItem,
-      data: dataDeleteCartItem,
-    },
-  ] = useMutation(DELETE_CART_ITEM);
-  const [
-    addCartItem,
-    {
-      loading: loadingAddCartItem,
-      error: errorAddCartItem,
-      data: dataAddCartItem,
-    },
-  ] = useMutation(ADD_CART_ITEM);
+  const inventoryId = parseInt(id);
+  const [setCartItem] = useCart(inventoryId);
+
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
-    variables: { saleId },
+    variables: { saleId: inventoryId },
     fetchPolicy: 'cache-and-network',
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
   console.log('data in detailed item is:', data);
-
+  const cartId = data.inventory.cartsList.length ? data.inventory.cartsList[0]?.id : -1
   const handleQuantitySelectChange = (e) => {
     setQuantity(+e.target.value);
   };
@@ -65,39 +48,6 @@ function DetailedItem() {
     return returnValue;
   };
 
-  function updateCart(cartItemId, inventoryId) {
-    isItemAlreadyInCart(+inventoryId)
-      ? removeItemFromCart(cartItemId, +inventoryId)
-      : addItemToCart(+inventoryId);
-  }
-
-  function addItemToCart(inventoryId) {
-    addCartItem({
-      variables: {
-        inventoryId,
-        quantity,
-        userId: userProfile.uid,
-      },
-    }).then(() => {
-      setCartItems((prev) => [...prev, inventoryId]);
-    });
-  }
-
-  function removeItemFromCart(cartItemId, inventoryId) {
-    deleteCartItem({
-      variables: {
-        id: cartItemId,
-      },
-    });
-    setCartItems((prev) => prev.filter((item) => item !== inventoryId));
-  }
-
-  function isItemAlreadyInCart(id) {
-    if (cartItems && cartItems.includes(id)) {
-      return true;
-    }
-  }
-
   console.log('detailItem component is rendering');
 
   function navigateToEditItem(id) {
@@ -108,7 +58,15 @@ function DetailedItem() {
       },
     });
   }
-
+  const addToCartClickHandler = () => {
+    const refetchData = !isInCart
+    setisInCart(!isInCart);
+    setCartItem(cartId);
+    //refetch if item was added to cart
+    if(refetchData){
+      refetch({saleId: inventoryId})
+    }
+  }
   console.log('data in detail item is', data);
   return (
     <StyledDiv className="container">
@@ -132,10 +90,10 @@ function DetailedItem() {
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
         <Button
-          onClick={() => updateCart(data.inventory.cartsList[0]?.id, id)}
+          onClick={()=> addToCartClickHandler(cartId)}
           variant="contained"
         >
-          {isItemAlreadyInCart(data.inventory.id)
+          {isInCart
             ? 'Remove from cart'
             : 'Add to Cart'}
         </Button>

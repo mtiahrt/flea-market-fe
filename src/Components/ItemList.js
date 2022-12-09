@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import BasicCard from './BasicCard';
 import {
   INVENTORY_LIST,
-  DELETE_CART_ITEM,
-  ADD_CART_ITEM,
 } from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/LoginContext';
 
@@ -18,22 +16,6 @@ const ItemList = () => {
     },
     fetchPolicy: 'cache-and-network',
   });
-  const [
-    deleteCartItem,
-    {
-      loading: loadingDeleteCartItem,
-      error: errorDeleteCartItem,
-      data: dataDeleteCartItem,
-    },
-  ] = useMutation(DELETE_CART_ITEM);
-  const [
-    addCartItem,
-    {
-      loading: loadingAddCartItem,
-      error: errorAddCartItem,
-      data: dataAddCartItem,
-    },
-  ] = useMutation(ADD_CART_ITEM);
 
   useEffect(() => {
     console.log('Item List use effect fired...');
@@ -53,6 +35,7 @@ const ItemList = () => {
     if (cartItems && cartItems.includes(id)) {
       return true;
     }
+    return false;
   }
 
   return (
@@ -60,7 +43,7 @@ const ItemList = () => {
       {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}
-          iconColor={isItemAlreadyInCart(item.id) ? 'primary' : 'disabled'}
+          isInCart={isItemAlreadyInCart(item.id)}
           link={`DetailedItem/${item.id}`}
           inventoryItem={item}
         ></BasicCard>

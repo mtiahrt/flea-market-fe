@@ -9,7 +9,7 @@ import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
 import useCart from '../CustomHooks/useCart';
 
-export default function BasicCard({ inventoryItem, link, iconColor }) {
+export default function BasicCard({ inventoryItem, link, isInCart }) {
   const cartItemId = inventoryItem.cartsList[0]?.id;
   const [setCartItem] = useCart(inventoryItem.id);
   return (
@@ -27,12 +27,12 @@ export default function BasicCard({ inventoryItem, link, iconColor }) {
         sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
       >
         <ShoppingCart
-          color={iconColor}
-          onClick={() => setCartItem(inventoryItem.id, cartItemId)}
+          color={isInCart ? 'primary' : 'disabled'}
+          onClick={() => setCartItem(cartItemId)}
         />
       </IconButton>
       <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
-        <Link to={link}>
+        <Link to={{pathname: link, state:{isInCart: isInCart}}}>
           <img
             style={{ width: '85%' }}
             src={

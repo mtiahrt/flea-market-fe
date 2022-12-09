@@ -3,7 +3,7 @@ import { UserProfileContext } from '../Contexts/LoginContext';
 import { useMutation } from '@apollo/client';
 import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
 
-export default function useCart(id) {
+export default function useCart(inventoryId) {
   const [
     addCartItem,
     {
@@ -23,14 +23,14 @@ export default function useCart(id) {
   const { cartItems, setCartItems, userProfile } =
     useContext(UserProfileContext);
 
-  const setCartItem = (inventoryId, cartId) => {
+  const setCartItem = (cartId = -1) => {
     isItemAlreadyInCart(inventoryId)
       ? removeItemFromCart(inventoryId, cartId)
       : addItemToCart(inventoryId);
   };
 
-  function isItemAlreadyInCart(id) {
-    if (cartItems && cartItems.includes(id)) {
+  function isItemAlreadyInCart(inventoryId) {
+    if (cartItems && cartItems.includes(inventoryId)) {
       return true;
     }
   }
@@ -54,8 +54,7 @@ export default function useCart(id) {
       },
     }).then((resp) => {
       console.log(resp);
-      setCartItems([...cartItems, id]);
-      // refetch().then(() => console.log('re-fetch complete', data));
+      setCartItems([...cartItems, inventoryId]);
     });
   }
   return [setCartItem];
