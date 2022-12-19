@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import {
-  INVENTORY_LIST,
-} from '../queries/graphQL';
+import { INVENTORY_LIST } from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/LoginContext';
 
 const ItemList = () => {
@@ -12,7 +10,7 @@ const ItemList = () => {
     useContext(UserProfileContext);
   const { loading, error, data, refetch } = useQuery(INVENTORY_LIST, {
     variables: {
-      userId: userProfile.uid,
+      applicationUserId: userProfile.uid,
     },
     fetchPolicy: 'cache-and-network',
   });

@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
 import { UserProfileContext } from '../../Contexts/LoginContext';
+import axios from 'axios';
 
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
@@ -46,7 +47,25 @@ export default function Login() {
     const authProvider = loginProviderFactory(provider.currentTarget.value);
     try {
       const result = await signInWithPopup(auth, authProvider);
-      console.log(result.user);
+      axios
+        .post(
+          `https://localhost:8080/user/generateAccessToken`,
+          {},
+          {
+            headers: {
+              'Auth-Token': result.user.accessToken,
+            },
+          }
+        ) //testing that the validation end point is working...
+        .then((response) =>
+          axios
+            .get(`https://localhost:8080/user/validateAccessToken`, {
+              headers: {
+                gfg_token_header_key: response.data,
+              },
+            })
+            .then((data) => console.log(data))
+        );
       mapMatches(result.user);
     } catch (error) {
       console.error(error);

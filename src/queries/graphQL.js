@@ -75,7 +75,7 @@ export const ADD_CART_ITEM = gql`
     createCart(
       input: {
         cart: {
-          userid: $userId
+          applicationUserId: $userId
           inventoryId: $inventoryId
           quantity: $quantity
         }
@@ -216,10 +216,10 @@ export const INVENTORY_LIST = gql`
         publicId
         url
       }
-      cartsList(condition: { userid: $userId }) {
+      cartsList(condition: { applicationUserId: $userId }) {
         id
         inventoryId
-        userid
+        applicationUserId
       }
     }
   }
@@ -227,10 +227,10 @@ export const INVENTORY_LIST = gql`
 
 export const GET_CART_ITEMS = gql`
   query ($user_id: String) {
-    cartsList(condition: { userid: $user_id }) {
+    cartsList(condition: { applicationUserId: $user_id }) {
       id
       inventoryId
-      userid
+      applicationUserId
       quantity
       inventory {
         description
