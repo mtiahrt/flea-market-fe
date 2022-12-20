@@ -5,9 +5,7 @@ import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
 import ImagesTile from '../SharedComponents/ImagesTile';
 import useCart from '../CustomHooks/useCart';
-import {
-  GET_INVENTORY_ITEM,
-} from '../queries/graphQL';
+import { GET_INVENTORY_ITEM } from '../queries/graphQL';
 import {
   Button,
   FormControl,
@@ -20,7 +18,7 @@ function DetailedItem() {
   const history = useHistory();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
-  const [isInCart, setisInCart] = useState(location.state.isInCart)
+  const [isInCart, setIsInCart] = useState(location.state?.isInCart);
   const { id } = useParams();
   const inventoryId = parseInt(id);
   const [setCartItem] = useCart(inventoryId);
@@ -32,7 +30,9 @@ function DetailedItem() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
   console.log('data in detailed item is:', data);
-  const cartId = data.inventory.cartsList.length ? data.inventory.cartsList[0]?.id : -1
+  const cartId = data.inventory.cartsList.length
+    ? data.inventory.cartsList[0]?.id
+    : -1;
   const handleQuantitySelectChange = (e) => {
     setQuantity(+e.target.value);
   };
@@ -55,18 +55,19 @@ function DetailedItem() {
       pathname: `/EditItem/${id}`,
       state: {
         fileDataURL: data.inventory.itemImagesList,
+        isInCart,
       },
     });
   }
   const addToCartClickHandler = () => {
-    const refetchData = !isInCart
-    setisInCart(!isInCart);
+    const refetchData = !isInCart;
+    setIsInCart(!isInCart);
     setCartItem(cartId);
     //refetch if item was added to cart
-    if(refetchData){
-      refetch({saleId: inventoryId})
+    if (refetchData) {
+      refetch({ saleId: inventoryId });
     }
-  }
+  };
   console.log('data in detail item is', data);
   return (
     <StyledDiv className="container">
@@ -90,12 +91,10 @@ function DetailedItem() {
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
         <Button
-          onClick={()=> addToCartClickHandler(cartId)}
+          onClick={() => addToCartClickHandler(cartId)}
           variant="contained"
         >
-          {isInCart
-            ? 'Remove from cart'
-            : 'Add to Cart'}
+          {isInCart ? 'Remove from cart' : 'Add to Cart'}
         </Button>
         <Button
           onClick={() => navigateToEditItem(id, data.inventory.id)}

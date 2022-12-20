@@ -11,14 +11,17 @@ export const postImage = async (image) => {
 };
 
 export const getSecureURL = async () => {
-  return await fetch('https://localhost:8080/secureImageURL').then((res) =>
-    res.json()
-  );
+  return await fetch(
+    `${process.env.REACT_APP_development_BACKEND_SERVER_URI}/secureImageURL`,
+    { method: 'GET' }
+  ).then((res) => res.json());
 };
 
 const getSecureDeleteURL = async (publicId) => {
   return await fetch(
-    `https://localhost:8080/secureImageDeleteURL/?publicId=${publicId}`
+    process.env[
+      `REACT_APP_${process.env.NODE_ENV}_BACKEND_SERVER_URI/user/secureImageDeleteURL/?publicId=${publicId}`
+    ]
   )
     .then((res) => res.json())
     .then((data) => data);

@@ -35,7 +35,7 @@ const EditItem = () => {
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation();
-  const { fileDataURL } = location.state ? location.state : [];
+  const { fileDataURL, isInCart } = location.state ? location.state : [];
   const saleId = +id;
   const {
     loading: loadinginventory,
@@ -249,7 +249,7 @@ const EditItem = () => {
           Save
         </Button>
         <Button
-          onClick={() => history.push(`/DetailedItem/${saleId}`)}
+          onClick={() => history.push(`/DetailedItem/${saleId}`, { isInCart })}
           style={{ backgroundColor: '#B8BDBB' }}
           variant="contained"
         >
