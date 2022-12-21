@@ -18,7 +18,7 @@ function DetailedItem() {
   const history = useHistory();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
-  const [isInCart, setIsInCart] = useState(location.state?.isInCart);
+  const [isInCart, setIsInCart] = useState(location.state.isInCart);
   const { id } = useParams();
   const inventoryId = parseInt(id);
   const [setCartItem] = useCart(inventoryId);
