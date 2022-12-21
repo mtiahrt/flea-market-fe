@@ -10,7 +10,7 @@ import {
 import { useQuery } from '@apollo/client';
 import { GET_CART_ITEMS } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
-import { UserProfileContext } from '../../Contexts/LoginContext';
+import { UserProfileContext } from '../../Contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
 
 export default function ShoppingCart() {

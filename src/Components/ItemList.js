@@ -3,11 +3,12 @@ import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
 import { INVENTORY_LIST } from '../queries/graphQL';
-import { UserProfileContext } from '../Contexts/LoginContext';
+import { UserProfileContext } from '../Contexts/UserContext';
+import { CartContext } from '../Contexts/CartContext';
 
 const ItemList = () => {
-  const { cartItems, setCartItems, userProfile } =
-    useContext(UserProfileContext);
+  const { userProfile } = useContext(UserProfileContext);
+  const { cartItems, setCartItems } = useContext(CartContext);
   const { loading, error, data, refetch } = useQuery(INVENTORY_LIST, {
     variables: {
       applicationUserId: userProfile.uid,

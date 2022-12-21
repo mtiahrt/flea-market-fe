@@ -1,9 +1,12 @@
 import { useContext } from 'react';
-import { UserProfileContext } from '../Contexts/LoginContext';
+import { UserProfileContext } from '../Contexts/UserContext';
 import { useMutation } from '@apollo/client';
 import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
+import { CartContext } from '../Contexts/CartContext';
 
 export default function useCart(inventoryId) {
+  const { cartItems, setCartItems } = useContext(CartContext);
+  const { userProfile } = useContext(UserProfileContext);
   const [
     addCartItem,
     {
@@ -20,8 +23,6 @@ export default function useCart(inventoryId) {
       data: dataDeleteCartItem,
     },
   ] = useMutation(DELETE_CART_ITEM);
-  const { cartItems, setCartItems, userProfile } =
-    useContext(UserProfileContext);
 
   const setCartItem = (cartId = -1) => {
     isItemAlreadyInCart(inventoryId)

@@ -14,11 +14,12 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
 import { useState } from 'react';
-import { UserProfileContext } from './Contexts/LoginContext';
+import { UserProfileContext } from './Contexts/UserContext';
 import DetailedItem from './Components/DetailedItem';
 import AddItem from './Components/ModifyItems/AddItem';
 import EditItem from './Components/ModifyItems/EditItem';
 import CheckOut from './Components/Checkout/CheckOut';
+import { CartContext } from './Contexts/CartContext';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -27,9 +28,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <UserProfileContext.Provider
-          value={{ userProfile, setUserProfile, cartItems, setCartItems }}
-        >
+        <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
           <NavBar>
             <NavItemProfile imgURL={userProfile.photoURL} />
             <NavItem url={''} icon={<HomeIcon />}></NavItem>
@@ -39,28 +38,36 @@ function App() {
               <DropdownMenu></DropdownMenu>
             </NavItem>
           </NavBar>
-          <Switch>
-            <Route exact path="/">
-              <header>
-                <h1>Wild Heather Shop</h1>
-              </header>
-              <ItemList />
-              <Modal
-                message="Please sign in"
-                isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}
-                onClose={null}
-              >
-                <Login />
-              </Modal>
-            </Route>
-            <Route path="/Profile">
-              <Profile userProfile={userProfile} />
-            </Route>
-            <Route path="/DetailedItem/:id" children={<DetailedItem />}></Route>
-            <Route path="/AddItem" children={<AddItem />}></Route>
-            <Route path="/CheckOut" children={<CheckOut />}></Route>
-            <Route path="/EditItem/:id" children={<EditItem />}></Route>
-          </Switch>
+          <CartContext.Provider value={{ cartItems, setCartItems }}>
+            <Switch>
+              <Route exact path="/">
+                <header>
+                  <h1>Wild Heather Shop</h1>
+                </header>
+                <ItemList />
+                <Modal
+                  message="Please sign in"
+                  isOpen={
+                    userProfile.isLoggedIn ? !userProfile.isLoggedIn : true
+                  }
+                  onClose={null}
+                >
+                  <Login />
+                </Modal>
+              </Route>
+              <Route path="/Profile">
+                <Profile userProfile={userProfile} />
+              </Route>
+
+              <Route
+                path="/DetailedItem/:id"
+                children={<DetailedItem />}
+              ></Route>
+              <Route path="/AddItem" children={<AddItem />}></Route>
+              <Route path="/CheckOut" children={<CheckOut />}></Route>
+              <Route path="/EditItem/:id" children={<EditItem />}></Route>
+            </Switch>
+          </CartContext.Provider>
         </UserProfileContext.Provider>
       </Router>
     </div>

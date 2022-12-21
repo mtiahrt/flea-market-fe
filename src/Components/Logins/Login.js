@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
-import { UserProfileContext } from '../../Contexts/LoginContext';
+import { UserProfileContext } from '../../Contexts/UserContext';
 import axios from 'axios';
 
 export default function Login() {
@@ -49,9 +49,7 @@ export default function Login() {
       const result = await signInWithPopup(auth, authProvider);
       axios
         .post(
-          process.env[
-            `REACT_APP_${process.env.NODE_ENV}_BACKEND_SERVER_URI/user/generateAccessToken`
-          ],
+          `https://localhost:8080/user/generateAccessToken`,
           {},
           {
             headers: {
@@ -61,16 +59,11 @@ export default function Login() {
         ) //testing that the validation end point is working...
         .then((response) =>
           axios
-            .get(
-              process.env[
-                `REACT_APP_${process.env.NODE_ENV}_BACKEND_SERVER_URI/user/validateAccessToken`
-              ],
-              {
-                headers: {
-                  gfg_token_header_key: response.data,
-                },
-              }
-            )
+            .get(`https://localhost:8080/user/validateAccessToken`, {
+              headers: {
+                gfg_token_header_key: response.data,
+              },
+            })
             .then((data) => console.log(data))
         );
       mapMatches(result.user);
