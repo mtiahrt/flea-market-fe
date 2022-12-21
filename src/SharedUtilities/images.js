@@ -1,37 +1,46 @@
 //TODO Looking to scaling images down to lower resolution before uploading to S3...
-export const postImage = async (image) => {
-  const { url } = await getSecureURL();
+import axios from 'axios';
+
+let accessToken;
+
+export const postImage = async (image, accessToken) => {
+  const { url } = await getSecureURL(accessToken);
   return fetch(url, {
     method: 'PUT',
     headers: {
       'Content-Type': 'multipart/form-data',
+      'Access-Token': accessToken,
     },
     body: image,
   });
 };
 
-export const getSecureURL = async () => {
-  return await fetch('https://localhost:8080/secureImageURL').then((res) =>
-    res.json()
-  );
+const getSecureURL = async (accessToken) => {
+  return axios
+    .get('https://localhost:8080/secureImageURL', {
+      headers: { 'Access-Token': accessToken },
+    })
+    .then((response) => response.data);
 };
 
-const getSecureDeleteURL = async (publicId) => {
-  return await fetch(
-    `https://localhost:8080/secureImageDeleteURL/?publicId=${publicId}`
-  )
-    .then((res) => res.json())
-    .then((data) => data);
+const getSecureDeleteURL = async (publicId, accessToken) => {
+  return axios
+    .get(`https://localhost:8080/secureImageDeleteURL/?publicId=${publicId}`, {
+      headers: { 'Access-Token': accessToken },
+    })
+    .then((x) => x.data);
 };
 
-export const deleteImageFromS3 = async (publicId) => {
-  const { url } = await getSecureDeleteURL(publicId);
-  return await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+export const deleteImageFromS3 = async (publicId, accessToken) => {
+  const { url } = await getSecureDeleteURL(publicId, accessToken);
+  return axios
+    .delete(url, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Access-Token': accessToken,
+      },
+    })
+    .then((x) => x.data);
 };
 
 export const saveItemImage = (saleId, values, saveFunction) => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -26,8 +26,10 @@ import {
   saveInventory,
 } from '../../SharedUtilities/images';
 import { useHistory } from 'react-router-dom';
+import { UserProfileContext } from '../../Contexts/UserContext';
 
 export default function AddItem() {
+  const { userProfile } = useContext(UserProfileContext);
   const [category, setCategory] = useState(-1);
   const [subcategory, setSubcategory] = useState(-1);
   const {
@@ -60,7 +62,7 @@ export default function AddItem() {
       ({ name }) => name === 'imageFile'
     );
     [...fileInputs.files].map(async (file) => {
-      promises.push(postImage(file));
+      promises.push(postImage(file, userProfile.accessToken));
     });
     Promise.all(promises).then((data) => {
       const inventoryId = data.find((x) => x.data?.createInventory.inventory.id)

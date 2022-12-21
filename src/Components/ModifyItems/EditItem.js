@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import {
@@ -30,8 +30,10 @@ import {
   saveItemImage,
   saveInventory,
 } from '../../SharedUtilities/images';
+import { UserProfileContext } from '../../Contexts/UserContext';
 
 const EditItem = () => {
+  const { userProfile } = useContext(UserProfileContext);
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation();
@@ -85,7 +87,7 @@ const EditItem = () => {
       ({ name }) => name === 'imageFile'
     );
     [...fileInputs.files].map(async (file) => {
-      promises.push(postImage(file));
+      promises.push(postImage(file, userProfile.accessToken));
     });
 
     Promise.all(promises)

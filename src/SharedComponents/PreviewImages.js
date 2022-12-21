@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
 import { useMutation } from '@apollo/client';
 import { DELETE_ITEM_IMAGE } from '../queries/graphQL';
 import { deleteImageFromS3 } from '../SharedUtilities/images';
+import { UserProfileContext } from '../Contexts/UserContext';
 
 const PreviewImages = ({ fileDataURL: urls }) => {
   const [
@@ -11,6 +12,7 @@ const PreviewImages = ({ fileDataURL: urls }) => {
     { deleteImageData, deleteImageLoading, deleteImageError },
   ] = useMutation(DELETE_ITEM_IMAGE);
   const [fileDataURL, setFileDataURL] = useState([]);
+  const { userProfile } = useContext(UserProfileContext);
 
   useEffect(() => {
     if (urls) {
@@ -39,7 +41,7 @@ const PreviewImages = ({ fileDataURL: urls }) => {
 
   const deleteImage = (publicId, imageId) => {
     const promises = [];
-    promises.push(deleteImageFromS3(publicId));
+    promises.push(deleteImageFromS3(publicId, userProfile.accessToken));
     promises.push(
       deleteItemImage({
         variables: { id: imageId },

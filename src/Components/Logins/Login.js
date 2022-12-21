@@ -16,15 +16,7 @@ import UserContextModel from '../../models/UserContextModel';
 
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
-  const keysForStateUpdate = [
-    'displayName',
-    'photoURL',
-    'uid',
-    'email',
-    'accessToken',
-  ];
-
-  const mapMatches = (user, accessToken) => {
+  const updateUserContext = (user, accessToken) => {
     const {
       displayName,
       email,
@@ -68,7 +60,7 @@ export default function Login() {
           }
         )
         .then((token) => {
-          mapMatches(userAuth.user, token.data);
+          updateUserContext(userAuth.user, token.data);
         });
     } catch (error) {
       console.error(error);
