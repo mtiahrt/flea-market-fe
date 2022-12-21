@@ -22,7 +22,7 @@ export default function ShoppingCart() {
     data: dataCartItems,
   } = useQuery(GET_CART_ITEMS, {
     variables: {
-      user_id: userProfile.uid,
+      user_id: userProfile.id,
     },
     fetchPolicy: 'cache-and-network',
   });

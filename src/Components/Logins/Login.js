@@ -12,6 +12,7 @@ import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
 import { UserProfileContext } from '../../Contexts/UserContext';
 import axios from 'axios';
+import UserContextModel from '../../models/UserContextModel';
 
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
@@ -23,15 +24,24 @@ export default function Login() {
     'accessToken',
   ];
 
-  const mapMatches = (user) => {
-    const result = Object.entries(user)
-      .filter((item) => keysForStateUpdate.includes(item[0]))
-      .reduce((prev, current) => {
-        const curObj = {};
-        curObj[current[0]] = current[1];
-        return { ...prev, ...curObj, ...{ isLoggedIn: true } };
-      }, {});
-    setUserProfile(result);
+  const mapMatches = (user, accessToken) => {
+    const {
+      displayName,
+      email,
+      photoURL,
+      uid: id,
+      accessToken: authToken,
+    } = user;
+    const userContextModel = new UserContextModel(
+      accessToken,
+      authToken,
+      displayName,
+      email,
+      photoURL,
+      id,
+      true
+    );
+    setUserProfile(userContextModel);
   };
   const loginProviderFactory = (provider) => {
     if (provider === 'google') {
@@ -46,27 +56,20 @@ export default function Login() {
   const login = async (provider) => {
     const authProvider = loginProviderFactory(provider.currentTarget.value);
     try {
-      const result = await signInWithPopup(auth, authProvider);
+      const userAuth = await signInWithPopup(auth, authProvider);
       axios
         .post(
           `https://localhost:8080/user/generateAccessToken`,
           {},
           {
             headers: {
-              'Auth-Token': result.user.accessToken,
+              'Auth-Token': userAuth.user.accessToken,
             },
           }
-        ) //testing that the validation end point is working...
-        .then((response) =>
-          axios
-            .get(`https://localhost:8080/user/validateAccessToken`, {
-              headers: {
-                gfg_token_header_key: response.data,
-              },
-            })
-            .then((data) => console.log(data))
-        );
-      mapMatches(result.user);
+        )
+        .then((token) => {
+          mapMatches(userAuth.user, token.data);
+        });
     } catch (error) {
       console.error(error);
     }

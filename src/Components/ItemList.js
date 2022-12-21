@@ -11,7 +11,7 @@ const ItemList = () => {
   const { cartItems, setCartItems } = useContext(CartContext);
   const { loading, error, data, refetch } = useQuery(INVENTORY_LIST, {
     variables: {
-      applicationUserId: userProfile.uid,
+      applicationUserId: userProfile.id,
     },
     fetchPolicy: 'cache-and-network',
   });

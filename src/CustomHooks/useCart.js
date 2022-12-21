@@ -51,7 +51,7 @@ export default function useCart(inventoryId) {
       variables: {
         inventoryId: inventoryId,
         quantity: 1,
-        userId: userProfile.uid,
+        userId: userProfile.id,
       },
     }).then((resp) => {
       console.log(resp);
