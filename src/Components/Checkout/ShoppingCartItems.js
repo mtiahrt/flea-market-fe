@@ -13,7 +13,8 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
       id: item.id,
       manufacturerName: item.inventory.manufacturerName,
       quantity: item.quantity,
-      price: +item.inventory.price,
+      totalQuantity: item.inventory.quantity,
+      price: item.inventory.price,
       totalPrice: +(item.inventory.price * item.quantity).toFixed(2),
     }));
     setCartItems(newStateValue);
@@ -24,6 +25,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     const itemToChangeIndex = [...cartItems].findIndex(
       (item) => item.id === id
     );
+
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
       quantity: newQuantity,
@@ -39,17 +41,17 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     );
   };
   const handleDeleterCartItemClick = (id) => {
-    debugger;
     setRemoveItemFromCart(id);
     setCartItems((prev) => prev.filter((x) => x.id !== id));
   };
-  function getCartItem(id) {
+  function getCartItemQuantity(id) {
     if (cartItems) {
       const theCartItemIs = cartItems?.find((x) => x.id === id);
       return theCartItemIs.quantity;
     }
   }
-  const getQuantity = (quantity) => {
+
+  const getQuantityDropDownOption = (quantity) => {
     let returnValue = [];
     for (let i = 1; quantity >= i; i++) {
       returnValue.push(
@@ -72,12 +74,12 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
               <InputLabel id="quantity-select-label">Quantity</InputLabel>
               <Select
                 style={{ height: '2.5em' }}
-                value={cartItems ? getCartItem(item.id) : item.quantity}
+                value={cartItems ? getCartItemQuantity(item.id) : item.quantity}
                 labelId="quantity-select-label"
                 label="Quantity"
                 onChange={(e, id) => handleQuantitySelectChange(e, item.id)}
               >
-                {getQuantity(item.quantity)}
+                {getQuantityDropDownOption(item.totalQuantity)}
               </Select>
             </FormControl>
             <h4 style={{ marginRight: '1em' }}>

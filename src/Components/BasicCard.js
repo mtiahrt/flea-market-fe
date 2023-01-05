@@ -15,6 +15,7 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   const [isInCart, setIsInCart] = useState(isItemInCart);
   const cartId = inventoryItem.cartsList[0]?.id;
   const inventoryId = inventoryItem.id;
+
   function handleCartClick() {
     isInCart ? setRemoveItemFromCart(cartId) : setAddItemToCart(inventoryId);
     setIsInCart((prev) => !prev);

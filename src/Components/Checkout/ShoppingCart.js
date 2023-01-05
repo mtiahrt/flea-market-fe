@@ -27,6 +27,7 @@ export default function ShoppingCart() {
     fetchPolicy: 'cache-and-network',
   });
   useEffect(() => sumOfCart(), [dataCartItems]);
+
   if (loadingCartItems) return 'Loading...';
   if (errorCartItems) return `Error! ${errorCartItems.message}`;
 
@@ -35,7 +36,7 @@ export default function ShoppingCart() {
       dataCartItems?.cartsList
         .reduce(
           (prev, current) =>
-            (prev += +current.inventory.price * current.inventory.quantity),
+            (prev += +current.inventory.price * current.quantity),
           0
         )
         .toFixed(2)
