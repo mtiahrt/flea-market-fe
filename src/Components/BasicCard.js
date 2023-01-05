@@ -8,12 +8,20 @@ import { ShoppingCart } from '@mui/icons-material';
 import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
 import useCart from '../CustomHooks/useCart';
+import { useState } from 'react';
 
-export default function BasicCard({ inventoryItem, link, isInCart }) {
-  const cartItemId = inventoryItem.cartsList[0]?.id;
-  const [setCartItem] = useCart(inventoryItem.id);
+export default function BasicCard({ inventoryItem, link, isItemInCart }) {
+  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
+  const [isInCart, setIsInCart] = useState(isItemInCart);
+  const cartId = inventoryItem.cartsList[0]?.id;
+  const inventoryId = inventoryItem.id;
+  function handleCartClick() {
+    isInCart ? setRemoveItemFromCart(cartId) : setAddItemToCart(inventoryId);
+    setIsInCart((prev) => !prev);
+  }
+
   return (
-    <Card data-cart-id={cartItemId} variant="outlined" sx={{ width: 320 }}>
+    <Card data-cart-id={cartId} variant="outlined" sx={{ width: 320 }}>
       <Typography level="h2" fontSize="lg" fontWeight="lg" sx={{ mb: 0.5 }}>
         {inventoryItem.manufacturerName}
       </Typography>
@@ -28,11 +36,11 @@ export default function BasicCard({ inventoryItem, link, isInCart }) {
       >
         <ShoppingCart
           color={isInCart ? 'primary' : 'disabled'}
-          onClick={() => setCartItem(cartItemId)}
+          onClick={handleCartClick}
         />
       </IconButton>
       <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
-        <Link to={{pathname: link, state:{isInCart: isInCart}}}>
+        <Link to={{ pathname: link, state: { isInCart: isInCart } }}>
           <img
             style={{ width: '85%' }}
             src={

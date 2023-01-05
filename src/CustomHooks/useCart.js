@@ -3,9 +3,10 @@ import { UserProfileContext } from '../Contexts/UserContext';
 import { useMutation } from '@apollo/client';
 import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
 import { CartContext } from '../Contexts/CartContext';
+import CartContextModel from '../models/CartContextModel';
 
-export default function useCart(inventoryId) {
-  const { cartItems, setCartItems } = useContext(CartContext);
+export default function useCart() {
+  const { setCartItems } = useContext(CartContext);
   const { userProfile } = useContext(UserProfileContext);
   const [
     addCartItem,
@@ -24,39 +25,31 @@ export default function useCart(inventoryId) {
     },
   ] = useMutation(DELETE_CART_ITEM);
 
-  const setCartItem = (cartId = -1) => {
-    isItemAlreadyInCart(inventoryId)
-      ? removeItemFromCart(inventoryId, cartId)
-      : addItemToCart(inventoryId);
-  };
-
-  function isItemAlreadyInCart(inventoryId) {
-    if (cartItems && cartItems.includes(inventoryId)) {
-      return true;
-    }
-  }
-
-  function removeItemFromCart(inventoryId, cartId) {
+  function setRemoveItemFromCart(cartId) {
     deleteCartItem({
       variables: {
         id: cartId,
       },
     }).then(() =>
-      setCartItems((prev) => prev.filter((item) => item !== inventoryId))
+      setCartItems((prev) => prev.filter((item) => item.id !== cartId))
     );
   }
 
-  function addItemToCart(inventoryId) {
+  function setAddItemToCart(inventoryId, quantity) {
     addCartItem({
       variables: {
         inventoryId: inventoryId,
-        quantity: 1,
+        quantity: quantity ? quantity : 1,
         userId: userProfile.id,
       },
-    }).then((resp) => {
-      console.log(resp);
-      setCartItems([...cartItems, inventoryId]);
+    }).then((res) => {
+      console.log(res);
+      new CartContextModel(
+        res.data.createCart.cart.id,
+        res.data.createCart.cart.quantity,
+        res.data.createCart.cart.price
+      );
     });
   }
-  return [setCartItem];
+  return [setAddItemToCart, setRemoveItemFromCart];
 }

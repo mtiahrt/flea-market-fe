@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import React, { useContext, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
 import { INVENTORY_LIST } from '../queries/graphQL';
 import { UserProfileContext } from '../Contexts/UserContext';
 import { CartContext } from '../Contexts/CartContext';
+import CartContextModel from '../models/CartContextModel';
 
 const ItemList = () => {
   const { userProfile } = useContext(UserProfileContext);
-  const { cartItems, setCartItems } = useContext(CartContext);
-  const { loading, error, data, refetch } = useQuery(INVENTORY_LIST, {
+  const { setCartItems } = useContext(CartContext);
+  const { loading, error, data } = useQuery(INVENTORY_LIST, {
     variables: {
       applicationUserId: userProfile.id,
     },
@@ -22,27 +23,28 @@ const ItemList = () => {
       setCartItems(
         data?.inventoriesList
           ?.filter((item) => item.cartsList.length)
-          .map((item) => item.cartsList[0].inventoryId)
+          .map(
+            (item) =>
+              new CartContextModel(
+                item.cartsList[0].id,
+                item.cartsList[0].quantity,
+                item.price
+              )
+          )
       );
     }
-  }, [userProfile.isLoggedIn, data]);
+  }, [userProfile.isLoggedIn]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
-  function isItemAlreadyInCart(id) {
-    if (cartItems && cartItems.includes(id)) {
-      return true;
-    }
-    return false;
-  }
 
   return (
     <StyledList className="item-list">
       {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}
-          isInCart={isItemAlreadyInCart(item.id)}
+          isItemInCart={item.cartsList.length ? true : false}
           link={`DetailedItem/${item.id}`}
           inventoryItem={item}
         ></BasicCard>

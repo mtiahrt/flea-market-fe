@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
+import DeleteIcon from '@mui/icons-material/Delete';
+import useCart from '../../CustomHooks/useCart';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const [cartItems, setCartItems] = useState();
+  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
+
   useEffect(() => {
     const newStateValue = shoppingCartItems.map((item) => ({
       id: item.id,
+      manufacturerName: item.inventory.manufacturerName,
       quantity: item.quantity,
       price: +item.inventory.price,
       totalPrice: +(item.inventory.price * item.quantity).toFixed(2),
@@ -33,7 +38,11 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
       newCartItems.reduce((acc, current) => acc + current.totalPrice, 0)
     );
   };
-
+  const handleDeleterCartItemClick = (id) => {
+    debugger;
+    setRemoveItemFromCart(id);
+    setCartItems((prev) => prev.filter((x) => x.id !== id));
+  };
   function getCartItem(id) {
     if (cartItems) {
       const theCartItemIs = cartItems?.find((x) => x.id === id);
@@ -53,12 +62,12 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   };
 
   return (
-    <div>
-      {shoppingCartItems?.map((item) => (
+    <>
+      {cartItems?.map((item, index) => (
         <React.Fragment key={item.id}>
           <StyledCartRowItemDiv>
-            <h3>{item.inventory.manufacturerName}</h3>
-            <h4>${item.inventory.price}</h4>
+            <h3>{item.manufacturerName}</h3>
+            <h4>${item.price}</h4>
             <FormControl>
               <InputLabel id="quantity-select-label">Quantity</InputLabel>
               <Select
@@ -68,23 +77,27 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
                 label="Quantity"
                 onChange={(e, id) => handleQuantitySelectChange(e, item.id)}
               >
-                {getQuantity(item.inventory.quantity)}
+                {getQuantity(item.quantity)}
               </Select>
             </FormControl>
             <h4 style={{ marginRight: '1em' }}>
               ${cartItems?.find((x) => x.id === item.id).totalPrice.toFixed(2)}
             </h4>
+            <DeleteIcon
+              onClick={() => handleDeleterCartItemClick(cartItems[index].id)}
+              color="error"
+            />
           </StyledCartRowItemDiv>
         </React.Fragment>
       ))}
-    </div>
+    </>
   );
 };
 
 export default ShoppingCartItems;
 const StyledCartRowItemDiv = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 0.4fr 0.4fr 0.4fr;
+  grid-template-columns: 1.2fr 0.4fr 0.4fr 0.4fr 0.2fr;
   grid-gap: 1em;
   align-items: center;
   margin-bottom: 1em;

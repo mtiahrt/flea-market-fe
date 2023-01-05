@@ -21,7 +21,7 @@ function DetailedItem() {
   const [isInCart, setIsInCart] = useState(location.state.isInCart);
   const { id } = useParams();
   const inventoryId = parseInt(id);
-  const [setCartItem] = useCart(inventoryId);
+  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
 
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { saleId: inventoryId },
@@ -36,7 +36,7 @@ function DetailedItem() {
   const handleQuantitySelectChange = (e) => {
     setQuantity(+e.target.value);
   };
-  const getQuantity = (quantity) => {
+  const getQuantityDropDownOptions = (quantity) => {
     let returnValue = [];
     for (let i = 1; quantity >= i; i++) {
       returnValue.push(
@@ -59,10 +59,14 @@ function DetailedItem() {
       },
     });
   }
-  const addToCartClickHandler = () => {
+
+  const handleCartClick = () => {
     const refetchData = !isInCart;
     setIsInCart(!isInCart);
-    setCartItem(cartId);
+    isInCart
+      ? setRemoveItemFromCart(cartId)
+      : setAddItemToCart(inventoryId, quantity);
+
     //refetch if item was added to cart
     if (refetchData) {
       refetch({ saleId: inventoryId });
@@ -85,19 +89,16 @@ function DetailedItem() {
           disabled={data.inventory.quantity < 2}
           onChange={handleQuantitySelectChange}
         >
-          {getQuantity(data.inventory.quantity)}
+          {getQuantityDropDownOptions(data.inventory.quantity)}
         </Select>
       </FormControl>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
-        <Button
-          onClick={() => addToCartClickHandler(cartId)}
-          variant="contained"
-        >
+        <Button onClick={handleCartClick} variant="contained">
           {isInCart ? 'Remove from cart' : 'Add to Cart'}
         </Button>
         <Button
-          onClick={() => navigateToEditItem(id, data.inventory.id)}
+          onClick={() => navigateToEditItem(id, inventoryId)}
           variant="contained"
         >
           Edit Item

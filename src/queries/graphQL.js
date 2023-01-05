@@ -83,6 +83,10 @@ export const ADD_CART_ITEM = gql`
     ) {
       cart {
         id
+        quantity
+        inventory {
+          price
+        }
       }
     }
   }
@@ -218,6 +222,7 @@ export const INVENTORY_LIST = gql`
       }
       cartsList(condition: { applicationUserId: $userId }) {
         id
+        quantity
         inventoryId
         applicationUserId
       }
