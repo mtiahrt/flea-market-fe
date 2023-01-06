@@ -2,14 +2,12 @@ import './App.css';
 import ItemList from './Components/ItemList';
 import NavBar from './nav/NavBar';
 import NavItem from './nav/NavItem';
-import DropdownMenu from './nav/DropdownMenu';
 import Login from './Components/Logins/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Modal from './SharedComponents/Modal';
 
 import Profile from './Components/Profile';
 import NavItemProfile from './nav/NavItemProfile';
-import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
@@ -34,9 +32,6 @@ function App() {
             <NavItem url={''} icon={<HomeIcon />}></NavItem>
             <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
             <NavItem url={'AddItem'} icon={<PlusIcon />}></NavItem>
-            <NavItem icon={<CaretIcon />}>
-              <DropdownMenu></DropdownMenu>
-            </NavItem>
           </NavBar>
           <CartContext.Provider value={{ cartItems, setCartItems }}>
             <Switch>
@@ -58,7 +53,6 @@ function App() {
               <Route path="/Profile">
                 <Profile userProfile={userProfile} />
               </Route>
-
               <Route
                 path="/DetailedItem/:id"
                 children={<DetailedItem />}
