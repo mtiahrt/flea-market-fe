@@ -6,7 +6,7 @@ import useCart from '../../CustomHooks/useCart';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const [cartItems, setCartItems] = useState();
-  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
+  const [, setRemoveItemFromCart] = useCart();
 
   useEffect(() => {
     const newStateValue = shoppingCartItems.map((item) => ({
@@ -15,7 +15,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
       quantity: item.quantity,
       totalQuantity: item.inventory.quantity,
       price: item.inventory.price,
-      totalPrice: +(item.inventory.price * item.quantity).toFixed(2),
+      totalPrice: +(item.inventory.price * item.quantity),
     }));
     setCartItems(newStateValue);
   }, []);
@@ -29,9 +29,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
       quantity: newQuantity,
-      totalPrice: +(cartItems[itemToChangeIndex].price * newQuantity).toFixed(
-        2
-      ),
+      totalPrice: +(cartItems[itemToChangeIndex].price * newQuantity),
     };
     const newCartItems = [...cartItems];
     newCartItems[itemToChangeIndex] = updatedChange;
@@ -41,6 +39,10 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     );
   };
   const handleDeleterCartItemClick = (id) => {
+    const totalPrice = cartItems.find((x) => x.id === id).totalPrice;
+    cartItems.lenth === 1
+      ? setCartTotal(0)
+      : setCartTotal((prev) => prev - totalPrice);
     setRemoveItemFromCart(id);
     setCartItems((prev) => prev.filter((x) => x.id !== id));
   };
@@ -114,5 +116,8 @@ const StyledCartRowItemDiv = styled.div`
     justify-self: end;
     font-weight: 100;
     font-size: 100%;
+  }
+  svg {
+    cursor: pointer;
   }
 `;
