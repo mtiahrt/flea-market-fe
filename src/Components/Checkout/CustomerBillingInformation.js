@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import {
-  Button,
   InputLabel,
   Select,
   Checkbox,
@@ -16,8 +15,6 @@ import {
 import axios from 'axios';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import states from '../../assets/data/states.json';
-import { useState } from 'react';
-import { CustomTextbox } from '../Textbox/CustomTextbox';
 
 export default function CustomerBillingInformation() {
   const {
@@ -25,37 +22,11 @@ export default function CustomerBillingInformation() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const { billingState, setBillingState } = useState();
   const stripe = useStripe();
   const elements = useElements();
-  const handlePaymentSubmit = async (paymentData, e) => {
-    const clientSecret = await axios
-      .post(
-        'https://uvvhidm2fnw6kbmbivkx35tlc40ikmmv.lambda-url.us-east-1.on.aws/',
-        { amount: 1000 },
-        {
-          headers: {
-            'content-type': 'text/plain',
-          },
-        }
-      )
-      .then((response) => response.data.paymentIntent.client_secret);
-    const paymentResult = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: 'Marky Mark',
-        },
-      },
-    });
-    if (paymentResult.error) {
-      alert(paymentResult.error);
-      return;
-    }
-    if (paymentResult.paymentIntent.status === 'succeeded') {
-      //TODO: update inventory and purchased tables
-      alert('payment is good!!!');
-    }
+  const handlePaymentSubmit = async (data) => {
+    //TODO: update inventory and purchased tables
+    console.log(data);
   };
   const onError = (e) => {
     console.error('Error in form submission', e.state);
@@ -94,17 +65,13 @@ export default function CustomerBillingInformation() {
         autoComplete="last-name"
         variant="standard"
       />
-      {/*First usage of CustomTextbox */}
-      <CustomTextbox
-        style={{ width: '100%' }}
-        {...register('email', { required: true })}
+      <TextField
+        style={{ ...textFieldStyles, width: '100%' }}
+        id="email"
+        label="Email"
+        autoComplete="email"
+        variant="standard"
       />
-      {/*<TextField style={textFieldStyles}*/}
-      {/*           id='email'*/}
-      {/*           label='Email'*/}
-      {/*           autoComplete='email'*/}
-      {/*           variant='standard'*/}
-      {/*/>*/}
       <TextField
         style={{ ...textFieldStyles, width: '100%' }}
         {...register('address', { required: true })}
@@ -141,16 +108,6 @@ export default function CustomerBillingInformation() {
         autoComplete="zip"
         variant="standard"
       />
-      <Divider style={{ width: '100%' }} />
-      <StyledPaymentDiv>
-        <StyledPaymentForm>
-          <Typography variant="h4" gutterBottom>
-            Credit Card
-          </Typography>
-          <CardElement />
-          <Button>Pay now</Button>
-        </StyledPaymentForm>
-      </StyledPaymentDiv>
       <Divider style={{ flexGrow: '1', flexShrink: '1', width: '100%' }} />
       <Typography
         style={{ margin: '10px 0px 0px 0px', width: '100%' }}
@@ -216,10 +173,6 @@ export default function CustomerBillingInformation() {
         autoComplete="zip"
         variant="standard"
       />
-      <Divider style={{ width: '100%' }} />
-      <Button type="submit" variant="contained">
-        Complete Payment
-      </Button>
     </StyledForm>
   );
 }
@@ -242,14 +195,4 @@ const StyledForm = styled.form`
   flex: 1 1 20rem;
   padding: 0.5rem;
   border: 2px solid #e3e5e8;
-`;
-
-const StyledPaymentDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  width: 100%;
-`;
-const StyledPaymentForm = styled.form`
-  min-width: 200px;
 `;

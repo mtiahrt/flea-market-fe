@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
+  Button,
   Divider,
   FormControl,
   InputLabel,
@@ -12,9 +13,11 @@ import { GET_CART_ITEMS } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../Contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
+import { CartContext } from '../../Contexts/CartContext';
 
 export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);
+  const { cartItems } = useContext(CartContext);
   const [shippingCost, setShippingCost] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const {
@@ -48,6 +51,31 @@ export default function ShoppingCart() {
     const shippingPrice = +e.target.value;
     console.log(cartTotal);
     cartTotal === 0 ? setShippingCost('') : setShippingCost(shippingPrice);
+  }
+
+  function handleBuyNowClick() {
+    fetch('https://localhost:8080/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Token': userProfile.accessToken,
+      },
+      body: JSON.stringify(
+        cartItems.map((i) => {
+          return { cartId: i.cartId, quantity: i.quantity };
+        })
+      ),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return res.json().then((json) => Promise.reject(json));
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((e) => {
+        console.error(e.error);
+      });
   }
 
   return (
@@ -84,6 +112,9 @@ export default function ShoppingCart() {
           ${cartTotal === 0 ? 0 : (cartTotal + shippingCost).toFixed(2)}
         </h2>
       </StyledSummation>
+      <Button onClick={handleBuyNowClick} variant="contained">
+        Buy Now
+      </Button>
     </StyledContainerDiv>
   );
 }
