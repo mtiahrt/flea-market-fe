@@ -1,12 +1,16 @@
 import { useContext } from 'react';
 import { UserProfileContext } from '../Contexts/UserContext';
 import { useMutation } from '@apollo/client';
-import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
+import {
+  ADD_CART_ITEM,
+  DELETE_CART_ITEM,
+  UPDATE_CART_QUANTITY,
+} from '../queries/graphQL';
 import { CartContext } from '../Contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 
 export default function useCart() {
-  const { setCartItems } = useContext(CartContext);
+  const { cartItems, setCartItems } = useContext(CartContext);
   const { userProfile } = useContext(UserProfileContext);
   const [
     addCartItem,
@@ -25,6 +29,15 @@ export default function useCart() {
     },
   ] = useMutation(DELETE_CART_ITEM);
 
+  const [
+    updateCartQuantity,
+    {
+      loading: loadingUpdateCartQuantity,
+      error: errorUpdateCartQuantity,
+      data: dataUpdateCartQuantity,
+    },
+  ] = useMutation(UPDATE_CART_QUANTITY);
+
   function setRemoveItemFromCart(cartId) {
     deleteCartItem({
       variables: {
@@ -42,14 +55,39 @@ export default function useCart() {
         quantity: quantity ? quantity : 1,
         userId: userProfile.id,
       },
+    }).then(
+      //destructure 3 levels
+      ({
+        data: {
+          createCart: { cart },
+        },
+      }) => {
+        const cartContextModel = new CartContextModel(
+          cart.id,
+          cart.quantity,
+          cart.inventory.price
+        );
+        setCartItems((prev) => [...prev, cartContextModel]);
+      }
+    );
+  }
+  function setQuantityInCart(cartId, quantity) {
+    updateCartQuantity({
+      variables: {
+        id: cartId,
+        quantity: quantity,
+      },
     }).then((res) => {
-      console.log(res);
-      new CartContextModel(
-        res.data.createCart.cart.id,
-        res.data.createCart.cart.quantity,
-        res.data.createCart.cart.price
+      const cartContextModel = new CartContextModel(
+        cartId,
+        res.data.updateCart.cart.quantity,
+        cartItems.find((x) => x.cartId === cartId).price
       );
+      setCartItems((prev) => [
+        ...prev.filter((x) => x.cartId !== cartId),
+        cartContextModel,
+      ]);
     });
   }
-  return [setAddItemToCart, setRemoveItemFromCart];
+  return [setAddItemToCart, setQuantityInCart, setRemoveItemFromCart];
 }

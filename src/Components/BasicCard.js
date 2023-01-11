@@ -11,7 +11,7 @@ import useCart from '../CustomHooks/useCart';
 import { useState } from 'react';
 
 export default function BasicCard({ inventoryItem, link, isItemInCart }) {
-  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
+  const [setAddItemToCart, , setRemoveItemFromCart] = useCart();
   const [isInCart, setIsInCart] = useState(isItemInCart);
   const cartId = inventoryItem.cartsList[0]?.id;
   const inventoryId = inventoryItem.id;

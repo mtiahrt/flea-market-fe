@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
@@ -17,24 +17,34 @@ import {
 function DetailedItem() {
   const history = useHistory();
   const location = useLocation();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [isInCart, setIsInCart] = useState(location.state.isInCart);
   const { id } = useParams();
   const inventoryId = parseInt(id);
-  const [setAddItemToCart, setRemoveItemFromCart] = useCart();
-
+  const [setAddItemToCart, setQuantityInCart, setRemoveItemFromCart] =
+    useCart();
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { saleId: inventoryId },
     fetchPolicy: 'cache-and-network',
   });
+  useEffect(() => {
+    let quantity = 1;
+    if (data && isInCart) {
+      quantity = data.inventory.cartsList[0].quantity;
+    }
+    setQuantity(quantity);
+  }, [data]);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
   console.log('data in detailed item is:', data);
-  const cartId = data.inventory.cartsList.length
-    ? data.inventory.cartsList[0]?.id
-    : -1;
+  const cartId = isInCart ? data.inventory.cartsList[0]?.id : -1;
   const handleQuantitySelectChange = (e) => {
-    setQuantity(+e.target.value);
+    const quantity = +e.target.value;
+    if (isInCart) {
+      setQuantityInCart(cartId, quantity);
+    }
+    setQuantity(quantity);
   };
   const getQuantityDropDownOptions = (quantity) => {
     let returnValue = [];
@@ -73,6 +83,7 @@ function DetailedItem() {
     }
   };
   console.log('data in detail item is', data);
+
   return (
     <StyledDiv className="container">
       <StyledH2>Item Details</StyledH2>

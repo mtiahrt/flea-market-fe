@@ -65,6 +65,16 @@ export const ADD_ITEM_IMAGE = gql`
     }
   }
 `;
+export const UPDATE_CART_QUANTITY = gql`
+  mutation updateCart($id: Int!, $quantity: Int) {
+    updateCart(input: { id: $id, patch: { quantity: $quantity } }) {
+      cart {
+        id
+        quantity
+      }
+    }
+  }
+`;
 
 export const ADD_CART_ITEM = gql`
   mutation createCartItem(
@@ -112,6 +122,7 @@ export const GET_INVENTORY_ITEM = gql`
       }
       cartsList {
         id
+        quantity
       }
     }
   }

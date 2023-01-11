@@ -6,7 +6,7 @@ import useCart from '../../CustomHooks/useCart';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const [cartItems, setCartItems] = useState();
-  const [, setRemoveItemFromCart] = useCart();
+  const [, setQuantityInCart, setRemoveItemFromCart] = useCart();
 
   useEffect(() => {
     const newStateValue = shoppingCartItems.map((item) => ({
@@ -25,7 +25,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     const itemToChangeIndex = [...cartItems].findIndex(
       (item) => item.id === id
     );
-
+    setQuantityInCart(id, newQuantity);
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
       quantity: newQuantity,
@@ -38,7 +38,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
       newCartItems.reduce((acc, current) => acc + current.totalPrice, 0)
     );
   };
-  const handleDeleterCartItemClick = (id) => {
+  const handleDeleteCartItemClick = (id) => {
     const totalPrice = cartItems.find((x) => x.id === id).totalPrice;
     cartItems.lenth === 1
       ? setCartTotal(0)
@@ -88,7 +88,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
               ${cartItems?.find((x) => x.id === item.id).totalPrice.toFixed(2)}
             </h4>
             <DeleteIcon
-              onClick={() => handleDeleterCartItemClick(cartItems[index].id)}
+              onClick={() => handleDeleteCartItemClick(cartItems[index].id)}
               color="error"
             />
           </StyledCartRowItemDiv>
