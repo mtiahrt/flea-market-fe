@@ -21,7 +21,11 @@ import { CartContext } from '../../Contexts/CartContext';
 export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);
   const { cartItems } = useContext(CartContext);
-  const [shippingCost, setShippingCost] = useState(0);
+  const [shippingCost, setShippingCost] = useState({
+    id: 0,
+    name: '',
+    price: 0,
+  });
   const [cartTotal, setCartTotal] = useState(0);
   const {
     loading: loadingCartItems,
@@ -33,7 +37,6 @@ export default function ShoppingCart() {
     },
     fetchPolicy: 'cache-and-network',
   });
-
   const {
     loading: loadingShippingCostItems,
     error: errorShippingCostItems,
@@ -58,24 +61,27 @@ export default function ShoppingCart() {
 
   console.log('data cart items is', dataCartItems);
 
+  const shippingPriceByID = (shippingId) =>
+    dataShippingCostItems.shippingCostsList.find((x) => x.id === shippingId);
+
   function handleShippingSelectChange(e) {
-    const shippingPrice = +e.target.value;
-    console.log(cartTotal);
+    const shippingId = +e.target.value;
+    const shippingPrice = shippingPriceByID(shippingId);
     cartTotal === 0 ? setShippingCost('') : setShippingCost(shippingPrice);
   }
 
   function handleBuyNowClick() {
+    const requestBody = cartItems.map((i) => {
+      return { cartId: i.cartId, inventoryItem: true };
+    });
+    requestBody.push({ shippingId: shippingCost.id, inventoryItem: false });
     fetch('https://localhost:8080/create-checkout-session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Access-Token': userProfile.accessToken,
       },
-      body: JSON.stringify(
-        cartItems.map((i) => {
-          return { cartId: i.cartId, quantity: i.quantity };
-        })
-      ),
+      body: JSON.stringify(requestBody),
     })
       .then((res) => {
         if (res.ok) return res.json();
@@ -88,7 +94,6 @@ export default function ShoppingCart() {
         console.error(e.error);
       });
   }
-
   return (
     <StyledContainerDiv>
       <Typography variant="h4" gutterBottom>
@@ -106,11 +111,12 @@ export default function ShoppingCart() {
         <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
           <InputLabel>Select Shipping Option</InputLabel>
           <Select
-            onChange={handleShippingSelectChange}
+            onChange={(e) => handleShippingSelectChange(e)}
             label="Select Shipping Option"
+            value={shippingCost.id}
           >
             {dataShippingCostItems.shippingCostsList.map((item) => (
-              <MenuItem key={item.id} value={item.price}>
+              <MenuItem key={item.id} value={item.id}>
                 {`${item.name} $${item.price}`}
               </MenuItem>
             ))}
@@ -122,7 +128,7 @@ export default function ShoppingCart() {
           Cart Total
         </Typography>
         <h2 style={{ margin: '0', marginBottom: '3%' }}>
-          ${cartTotal === 0 ? 0 : (cartTotal + shippingCost).toFixed(2)}
+          ${cartTotal === 0 ? 0 : (cartTotal + +shippingCost.price).toFixed(2)}
         </h2>
       </StyledSummation>
       <Button onClick={handleBuyNowClick} variant="contained">
