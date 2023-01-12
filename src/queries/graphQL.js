@@ -101,7 +101,15 @@ export const ADD_CART_ITEM = gql`
     }
   }
 `;
-
+export const GET_SHIPPING_COSTS_ITEMS = gql`
+  query shippingCostsList {
+    shippingCostsList {
+      id
+      name
+      price
+    }
+  }
+`;
 export const GET_INVENTORY_ITEM = gql`
   query ($saleId: Int!) {
     inventory(id: $saleId) {

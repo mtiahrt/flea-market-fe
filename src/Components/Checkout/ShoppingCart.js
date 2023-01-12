@@ -9,7 +9,10 @@ import {
   Select,
 } from '@mui/material';
 import { useQuery } from '@apollo/client';
-import { GET_CART_ITEMS } from '../../queries/graphQL';
+import {
+  GET_CART_ITEMS,
+  GET_SHIPPING_COSTS_ITEMS,
+} from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../Contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
@@ -30,10 +33,18 @@ export default function ShoppingCart() {
     },
     fetchPolicy: 'cache-and-network',
   });
+
+  const {
+    loading: loadingShippingCostItems,
+    error: errorShippingCostItems,
+    data: dataShippingCostItems,
+  } = useQuery(GET_SHIPPING_COSTS_ITEMS);
+
   useEffect(() => sumOfCart(), [dataCartItems]);
 
-  if (loadingCartItems) return 'Loading...';
-  if (errorCartItems) return `Error! ${errorCartItems.message}`;
+  if (loadingCartItems || loadingShippingCostItems) return 'Loading...';
+  if (errorCartItems || errorShippingCostItems)
+    return `Error! ${errorCartItems.message}`;
 
   function sumOfCart() {
     setCartTotal(
@@ -98,12 +109,14 @@ export default function ShoppingCart() {
             onChange={handleShippingSelectChange}
             label="Select Shipping Option"
           >
-            <MenuItem value="15.32">Ground $15.32</MenuItem>
-            <MenuItem value="32.5">Air $32.50</MenuItem>
+            {dataShippingCostItems.shippingCostsList.map((item) => (
+              <MenuItem key={item.id} value={item.price}>
+                {`${item.name} $${item.price}`}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </StyledShipping>
-
       <StyledSummation>
         <Typography variant="h5" gutterBottom>
           Cart Total
