@@ -11,6 +11,8 @@ import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
+import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
+
 import { useState } from 'react';
 import { UserProfileContext } from './Contexts/UserContext';
 import DetailedItem from './Components/DetailedItem';
@@ -32,6 +34,7 @@ function App() {
             <NavItem url={''} icon={<HomeIcon />}></NavItem>
             <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
             <NavItem url={'AddItem'} icon={<PlusIcon />}></NavItem>
+            <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
           </NavBar>
           <CartContext.Provider value={{ cartItems, setCartItems }}>
             <Switch>
