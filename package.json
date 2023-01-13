@@ -4,18 +4,12 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.20",
-    "@emotion/react": "^11.10.0",
-    "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/joy": "^5.0.0-alpha.48",
     "@mui/material": "^5.10.1",
-    "@stripe/react-stripe-js": "^1.12.0",
-    "@stripe/stripe-js": "^1.38.1",
     "@testing-library/user-event": "^13.1.9",
-    "apollo-link-ws": "^1.0.20",
     "axios": "^0.21.1",
     "firebase": "^9.12.0",
-    "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -25,7 +19,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "styled-components": "^5.3.0",
-    "subscriptions-transport-ws": "^0.9.19",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

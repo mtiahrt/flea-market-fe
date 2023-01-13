@@ -12,9 +12,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      {/*<Elements stripe={stripePromise}>*/}
       <App />
-      {/*</Elements>*/}
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
