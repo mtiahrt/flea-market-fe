@@ -1,12 +1,12 @@
 import './App.css';
-import ItemList from './Components/ItemList';
+import ItemList from './components/ItemList';
 import NavBar from './nav/NavBar';
 import NavItem from './nav/NavItem';
-import Login from './Components/Logins/Login';
+import Login from './components/login/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Modal from './SharedComponents/Modal';
+import Modal from './components/shared/Modal';
 
-import Profile from './Components/Profile';
+import Profile from './components/Profile';
 import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
@@ -14,12 +14,12 @@ import { ReactComponent as HomeIcon } from './icons/home.svg';
 import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
 
 import { useState } from 'react';
-import { UserProfileContext } from './Contexts/UserContext';
-import DetailedItem from './Components/DetailedItem';
-import AddItem from './Components/ModifyItems/AddItem';
-import EditItem from './Components/ModifyItems/EditItem';
-import CheckOut from './Components/Checkout/CheckOut';
-import { CartContext } from './Contexts/CartContext';
+import { UserProfileContext } from './contexts/UserContext';
+import DetailedItem from './components/DetailedItem';
+import AddItem from './components/modify-items/AddItem';
+import EditItem from './components/modify-items/EditItem';
+import CheckOut from './components/checkout/CheckOut';
+import { CartContext } from './contexts/CartContext';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});

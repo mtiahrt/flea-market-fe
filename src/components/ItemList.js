@@ -3,8 +3,8 @@ import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
 import { INVENTORY_LIST } from '../queries/graphQL';
-import { UserProfileContext } from '../Contexts/UserContext';
-import { CartContext } from '../Contexts/CartContext';
+import { UserProfileContext } from '../contexts/UserContext';
+import { CartContext } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 
 const ItemList = () => {

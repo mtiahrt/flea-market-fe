@@ -14,9 +14,9 @@ import {
   GET_SHIPPING_COSTS_ITEMS,
 } from '../../queries/graphQL';
 import Typography from '@mui/material/Typography';
-import { UserProfileContext } from '../../Contexts/UserContext';
+import { UserProfileContext } from '../../contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
-import { CartContext } from '../../Contexts/CartContext';
+import { CartContext } from '../../contexts/CartContext';
 
 export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);

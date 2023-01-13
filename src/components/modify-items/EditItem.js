@@ -23,14 +23,14 @@ import {
   GET_SALE_ITEM_AND_CATEGORIES,
   DELETE_INVENTORY_ITEM,
 } from '../../queries/graphQL';
-import PreviewImages from '../../SharedComponents/PreviewImages';
+import PreviewImages from '../shared/PreviewImages';
 import { useLocation } from 'react-router';
 import {
   postImage,
   saveItemImage,
   saveInventory,
-} from '../../SharedUtilities/images';
-import { UserProfileContext } from '../../Contexts/UserContext';
+} from '../../utility-functions/images';
+import { UserProfileContext } from '../../contexts/UserContext';
 
 const EditItem = () => {
   const { userProfile } = useContext(UserProfileContext);

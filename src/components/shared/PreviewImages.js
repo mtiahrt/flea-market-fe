@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import ImagesTile from './ImagesTile';
 import { useMutation } from '@apollo/client';
-import { DELETE_ITEM_IMAGE } from '../queries/graphQL';
-import { deleteImageFromS3 } from '../SharedUtilities/images';
-import { UserProfileContext } from '../Contexts/UserContext';
+import { DELETE_ITEM_IMAGE } from '../../queries/graphQL';
+import { deleteImageFromS3 } from '../../utility-functions/images';
+import { UserProfileContext } from '../../contexts/UserContext';
 
 const PreviewImages = ({ fileDataURL: urls }) => {
   const [

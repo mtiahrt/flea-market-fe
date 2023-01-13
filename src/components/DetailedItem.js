@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
-import ImagesTile from '../SharedComponents/ImagesTile';
-import useCart from '../CustomHooks/useCart';
+import ImagesTile from './shared/ImagesTile';
+import useCart from '../hooks/useCart';
 import { GET_INVENTORY_ITEM } from '../queries/graphQL';
 import {
   Button,

@@ -19,14 +19,14 @@ import {
   ADD_SALE_ITEM,
   ADD_ITEM_IMAGE,
 } from '../../queries/graphQL';
-import PreviewImages from '../../SharedComponents/PreviewImages';
+import PreviewImages from '../shared/PreviewImages';
 import {
   postImage,
   saveItemImage,
   saveInventory,
-} from '../../SharedUtilities/images';
+} from '../../utility-functions/images';
 import { useHistory } from 'react-router-dom';
-import { UserProfileContext } from '../../Contexts/UserContext';
+import { UserProfileContext } from '../../contexts/UserContext';
 
 export default function AddItem() {
   const { userProfile } = useContext(UserProfileContext);

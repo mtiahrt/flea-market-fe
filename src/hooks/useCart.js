@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { UserProfileContext } from '../Contexts/UserContext';
+import { UserProfileContext } from '../contexts/UserContext';
 import { useMutation } from '@apollo/client';
 import {
   ADD_CART_ITEM,
   DELETE_CART_ITEM,
   UPDATE_CART_QUANTITY,
 } from '../queries/graphQL';
-import { CartContext } from '../Contexts/CartContext';
+import { CartContext } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 
 export default function useCart() {

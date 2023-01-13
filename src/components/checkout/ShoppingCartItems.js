@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import DeleteIcon from '@mui/icons-material/Delete';
-import useCart from '../../CustomHooks/useCart';
+import useCart from '../../hooks/useCart';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const [cartItems, setCartItems] = useState();

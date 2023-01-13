@@ -12,8 +12,6 @@ import {
   FormControl,
   Divider,
 } from '@mui/material';
-import axios from 'axios';
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import states from '../../assets/data/states.json';
 
 export default function CustomerBillingInformation() {
@@ -22,8 +20,6 @@ export default function CustomerBillingInformation() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const stripe = useStripe();
-  const elements = useElements();
   const handlePaymentSubmit = async (data) => {
     //TODO: update inventory and purchased tables
     console.log(data);

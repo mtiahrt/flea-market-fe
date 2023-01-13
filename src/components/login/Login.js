@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
 import { useContext } from 'react';
-import { UserProfileContext } from '../../Contexts/UserContext';
+import { UserProfileContext } from '../../contexts/UserContext';
 import axios from 'axios';
 import UserContextModel from '../../models/UserContextModel';
 

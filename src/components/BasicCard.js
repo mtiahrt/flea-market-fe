@@ -7,7 +7,7 @@ import Typography from '@mui/joy/Typography';
 import { ShoppingCart } from '@mui/icons-material';
 import NoImage from '../assets/no-image-available.jpg';
 import { Link } from 'react-router-dom';
-import useCart from '../CustomHooks/useCart';
+import useCart from '../hooks/useCart';
 import { useState } from 'react';
 
 export default function BasicCard({ inventoryItem, link, isItemInCart }) {

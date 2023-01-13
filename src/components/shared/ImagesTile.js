@@ -1,6 +1,6 @@
 import './ImagesTile.css';
 import styled from 'styled-components';
-import { getSecureDeleteURL } from '../SharedUtilities/images';
+import { getSecureDeleteURL } from '../../utility-functions/images';
 
 const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
   console.log('file urls Images Tile got was...', fileDataURL);
@@ -14,7 +14,7 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
             {allowDelete && (
               <a
                 onClick={() => deleteHandler(item.publicId, item.id)}
-                href="#"
+                href="src/components/sharedComponents#"
                 className="close image-delete"
               >
                 X

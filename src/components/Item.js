@@ -1,5 +1,5 @@
 import React from 'react';
-import Heart from '../SharedComponents/Heart.js';
+import Heart from './shared/Heart.js';
 import {
   CardWrapper,
   CardHeader,
@@ -7,7 +7,7 @@ import {
   CardBody,
   CardFieldset,
   CardOptionsNote,
-} from '../SharedComponents/Card';
+} from './shared/Card';
 
 console.log('Item component is rendering');
 

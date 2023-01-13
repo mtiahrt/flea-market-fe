@@ -3,7 +3,7 @@
 // import { Select } from '@mui/joy';
 // import DeleteIcon from '@mui/icons-material/Delete';
 import styled from 'styled-components';
-import useCart from '../../CustomHooks/useCart';
+import useCart from '../../hooks/useCart';
 
 // function ShoppingCartItem({ item }) {
 //   const { setRemoveItemFromCart } = useCart();

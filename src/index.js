@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from './utils/stripe/stripe.utils';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -14,9 +12,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Elements stripe={stripePromise}>
-        <App />
-      </Elements>
+      {/*<Elements stripe={stripePromise}>*/}
+      <App />
+      {/*</Elements>*/}
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
