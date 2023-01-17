@@ -1,14 +1,10 @@
 import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import IconButton from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
 import { ShoppingCart } from '@mui/icons-material';
-import NoImage from '../assets/no-image-available.jpg';
-import { Link } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import { useState } from 'react';
+import ProductDetails from './ProductDetails';
 
 export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   const [setAddItemToCart, , setRemoveItemFromCart] = useCart();
@@ -23,10 +19,6 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
 
   return (
     <Card data-cart-id={cartId} variant="outlined" sx={{ width: 320 }}>
-      <Typography level="h2" fontSize="lg" fontWeight="lg" sx={{ mb: 0.5 }}>
-        {inventoryItem.manufacturerName}
-      </Typography>
-      <Typography level="body2">{inventoryItem.name}</Typography>
       <IconButton
         style={buttonStyles}
         aria-label={inventoryItem.manufacturerName}
@@ -40,29 +32,11 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
           onClick={handleCartClick}
         />
       </IconButton>
-      <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
-        <Link to={{ pathname: link, state: { isInCart: isInCart } }}>
-          <img
-            style={{ width: '85%' }}
-            src={
-              inventoryItem.itemImagesList.length > 0
-                ? inventoryItem.itemImagesList.find((x) => x).url
-                : NoImage
-            }
-            srcSet={`${inventoryItem ? inventoryItem.url : NoImage} 2x`}
-            loading="lazy"
-            alt=""
-          />
-        </Link>
-      </AspectRatio>
-      <Box sx={{ display: 'flex' }}>
-        <div>
-          <Typography level="body3">Total price:</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
-            ${inventoryItem.price}
-          </Typography>
-        </div>
-      </Box>
+      <ProductDetails
+        productDetails={inventoryItem}
+        link={link}
+        isInCart={isInCart}
+      />
     </Card>
   );
 }
