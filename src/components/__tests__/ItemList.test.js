@@ -1,22 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+
 import ItemList from '../ItemList';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { CartContext } from '../../contexts/CartContext';
 import { MockedProvider } from '@apollo/client/testing';
 import { cleanup } from '@testing-library/react';
 import { INVENTORY_LIST } from '../../queries/graphQL';
+import { BrowserRouter } from 'react-router-dom';
+
 afterEach(() => {
   cleanup();
 });
-const mockValues = {
-  name: 'Marks Mock',
-  description: 'Mock Description',
-  manufacturerName: 'Mock Manufacturer',
-  price: '9.99',
-};
+
 const mocks = [
   {
     request: {
@@ -93,26 +89,28 @@ const mocks = [
   },
 ];
 
-const setup = (renderComponentYN) => {
-  const setup = (
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <UserProfileContext.Provider
-        value={{ userProfile: { id: 1, isLoggedIn: true } }}
-      >
-        <CartContext.Provider value={{ setCartItems: () => {} }}>
-          <ItemList />
-        </CartContext.Provider>
-      </UserProfileContext.Provider>
-    </MockedProvider>
-  );
-  return renderComponentYN ? render(setup) : setup;
-};
-it('Item List renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(setup(false), div);
-});
+describe('ItemList tests', () => {
+  beforeEach(() => {
+    render(
+      <BrowserRouter>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <UserProfileContext.Provider
+            value={{ userProfile: { id: 1, isLoggedIn: true } }}
+          >
+            <CartContext.Provider value={{ setCartItems: () => {} }}>
+              <ItemList />
+            </CartContext.Provider>
+          </UserProfileContext.Provider>
+        </MockedProvider>
+      </BrowserRouter>
+    );
+  });
 
-it('Cart items are added to useContext cart ', () => {
-  const component = setup(true);
-  console.log(component);
+  it('Item List renders loading without crashing', async () => {
+    expect(await screen.findByText('Loading...')).toBeInTheDocument();
+    expect(await screen.findByText('High Sierra')).toBeInTheDocument();
+    const cards = await screen.findAllByText('Total price:');
+    expect(cards).toHaveLength(4);
+    expect(screen.getByRole('item-list')).toBeInTheDocument();
+  });
 });

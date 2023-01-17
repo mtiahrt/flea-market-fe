@@ -88,6 +88,7 @@ export default function ShoppingCart() {
         return res.json().then((json) => Promise.reject(json));
       })
       .then(({ url }) => {
+        //todo: send to handled route
         window.location = url;
       })
       .catch((e) => {

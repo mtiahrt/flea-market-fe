@@ -35,12 +35,12 @@ const ItemList = () => {
     }
   }, [userProfile.isLoggedIn]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p role="loading">Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
 
   return (
-    <StyledList className="item-list">
+    <StyledList role="item-list" className="item-list">
       {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}
