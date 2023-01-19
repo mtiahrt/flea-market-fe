@@ -74,7 +74,7 @@ describe('BasicCard tests', () => {
     const icon = screen.getByRole('cart-icon', { hidden: true });
     expect(icon).toHaveClass('MuiSvgIcon-colorDisabled');
   });
-  it('clicks cart button to add changes icon to Primary(blue)', async () => {
+  it('clicks cart button to add icon changes to Primary(blue)', async () => {
     setup(false);
     const button = screen.getByRole('button');
     userEvent.click(button);
