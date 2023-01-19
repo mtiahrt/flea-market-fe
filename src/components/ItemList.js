@@ -40,7 +40,7 @@ const ItemList = () => {
   console.log('Item List data is :', data);
 
   return (
-    <StyledList role="item-list" className="item-list">
+    <StyledList role="item-list">
       {data.inventoriesList.map((item) => (
         <BasicCard
           key={`card${item.id.toString()}`}

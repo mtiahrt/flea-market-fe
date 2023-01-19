@@ -90,27 +90,25 @@ const mocks = [
 ];
 
 describe('ItemList tests', () => {
-  beforeEach(() => {
-    render(
-      <BrowserRouter>
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <UserProfileContext.Provider
-            value={{ userProfile: { id: 1, isLoggedIn: true } }}
-          >
-            <CartContext.Provider value={{ setCartItems: () => {} }}>
-              <ItemList />
-            </CartContext.Provider>
-          </UserProfileContext.Provider>
-        </MockedProvider>
-      </BrowserRouter>
-    );
-  });
+  render(
+    <BrowserRouter>
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <UserProfileContext.Provider
+          value={{ userProfile: { id: 1, isLoggedIn: true } }}
+        >
+          <CartContext.Provider value={{ setCartItems: () => {} }}>
+            <ItemList />
+          </CartContext.Provider>
+        </UserProfileContext.Provider>
+      </MockedProvider>
+    </BrowserRouter>
+  );
+});
 
-  it('Item List renders loading without crashing', async () => {
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
-    expect(await screen.findByText('High Sierra')).toBeInTheDocument();
-    const cards = await screen.findAllByText('Total price:');
-    expect(cards).toHaveLength(4);
-    expect(screen.getByRole('item-list')).toBeInTheDocument();
-  });
+it('renders loading without crashing', async () => {
+  expect(await screen.findByText('Loading...')).toBeInTheDocument();
+  expect(await screen.findByText('High Sierra')).toBeInTheDocument();
+  const cards = await screen.findAllByText('Total price:');
+  expect(cards).toHaveLength(4);
+  expect(screen.getByRole('item-list')).toBeInTheDocument();
 });

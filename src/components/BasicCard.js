@@ -18,26 +18,29 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   }
 
   return (
-    <Card data-cart-id={cartId} variant="outlined" sx={{ width: 320 }}>
-      <IconButton
-        style={buttonStyles}
-        aria-label={inventoryItem.manufacturerName}
-        variant="plain"
-        color="neutral"
-        size="sm"
-        sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
-      >
-        <ShoppingCart
-          color={isInCart ? 'primary' : 'disabled'}
+    <div>
+      <Card data-cart-id={cartId} variant="outlined" sx={{ width: 320 }}>
+        <IconButton
+          style={buttonStyles}
+          aria-label={inventoryItem.manufacturerName}
+          variant="plain"
+          color="neutral"
+          size="sm"
           onClick={handleCartClick}
+          sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
+        >
+          <ShoppingCart
+            role="cart-icon"
+            color={isInCart ? 'primary' : 'disabled'}
+          />
+        </IconButton>
+        <ProductDetails
+          productDetails={inventoryItem}
+          link={link}
+          isInCart={isInCart}
         />
-      </IconButton>
-      <ProductDetails
-        productDetails={inventoryItem}
-        link={link}
-        isInCart={isInCart}
-      />
-    </Card>
+      </Card>
+    </div>
   );
 }
 

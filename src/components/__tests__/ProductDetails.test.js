@@ -1,7 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import React from 'react';
 import ProductDetails from '../ProductDetails';
 import { BrowserRouter } from 'react-router-dom';
+
+afterEach(() => {
+  cleanup();
+});
 
 const mockWithImages = {
   __typename: 'Inventory',
@@ -37,7 +41,7 @@ const mockWithoutImages = {
 };
 
 describe('Product Details tests', () => {
-  it('renders product details without crashing', async () => {
+  it('renders without crashing', async () => {
     render(
       <BrowserRouter>
         <ProductDetails productDetails={mockWithImages}></ProductDetails>
