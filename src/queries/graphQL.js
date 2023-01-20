@@ -111,8 +111,8 @@ export const GET_SHIPPING_COSTS_ITEMS = gql`
   }
 `;
 export const GET_INVENTORY_ITEM = gql`
-  query ($saleId: Int!) {
-    inventory(id: $saleId) {
+  query ($inventoryId: Int!) {
+    inventory(id: $inventoryId) {
       id
       description
       manufacturerName

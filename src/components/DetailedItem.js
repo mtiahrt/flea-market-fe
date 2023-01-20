@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -19,12 +18,11 @@ function DetailedItem() {
   const location = useLocation();
   const [quantity, setQuantity] = useState(0);
   const [isInCart, setIsInCart] = useState(location.state.isInCart);
-  const { id } = useParams();
-  const inventoryId = parseInt(id);
+  const inventoryId = location.state.inventoryId;
   const [setAddItemToCart, setQuantityInCart, setRemoveItemFromCart] =
     useCart();
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
-    variables: { saleId: inventoryId },
+    variables: { inventoryId },
     fetchPolicy: 'cache-and-network',
   });
   useEffect(() => {
@@ -37,7 +35,6 @@ function DetailedItem() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-  console.log('data in detailed item is:', data);
   const cartId = isInCart ? data.inventory.cartsList[0]?.id : -1;
   const handleQuantitySelectChange = (e) => {
     const quantity = +e.target.value;
@@ -58,8 +55,6 @@ function DetailedItem() {
     return returnValue;
   };
 
-  console.log('detailItem component is rendering');
-
   function navigateToEditItem(id) {
     history.push({
       pathname: `/EditItem/${id}`,
@@ -79,10 +74,11 @@ function DetailedItem() {
 
     //refetch if item was added to cart
     if (refetchData) {
-      refetch({ saleId: inventoryId });
+      refetch({ inventoryId });
     }
   };
-  console.log('data in detail item is', data);
+  console.log('detailItem component is rendering');
+  console.log('data is', data);
 
   return (
     <StyledDiv className="container">
@@ -109,7 +105,7 @@ function DetailedItem() {
           {isInCart ? 'Remove from cart' : 'Add to Cart'}
         </Button>
         <Button
-          onClick={() => navigateToEditItem(id, inventoryId)}
+          onClick={() => navigateToEditItem(inventoryId, inventoryId)}
           variant="contained"
         >
           Edit Item

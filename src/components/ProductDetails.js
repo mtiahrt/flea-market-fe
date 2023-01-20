@@ -15,7 +15,12 @@ const ProductDetails = ({ productDetails, link, isInCart }) => {
       </Typography>
       <Typography level="body2">{productDetails.name}</Typography>
       <AspectRatio minHeight="120px" maxHeight="200px" sx={{ my: 2 }}>
-        <Link to={{ pathname: link, state: { isInCart: isInCart } }}>
+        <Link
+          to={{
+            pathname: link,
+            state: { inventoryId: productDetails.id, isInCart: isInCart },
+          }}
+        >
           <img
             data-id={productDetails.id}
             className="product-image"

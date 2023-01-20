@@ -103,12 +103,12 @@ describe('ItemList tests', () => {
       </MockedProvider>
     </BrowserRouter>
   );
-});
 
-it('renders loading without crashing', async () => {
-  expect(await screen.findByText('Loading...')).toBeInTheDocument();
-  expect(await screen.findByText('High Sierra')).toBeInTheDocument();
-  const cards = await screen.findAllByText('Total price:');
-  expect(cards).toHaveLength(4);
-  expect(screen.getByRole('item-list')).toBeInTheDocument();
+  it('renders loading without crashing', async () => {
+    expect(await screen.findByText('Loading...')).toBeInTheDocument();
+    expect(await screen.findByText('High Sierra')).toBeInTheDocument();
+    const cards = await screen.findAllByText('Total price:');
+    expect(cards).toHaveLength(4);
+    expect(screen.getByRole('item-list')).toBeInTheDocument();
+  });
 });
