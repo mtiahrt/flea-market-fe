@@ -47,32 +47,52 @@ const mocks = [
 ];
 
 describe('DetailItems tests', () => {
-  render(
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: 'DetailItem/1',
-            state: {
-              inventoryId: mocks[0].result.data.inventory.id,
-              isInCart: false,
+  function setup(isInCart) {
+    render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: 'DetailItem/1',
+              state: {
+                inventoryId: mocks[0].result.data.inventory.id,
+                isInCart: isInCart,
+              },
             },
-          },
-        ]}
-      >
-        <CartContext.Provider value={{ setCartItems: () => {} }}>
-          <UserProfileContext.Provider
-            value={{ userProfile: { id: 1, isLoggedIn: true } }}
-          >
-            <DetailedItem />
-          </UserProfileContext.Provider>
-        </CartContext.Provider>
-      </MemoryRouter>
-    </MockedProvider>
-  );
+          ]}
+        >
+          <CartContext.Provider value={{ setCartItems: () => {} }}>
+            <UserProfileContext.Provider
+              value={{ userProfile: { id: 1, isLoggedIn: true } }}
+            >
+              <DetailedItem />
+            </UserProfileContext.Provider>
+          </CartContext.Provider>
+        </MemoryRouter>
+      </MockedProvider>
+    );
+  }
 
   it('renders without crashing', async () => {
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Item Details')).toBeInTheDocument();
+  });
+
+  it('Button text is Add to Cart when isInCart is false', async () => {
+    setup(false);
+    const button = await screen.findByText('Add to Cart');
+    expect(button).toBeInTheDocument();
+  });
+  it('Button text is Remove from cart when isInCart is true', async () => {
+    setup(true);
+    const button = await screen.findByText('Remove from cart');
+    expect(button).toBeInTheDocument();
+  });
+  it('Click remove from cart button', async () => {
+    setup(true);
+    const removeFn = jest.spyOn(Screen.prototype, 'setRemoveItemFromCart');
+    const button = await screen.findByText('Remove from cart');
+    button.click();
+    expect(removeFn).toHaveBeenCalled();
   });
 });

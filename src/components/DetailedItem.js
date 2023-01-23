@@ -65,7 +65,7 @@ function DetailedItem() {
     });
   }
 
-  const handleCartClick = () => {
+  const handleAddOrRemoveFromCartClick = () => {
     const refetchData = !isInCart;
     setIsInCart(!isInCart);
     isInCart
@@ -101,7 +101,7 @@ function DetailedItem() {
       </FormControl>
       <ImagesTile fileDataURL={data.inventory.itemImagesList} />
       <StyledButtonsDiv className="buttons">
-        <Button onClick={handleCartClick} variant="contained">
+        <Button onClick={handleAddOrRemoveFromCartClick} variant="contained">
           {isInCart ? 'Remove from cart' : 'Add to Cart'}
         </Button>
         <Button
