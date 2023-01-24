@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
 import ImagesTile from './shared/ImagesTile';
-import useCart from '../hooks/useCart';
-import { GET_INVENTORY_ITEM } from '../queries/graphQL';
+import {
+  ADD_CART_ITEM,
+  DELETE_CART_ITEM,
+  GET_INVENTORY_ITEM,
+  UPDATE_CART_QUANTITY,
+} from '../queries/graphQL';
 import {
   Button,
   FormControl,
@@ -12,15 +16,45 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
+import { useCart } from '../contexts/CartContext';
+import { UserProfileContext } from '../contexts/UserContext';
 
 function DetailedItem() {
+  const { removeFromCart, updateQuantity, addToCart } = useCart();
+  const { userProfile } = useContext(UserProfileContext);
+
+  const [
+    addingCartItem,
+    {
+      loading: loadingAddCartItem,
+      error: errorAddCartItem,
+      data: dataAddCartItem,
+    },
+  ] = useMutation(ADD_CART_ITEM);
+  const [
+    deleteingCartItem,
+    {
+      loading: loadingDeleteCartItem,
+      error: errorDeleteCartItem,
+      data: dataDeleteCartItem,
+    },
+  ] = useMutation(DELETE_CART_ITEM);
+
+  const [
+    updatingCartQuantity,
+    {
+      loading: loadingUpdateCartQuantity,
+      error: errorUpdateCartQuantity,
+      data: dataUpdateCartQuantity,
+    },
+  ] = useMutation(UPDATE_CART_QUANTITY);
+
   const history = useHistory();
   const location = useLocation();
   const [quantity, setQuantity] = useState(0);
   const [isInCart, setIsInCart] = useState(location.state.isInCart);
   const inventoryId = location.state.inventoryId;
-  const [setAddItemToCart, setQuantityInCart, setRemoveItemFromCart] =
-    useCart();
+
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { inventoryId },
     fetchPolicy: 'cache-and-network',
@@ -39,7 +73,9 @@ function DetailedItem() {
   const handleQuantitySelectChange = (e) => {
     const quantity = +e.target.value;
     if (isInCart) {
-      setQuantityInCart(cartId, quantity);
+      updateQuantity(cartId, quantity, () =>
+        updatingCartQuantity({ variables: { cartId, quantity } })
+      );
     }
     setQuantity(quantity);
   };
@@ -69,8 +105,18 @@ function DetailedItem() {
     const refetchData = !isInCart;
     setIsInCart(!isInCart);
     isInCart
-      ? setRemoveItemFromCart(cartId)
-      : setAddItemToCart(inventoryId, quantity);
+      ? removeFromCart(cartId, () =>
+          deleteingCartItem({ variables: { cartId } })
+        )
+      : addToCart(inventoryId, 1, () =>
+          addingCartItem({
+            variables: {
+              inventoryId: inventoryId,
+              quantity: 1,
+              userId: userProfile.id,
+            },
+          })
+        );
 
     //refetch if item was added to cart
     if (refetchData) {

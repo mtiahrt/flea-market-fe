@@ -19,11 +19,10 @@ import DetailedItem from './components/DetailedItem';
 import AddItem from './components/modify-items/AddItem';
 import EditItem from './components/modify-items/EditItem';
 import CheckOut from './components/checkout/CheckOut';
-import { CartContext } from './contexts/CartContext';
+import { CartContextProvider } from './contexts/CartContext';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
-  const [cartItems, setCartItems] = useState([]);
   console.log('App component is rendering');
   return (
     <div className="App">
@@ -36,7 +35,7 @@ function App() {
             <NavItem url={'AddItem'} icon={<PlusIcon />}></NavItem>
             <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
           </NavBar>
-          <CartContext.Provider value={{ cartItems, setCartItems }}>
+          <CartContextProvider>
             <Switch>
               <Route exact path="/">
                 <header>
@@ -64,7 +63,7 @@ function App() {
               <Route path="/CheckOut" children={<CheckOut />}></Route>
               <Route path="/EditItem/:id" children={<EditItem />}></Route>
             </Switch>
-          </CartContext.Provider>
+          </CartContextProvider>
         </UserProfileContext.Provider>
       </Router>
     </div>

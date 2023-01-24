@@ -16,11 +16,11 @@ import {
 import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
-import { CartContext } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/CartContext';
 
 export default function ShoppingCart() {
   const { userProfile } = useContext(UserProfileContext);
-  const { cartItems } = useContext(CartContext);
+  const { items } = useCart();
   const [shippingCost, setShippingCost] = useState({
     id: 0,
     name: '',
@@ -71,7 +71,7 @@ export default function ShoppingCart() {
   }
 
   function handleBuyNowClick() {
-    const requestBody = cartItems.map((i) => {
+    const requestBody = items.map((i) => {
       return { cartId: i.cartId, inventoryItem: true };
     });
     requestBody.push({ shippingId: shippingCost.id, inventoryItem: false });

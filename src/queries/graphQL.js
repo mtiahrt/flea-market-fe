@@ -66,8 +66,8 @@ export const ADD_ITEM_IMAGE = gql`
   }
 `;
 export const UPDATE_CART_QUANTITY = gql`
-  mutation updateCart($id: Int!, $quantity: Int) {
-    updateCart(input: { id: $id, patch: { quantity: $quantity } }) {
+  mutation updateCart($cartId: Int!, $quantity: Int) {
+    updateCart(input: { id: $cartId, patch: { quantity: $quantity } }) {
       cart {
         id
         quantity
@@ -220,8 +220,8 @@ export const DELETE_ITEM_IMAGE = gql`
   }
 `;
 export const DELETE_CART_ITEM = gql`
-  mutation deleteCart($id: Int!) {
-    deleteCart(input: { id: $id }) {
+  mutation deleteCart($cartId: Int!) {
+    deleteCart(input: { id: $cartId }) {
       clientMutationId
     }
   }

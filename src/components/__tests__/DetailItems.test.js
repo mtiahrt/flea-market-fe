@@ -74,6 +74,7 @@ describe('DetailItems tests', () => {
   }
 
   it('renders without crashing', async () => {
+    setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Item Details')).toBeInTheDocument();
   });

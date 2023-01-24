@@ -2,11 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import DeleteIcon from '@mui/icons-material/Delete';
-import useCart from '../../hooks/useCart';
+import { useMutation } from '@apollo/client';
+import { useCart } from '../../contexts/CartContext';
+import { DELETE_CART_ITEM, UPDATE_CART_QUANTITY } from '../../queries/graphQL';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
+  const [
+    deleteingCartItem,
+    {
+      loading: loadingDeleteCartItem,
+      error: errorDeleteCartItem,
+      data: dataDeleteCartItem,
+    },
+  ] = useMutation(DELETE_CART_ITEM);
+
+  const [
+    updatingCartQuantity,
+    {
+      loading: loadingUpdateCartQuantity,
+      error: errorUpdateCartQuantity,
+      data: dataUpdateCartQuantity,
+    },
+  ] = useMutation(UPDATE_CART_QUANTITY);
   const [cartItems, setCartItems] = useState();
-  const [, setQuantityInCart, setRemoveItemFromCart] = useCart();
+  const { removeFromCart, updateQuantity } = useCart();
 
   useEffect(() => {
     const newStateValue = shoppingCartItems.map((item) => ({
@@ -20,12 +39,14 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     setCartItems(newStateValue);
   }, []);
 
-  const handleQuantitySelectChange = (e, id) => {
+  const handleQuantitySelectChange = (e, cartId) => {
     const newQuantity = e.target.value;
     const itemToChangeIndex = [...cartItems].findIndex(
-      (item) => item.id === id
+      (item) => item.id === cartId
     );
-    setQuantityInCart(id, newQuantity);
+    updateQuantity(cartId, newQuantity, () =>
+      updatingCartQuantity({ variables: { cartId, quantity: newQuantity } })
+    );
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
       quantity: newQuantity,
@@ -38,14 +59,16 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
       newCartItems.reduce((acc, current) => acc + current.totalPrice, 0)
     );
   };
-  const handleDeleteCartItemClick = (id) => {
-    const totalPrice = cartItems.find((x) => x.id === id).totalPrice;
+
+  const handleDeleteCartItemClick = (cartId) => {
+    const totalPrice = cartItems.find((x) => x.id === cartId).totalPrice;
     cartItems.lenth === 1
       ? setCartTotal(0)
       : setCartTotal((prev) => prev - totalPrice);
-    setRemoveItemFromCart(id);
-    setCartItems((prev) => prev.filter((x) => x.id !== id));
+    removeFromCart(cartId, () => deleteingCartItem({ variables: { cartId } }));
+    setCartItems((prev) => prev.filter((x) => x.id !== cartId));
   };
+
   function getCartItemQuantity(id) {
     if (cartItems) {
       const theCartItemIs = cartItems?.find((x) => x.id === id);

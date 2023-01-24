@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import BasicCard from './BasicCard';
 import { INVENTORY_LIST } from '../queries/graphQL';
 import { UserProfileContext } from '../contexts/UserContext';
-import { CartContext } from '../contexts/CartContext';
+import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 
 const ItemList = () => {
   const { userProfile } = useContext(UserProfileContext);
-  const { setCartItems } = useContext(CartContext);
+  const { loadCartItems } = useCart();
   const { loading, error, data } = useQuery(INVENTORY_LIST, {
     variables: {
       applicationUserId: userProfile.id,
@@ -20,7 +20,7 @@ const ItemList = () => {
   useEffect(() => {
     console.log('Item List use effect fired...');
     if (data?.inventoriesList && userProfile.isLoggedIn) {
-      setCartItems(
+      loadCartItems(
         data?.inventoriesList
           ?.filter((item) => item.cartsList.length)
           .map(
@@ -38,7 +38,6 @@ const ItemList = () => {
   if (loading) return <p role="loading">Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
-
   return (
     <StyledList role="item-list">
       {data.inventoriesList.map((item) => (
