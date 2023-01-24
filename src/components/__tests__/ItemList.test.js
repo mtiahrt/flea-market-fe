@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import ItemList from '../ItemList';
 import { UserProfileContext } from '../../contexts/UserContext';
-import { CartContext } from '../../contexts/CartContext';
+import { CartContextProvider } from '../../contexts/CartContext';
 import { MockedProvider } from '@apollo/client/testing';
 import { cleanup } from '@testing-library/react';
 import { INVENTORY_LIST } from '../../queries/graphQL';
@@ -96,9 +96,9 @@ describe('ItemList tests', () => {
         <UserProfileContext.Provider
           value={{ userProfile: { id: 1, isLoggedIn: true } }}
         >
-          <CartContext.Provider value={{ setCartItems: () => {} }}>
+          <CartContextProvider value={{ setCartItems: () => {} }}>
             <ItemList />
-          </CartContext.Provider>
+          </CartContextProvider>
         </UserProfileContext.Provider>
       </MockedProvider>
     </BrowserRouter>
