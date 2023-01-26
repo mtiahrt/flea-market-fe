@@ -20,6 +20,7 @@ import AddItem from './components/modify-items/AddItem';
 import EditItem from './components/modify-items/EditItem';
 import CheckOut from './components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
+import EditCategories from './components/modify-items/EditCategories';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -62,6 +63,10 @@ function App() {
               <Route path="/AddItem" children={<AddItem />}></Route>
               <Route path="/CheckOut" children={<CheckOut />}></Route>
               <Route path="/EditItem/:id" children={<EditItem />}></Route>
+              <Route
+                path="/EditCategories"
+                children={<EditCategories />}
+              ></Route>
             </Switch>
           </CartContextProvider>
         </UserProfileContext.Provider>

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { UserProfileContext } from '../../contexts/UserContext';
 import DetailedItem from '../DetailedItem';
 import { CartContextProvider } from '../../contexts/CartContext';
 import { MockedProvider } from '@apollo/client/testing';
-import CartContextModel from '../../models/CartContextModel';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { GET_INVENTORY_ITEM } from '../../queries/graphQL';
@@ -61,7 +60,12 @@ describe('DetailItems tests', () => {
             },
           ]}
         >
-          <CartContextProvider value={{ setCartItems: () => {} }}>
+          <CartContextProvider
+            value={{
+              removeFromCart: () => console.log('removeFromCart was fired'),
+              addToCart: () => console.log('addToCart was fired'),
+            }}
+          >
             <UserProfileContext.Provider
               value={{ userProfile: { id: 1, isLoggedIn: true } }}
             >
@@ -88,12 +92,5 @@ describe('DetailItems tests', () => {
     setup(true);
     const button = await screen.findByText('Remove from cart');
     expect(button).toBeInTheDocument();
-  });
-  it('Click remove from cart button', async () => {
-    setup(true);
-    // const removeFn = jest.spyOn(Screen.prototype, 'setRemoveItemFromCart');
-    // const button = await screen.findByText('Remove from cart');
-    // button.click();
-    // expect(removeFn).toHaveBeenCalled();
   });
 });
