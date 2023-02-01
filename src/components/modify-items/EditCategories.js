@@ -4,7 +4,6 @@ import { UserProfileContext } from '../../contexts/UserContext';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_CATEGORIES, GET_SUBCATEGORIES } from '../../queries/graphQL';
 import styled from 'styled-components';
-import ContentCut from '@mui/icons-material/ContentCut';
 import AddOutlined from '@mui/icons-material/AddOutlined';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
 
@@ -18,23 +17,21 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import { Link, useHistory } from 'react-router-dom';
 
-function EditCategories(props) {
-  const [category, setCategory] = useState(-1);
-  const [subcategory, setSubcategory] = useState(-1);
+function EditCategories() {
+  const [toggleAddOptions, setToggleAddOptions] = useState(false);
+  const [addCategory, setAddCategory] = useState(false);
   const { userProfile } = useContext(UserProfileContext);
-  const history = useHistory();
 
   const {
     loading: loadingCategories,
     error: errorCategories,
     data: dataCategories,
   } = useQuery(GET_CATEGORIES);
-  const [
-    getSubcategories,
-    { loading: loadingSubs, error: errorSubs, data: dataSubs },
-  ] = useLazyQuery(GET_SUBCATEGORIES);
+  // const [
+  //   getSubcategories,
+  //   { loading: loadingSubs, error: errorSubs, data: dataSubs },
+  // ] = useLazyQuery(GET_SUBCATEGORIES);
   const {
     register,
     formState: { errors },
@@ -46,43 +43,41 @@ function EditCategories(props) {
   const handleNewItemSubmit = (data, e) => {
     console.log('submit happened', data);
   };
+  const handleAddCategoryClick = () => {};
+  const handleAddSubcategoryClick = () => {};
   const handleCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
-    setCategory(categoryId);
-    getSubcategories({ variables: { categoryId: categoryId } });
+    // setCategory(categoryId);
   };
 
-  const getPlusOption = () => {
-    return (
-      <MenuItem>
-        <ListItemIcon>
-          <AddOutlined />
-        </ListItemIcon>
-        <ListItemText primary="New" />
-      </MenuItem>
-    );
-  };
-
-  const handleSubcategorySelectChange = (e) => {
-    setSubcategory(+e.target.value);
-  };
-  if (loadingCategories) return 'Loading...';
-  if (errorCategories) return `Error! ${errorCategories.message}`;
-
+  if (loadingCategories) return <p>Loading...</p>;
+  if (errorCategories) return <p>{errorCategories.message}</p>;
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
       <Typography variant="h4" gutterBottom>
-        Edit Categories
+        Edit Categories and Subcategories
       </Typography>
-      <InputLabel id="category-select-label">Add Category</InputLabel>
+      <InputLabel id="category-select-label">Add</InputLabel>
       <StyledIconButton>
-        <PlusIcon />
+        <PlusIcon
+          role="categories-plus-icon"
+          onClick={() => setToggleAddOptions(!toggleAddOptions)}
+        />
       </StyledIconButton>
+      {toggleAddOptions && (
+        <div role="dropdown-options">
+          <option onClick={handleAddCategoryClick}>Add Category</option>
+          <option onClick={handleAddSubcategoryClick}>Add Subcategory</option>
+        </div>
+      )}
 
-      <InputLabel id="category-select-label">Add Subcategory</InputLabel>
-      <StyledIconButton>
-        <PlusIcon />
-      </StyledIconButton>
+      {/*{addCategory &&*/}
+      {/*  dataCategories.categoriesList.map((category) => {*/}
+      {/*    <>*/}
+      {/*      <div role="categories-list">{category}</div>*/}
+      {/*      <input role="category" />*/}
+      {/*    </>;*/}
+      {/*  })}*/}
       {/*<Select*/}
       {/*  labelId="category-select-label"*/}
       {/*  value={category}*/}
@@ -119,7 +114,7 @@ function EditCategories(props) {
         Submit
       </Button>
       <Button
-        onClick={() => history.push(`/`)}
+        onClick={() => {}}
         style={{ backgroundColor: '#B8BDBB' }}
         variant="contained"
       >
