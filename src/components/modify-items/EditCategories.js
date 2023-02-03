@@ -43,13 +43,11 @@ function EditCategories() {
   const handleNewItemSubmit = (data, e) => {
     console.log('submit happened', data);
   };
-  const handleAddCategoryClick = () => {};
   const handleAddSubcategoryClick = () => {};
   const handleCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
     // setCategory(categoryId);
   };
-
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
   return (
@@ -66,8 +64,26 @@ function EditCategories() {
       </StyledIconButton>
       {toggleAddOptions && (
         <div role="dropdown-options">
-          <option onClick={handleAddCategoryClick}>Add Category</option>
-          <option onClick={handleAddSubcategoryClick}>Add Subcategory</option>
+          <option
+            role="category-selection"
+            onClick={() => setAddCategory(!addCategory)}
+          >
+            Add Category
+          </option>
+          <option
+            role="subcategory-selection"
+            onClick={handleAddSubcategoryClick}
+          >
+            Add Subcategory
+          </option>
+        </div>
+      )}
+      {addCategory && (
+        <div role="categories-list">
+          {dataCategories.categoriesList.map((category) => {
+            return <h4 key={category.id}>{category.name}</h4>;
+          })}
+          <input role="category" />
         </div>
       )}
 
