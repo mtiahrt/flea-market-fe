@@ -21,17 +21,15 @@ import Typography from '@mui/material/Typography';
 function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
+  const [addSubcategory, setAddSubcategory] = useState(false);
   const { userProfile } = useContext(UserProfileContext);
-
+  const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
   const {
     loading: loadingCategories,
     error: errorCategories,
     data: dataCategories,
   } = useQuery(GET_CATEGORIES);
-  // const [
-  //   getSubcategories,
-  //   { loading: loadingSubs, error: errorSubs, data: dataSubs },
-  // ] = useLazyQuery(GET_SUBCATEGORIES);
+
   const {
     register,
     formState: { errors },
@@ -43,10 +41,14 @@ function EditCategories() {
   const handleNewItemSubmit = (data, e) => {
     console.log('submit happened', data);
   };
-  const handleAddSubcategoryClick = () => {};
-  const handleCategorySelectChange = (e) => {
+  const handleClearForm = () => {
+    setAddCategory(false);
+  };
+  const handleAddSubcategoryCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
-    // setCategory(categoryId);
+    if (categoryId) {
+      setCategoryOptionSelected(true);
+    }
   };
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
@@ -58,7 +60,7 @@ function EditCategories() {
       <InputLabel id="category-select-label">Add</InputLabel>
       <StyledIconButton>
         <PlusIcon
-          role="categories-plus-icon"
+          role="plus-icon"
           onClick={() => setToggleAddOptions(!toggleAddOptions)}
         />
       </StyledIconButton>
@@ -66,71 +68,56 @@ function EditCategories() {
         <div role="dropdown-options">
           <option
             role="category-selection"
+            data-testid="category-selection"
             onClick={() => setAddCategory(!addCategory)}
           >
             Add Category
           </option>
           <option
             role="subcategory-selection"
-            onClick={handleAddSubcategoryClick}
+            data-testid="subcategory-selection"
+            onClick={() => setAddSubcategory(!addSubcategory)}
           >
             Add Subcategory
           </option>
         </div>
       )}
       {addCategory && (
-        <div role="categories-list">
+        <div data-testid="categories-list">
           {dataCategories.categoriesList.map((category) => {
             return <h4 key={category.id}>{category.name}</h4>;
           })}
           <input role="category" />
         </div>
       )}
-
-      {/*{addCategory &&*/}
-      {/*  dataCategories.categoriesList.map((category) => {*/}
-      {/*    <>*/}
-      {/*      <div role="categories-list">{category}</div>*/}
-      {/*      <input role="category" />*/}
-      {/*    </>;*/}
-      {/*  })}*/}
-      {/*<Select*/}
-      {/*  labelId="category-select-label"*/}
-      {/*  value={category}*/}
-      {/*  label="Category"*/}
-      {/*  onChange={handleCategorySelectChange}*/}
-      {/*>*/}
-      {/*  {getPlusOption()}*/}
-      {/*  {dataCategories.categoriesList.map((category) => (*/}
-      {/*    <MenuItem key={category.id} value={category.id}>*/}
-      {/*      {category.name}*/}
-      {/*    </MenuItem>*/}
-      {/*  ))}*/}
-      {/*</Select>*/}
-      {/*{dataSubs?.category?.subcategoriesList && (*/}
-      {/*  <>*/}
-      {/*    <InputLabel id="subcategory-select-label">Subcategory</InputLabel>*/}
-      {/*    <Select*/}
-      {/*      {...register('subcategoryId', { required: true })}*/}
-      {/*      labelId="subcategory-select-label"*/}
-      {/*      value={subcategory}*/}
-      {/*      label="Subcategory"*/}
-      {/*      onChange={handleSubcategorySelectChange}*/}
-      {/*    >*/}
-      {/*      {getPlusOption()}*/}
-      {/*      {dataSubs.category.subcategoriesList.map((sub) => (*/}
-      {/*        <MenuItem key={sub.id} value={sub.id}>*/}
-      {/*          {sub.name}*/}
-      {/*        </MenuItem>*/}
-      {/*      ))}*/}
-      {/*    </Select>*/}
-      {/*  </>*/}
+      {addSubcategory && (
+        <div role="add-subcategory">
+          <Select
+            labelId="category-select-label"
+            role="add-category-dropdown"
+            // value={category}
+            label="Category"
+            onChange={handleAddSubcategoryCategorySelectChange}
+          >
+            {dataCategories.categoriesList.map((category) => (
+              <MenuItem
+                role="add-subcategory-category-option"
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+          {categoryOptionSelected && <input data-testid="subcategory" />}
+        </div>
+      )}
 
       <Button type="submit" variant="contained">
         Submit
       </Button>
       <Button
-        onClick={() => {}}
+        onClick={handleClearForm}
         style={{ backgroundColor: '#B8BDBB' }}
         variant="contained"
       >
