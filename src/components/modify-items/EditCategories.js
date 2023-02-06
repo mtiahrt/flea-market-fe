@@ -43,6 +43,8 @@ function EditCategories() {
   };
   const handleClearForm = () => {
     setAddCategory(false);
+    setToggleAddOptions(false);
+    setAddSubcategory(false);
   };
   const handleAddSubcategoryCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
@@ -83,7 +85,7 @@ function EditCategories() {
         </div>
       )}
       {addCategory && (
-        <div data-testid="categories-list">
+        <div role="add-category">
           {dataCategories.categoriesList.map((category) => {
             return <h4 key={category.id}>{category.name}</h4>;
           })}
@@ -94,8 +96,6 @@ function EditCategories() {
         <div role="add-subcategory">
           <Select
             labelId="category-select-label"
-            role="add-category-dropdown"
-            // value={category}
             label="Category"
             onChange={handleAddSubcategoryCategorySelectChange}
           >

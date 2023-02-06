@@ -110,7 +110,7 @@ describe('Edit Categories tests', () => {
     userEvent.click(categoryDropdown);
     //Is the category input rendered
     expect(screen.getByRole('category', { hidden: true })).toBeInTheDocument();
-    expect(screen.getByTestId('categories-list')).toBeInTheDocument();
+    expect(screen.queryByRole('add-category')).toBeInTheDocument();
   });
 
   it('Adding subcategory - renders existing categories dropdown and options when add subcategory is selected', async () => {
@@ -157,7 +157,7 @@ describe('Edit Categories tests', () => {
     setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
-    //start added a category
+    //adding a category
     const plusIcon = screen.getByRole('plus-icon', { hidden: true });
     userEvent.click(plusIcon);
     //click the category option
@@ -168,9 +168,27 @@ describe('Edit Categories tests', () => {
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
     userEvent.click(cancelButton);
     //is the form cleared
-    expect(screen.queryByTestId('categories-list')).toBeNull();
+    expect(screen.queryByRole('add-category')).toBeNull();
     expect(screen.queryByTestId('category-selection')).toBeNull();
     expect(screen.queryByTestId('subcategory-selection')).toBeNull();
-    //start adding a subcategory
+    //adding a subcategory
+    userEvent.click(plusIcon);
+    const subcategoryDropdown = screen.getByRole('subcategory-selection');
+    userEvent.click(subcategoryDropdown);
+    const buttons = screen.getAllByRole('button');
+    console.log(buttons);
+    const existingCategoriesDropdown = buttons.find((x) =>
+      x.classList.contains('MuiSelect-select')
+    );
+    userEvent.click(existingCategoriesDropdown);
+    //now select a dropdown option
+    const options = screen.getAllByRole('option');
+    userEvent.click(options[0]);
+    userEvent.click(cancelButton);
+    expect(screen.queryByRole('add-category')).toBeNull();
+    expect(screen.queryByTestId('category-selection')).toBeNull();
+    expect(screen.queryByTestId('subcategory-selection')).toBeNull();
+    expect(screen.queryByRole('add-subcategory')).toBeNull();
+    screen.debug();
   });
 });
