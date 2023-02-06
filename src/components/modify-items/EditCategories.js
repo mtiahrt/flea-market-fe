@@ -45,8 +45,10 @@ function EditCategories() {
     setAddCategory(false);
     setToggleAddOptions(false);
     setAddSubcategory(false);
+    setCategoryOptionSelected(false);
   };
   const handleAddSubcategoryCategorySelectChange = (e) => {
+    console.log(categoryOptionSelected);
     const categoryId = +e.target.value;
     if (categoryId) {
       setCategoryOptionSelected(true);
@@ -59,7 +61,6 @@ function EditCategories() {
       <Typography variant="h4" gutterBottom>
         Edit Categories and Subcategories
       </Typography>
-      <InputLabel id="category-select-label">Add</InputLabel>
       <StyledIconButton>
         <PlusIcon
           role="plus-icon"
@@ -94,6 +95,7 @@ function EditCategories() {
       )}
       {addSubcategory && (
         <div role="add-subcategory">
+          <InputLabel id="quantity-select-label">Select Category</InputLabel>
           <Select
             labelId="category-select-label"
             label="Category"

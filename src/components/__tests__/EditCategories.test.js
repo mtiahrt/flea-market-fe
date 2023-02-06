@@ -1,10 +1,14 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, getAllByRole, render, screen } from '@testing-library/react';
 import React from 'react';
 import EditCategories from '../modify-items/EditCategories';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { MockedProvider } from '@apollo/client/testing';
 import { GET_CATEGORIES } from '../../queries/graphQL';
 import userEvent from '@testing-library/user-event';
+
+afterEach(() => {
+  cleanup();
+});
 
 const apolloMock = [
   {
@@ -61,23 +65,35 @@ const apolloMock = [
     },
   },
 ];
-function setup() {
-  return render(
-    <MockedProvider mocks={apolloMock}>
-      <UserProfileContext.Provider
-        value={{ userProfile: { id: 1, isLoggedIn: true } }}
-      >
-        <EditCategories />
-      </UserProfileContext.Provider>
-    </MockedProvider>
-  );
-}
 
-afterEach(() => {
-  console.log('clean up run');
-  cleanup();
-});
 describe('Edit Categories tests', () => {
+  const setup = () =>
+    render(
+      <MockedProvider mocks={apolloMock}>
+        <UserProfileContext.Provider
+          value={{ userProfile: { id: 1, isLoggedIn: true } }}
+        >
+          <EditCategories />
+        </UserProfileContext.Provider>
+      </MockedProvider>
+    );
+
+  const clickSubcategoryAddOption = () =>
+    userEvent.click(
+      screen.getByTestId('subcategory-selection', {
+        hidden: true,
+      })
+    );
+
+  const clickCancelButton = () =>
+    userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+  function clickPlusButton() {
+    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
+    userEvent.click(plusIcon);
+    return plusIcon;
+  }
+
   it('renders without crashing', async () => {
     setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
@@ -86,11 +102,8 @@ describe('Edit Categories tests', () => {
 
   it('renders categories and subcategories dropdown options when plus button is clicked', async () => {
     setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
-    //page rendered now get the plus button
-    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
-    userEvent.click(plusIcon);
+    clickPlusButton();
     //did the dropdown render
     const dropdownOptions = screen.getByRole('dropdown-options');
     expect(dropdownOptions).toBeInTheDocument();
@@ -98,11 +111,9 @@ describe('Edit Categories tests', () => {
 
   it('Adding a category - renders category input and existing categories when category dropdown is selected', async () => {
     setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     //page rendered now get the plus button
-    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
-    userEvent.click(plusIcon);
+    clickPlusButton();
     //click the category option
     const categoryDropdown = screen.getByTestId('category-selection', {
       hidden: true,
@@ -115,16 +126,11 @@ describe('Edit Categories tests', () => {
 
   it('Adding subcategory - renders existing categories dropdown and options when add subcategory is selected', async () => {
     setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     //page rendered now get the plus button
-    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
-    userEvent.click(plusIcon);
+    clickPlusButton();
     //click the subcategory option
-    const subcategoryDropdown = screen.getByTestId('subcategory-selection', {
-      hidden: true,
-    });
-    userEvent.click(subcategoryDropdown);
+    clickSubcategoryAddOption();
     //is the category select input rendered
     const catDropdown = screen.getByRole('button', {
       expanded: false,
@@ -136,47 +142,37 @@ describe('Edit Categories tests', () => {
     expect(categoryOptions.length).toEqual(
       apolloMock[0].result.data.categoriesList.length
     );
-    console.log(categoryOptions);
   });
 
   it('Adding subcategory - user must select a category first', async () => {
     setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
-    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
-    userEvent.click(plusIcon);
-    const subcategoryDropdown = screen.getByTestId('subcategory-selection', {
-      hidden: true,
-    });
-    userEvent.click(subcategoryDropdown);
+    clickPlusButton();
+    clickSubcategoryAddOption();
     //check that the subcategory input did not render
     expect(screen.queryByTestId('subcategory')).toBeNull();
   });
 
   it('clears the screen back to a plus sign when cancel is clicked', async () => {
     setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
-    //adding a category
-    const plusIcon = screen.getByRole('plus-icon', { hidden: true });
-    userEvent.click(plusIcon);
+    const plusIcon = clickPlusButton();
     //click the category option
     const categoryDropdown = screen.getByTestId('category-selection', {
       hidden: true,
     });
     userEvent.click(categoryDropdown);
-    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
-    userEvent.click(cancelButton);
+    clickCancelButton();
     //is the form cleared
     expect(screen.queryByRole('add-category')).toBeNull();
     expect(screen.queryByTestId('category-selection')).toBeNull();
     expect(screen.queryByTestId('subcategory-selection')).toBeNull();
+    expect(screen.queryByRole('add-subcategory')).toBeNull();
+
     //adding a subcategory
     userEvent.click(plusIcon);
-    const subcategoryDropdown = screen.getByRole('subcategory-selection');
-    userEvent.click(subcategoryDropdown);
+    clickSubcategoryAddOption();
     const buttons = screen.getAllByRole('button');
-    console.log(buttons);
     const existingCategoriesDropdown = buttons.find((x) =>
       x.classList.contains('MuiSelect-select')
     );
@@ -184,11 +180,33 @@ describe('Edit Categories tests', () => {
     //now select a dropdown option
     const options = screen.getAllByRole('option');
     userEvent.click(options[0]);
-    userEvent.click(cancelButton);
+    clickCancelButton();
     expect(screen.queryByRole('add-category')).toBeNull();
     expect(screen.queryByTestId('category-selection')).toBeNull();
     expect(screen.queryByTestId('subcategory-selection')).toBeNull();
     expect(screen.queryByRole('add-subcategory')).toBeNull();
-    screen.debug();
+  });
+
+  it('Adding subcategory - subcategory input is disabled if no category is selected', async () => {
+    setup();
+    expect(await screen.findByText('Submit')).toBeInTheDocument();
+    clickPlusButton();
+    clickSubcategoryAddOption();
+    const subCatInput = screen.queryByTestId('subcategory');
+    expect(subCatInput).toBeNull();
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+    //select an option
+    const buttons = screen.getAllByRole('button');
+    const existingCategoriesDropdown = buttons.find((x) =>
+      x.classList.contains('MuiSelect-select')
+    );
+    userEvent.click(existingCategoriesDropdown);
+    const options = screen.getAllByRole('option');
+    userEvent.click(options[0]);
+    userEvent.click(cancelButton);
+    clickPlusButton();
+    clickSubcategoryAddOption();
+    const subCatInput2 = screen.queryByTestId('subcategory');
+    expect(subCatInput2).toBeNull();
   });
 });
