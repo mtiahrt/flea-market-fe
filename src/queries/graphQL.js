@@ -10,6 +10,34 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const ADD_CATEGORY = gql`
+  mutation createCategory($name: String!) {
+    createCategory(input: { category: { name: $name } }) {
+      category {
+        id
+        name
+      }
+    }
+  }
+`;
+export const ADD_SUBCATEGORY = gql`
+  mutation createSubcategory($name: String!, $categoryId: Int!) {
+    createSubcategory(
+      input: {
+        subcategory: {
+          name: $name
+          categoryId: $categoryId
+          description: "No description"
+        }
+      }
+    ) {
+      subcategory {
+        id
+        name
+      }
+    }
+  }
+`;
 export const GET_SUBCATEGORIES = gql`
   query ($categoryId: Int!) {
     category(id: $categoryId) {

@@ -1,14 +1,50 @@
-import { cleanup, getAllByRole, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import EditCategories from '../modify-items/EditCategories';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { MockedProvider } from '@apollo/client/testing';
-import { GET_CATEGORIES } from '../../queries/graphQL';
+import {
+  ADD_CATEGORY,
+  ADD_SUBCATEGORY,
+  GET_CATEGORIES,
+} from '../../queries/graphQL';
 import userEvent from '@testing-library/user-event';
 
 afterEach(() => {
   cleanup();
 });
+const addCategoryMock = {
+  request: {
+    query: ADD_CATEGORY,
+    variables: { name: 'High Value Coins' },
+  },
+  result: {
+    data: {
+      createCategory: {
+        category: {
+          id: 10,
+          name: 'High Value Coins',
+        },
+      },
+    },
+  },
+};
+const addSubcategoryMock = {
+  request: {
+    query: ADD_SUBCATEGORY,
+    variables: { name: 'Mock Subcategory Name' },
+  },
+  result: {
+    data: {
+      createSubcategory: {
+        subcategory: {
+          id: 31,
+          name: 'Mock Subcategory Name',
+        },
+      },
+    },
+  },
+};
 
 const apolloMock = [
   {
@@ -42,28 +78,12 @@ const apolloMock = [
             description: 'Household goods',
             __typename: 'Category',
           },
-          {
-            id: 2,
-            name: 'Jewelry and Accessories',
-            description: 'Gems and valuables',
-            __typename: 'Category',
-          },
-          {
-            id: 6,
-            name: 'New Arrivals',
-            description: 'Our latest products',
-            __typename: 'Category',
-          },
-          {
-            id: 7,
-            name: 'Sale',
-            description: 'Price discounted',
-            __typename: 'Category',
-          },
         ],
       },
     },
   },
+  addCategoryMock,
+  addSubcategoryMock,
 ];
 
 describe('Edit Categories tests', () => {
@@ -209,4 +229,21 @@ describe('Edit Categories tests', () => {
     const subCatInput2 = screen.queryByTestId('subcategory');
     expect(subCatInput2).toBeNull();
   });
+
+  it('Adding category - New category is added to the list', async () => {
+    setup();
+    expect(await screen.findByText('Submit')).toBeInTheDocument();
+    clickPlusButton();
+    const categoryDropdown = screen.getByTestId('category-selection', {
+      hidden: true,
+    });
+    userEvent.click(categoryDropdown);
+    const categoryInput = screen.getByRole('category');
+    userEvent.type(categoryInput, 'High Value Coins');
+    //submit
+    userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(await screen.findByText(categoryInput.value)).toBeInTheDocument();
+  });
+
+  it('Adding subcategory - ????', async () => {});
 });

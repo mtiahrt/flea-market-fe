@@ -1,29 +1,36 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserProfileContext } from '../../contexts/UserContext';
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_CATEGORIES, GET_SUBCATEGORIES } from '../../queries/graphQL';
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  ADD_CATEGORY,
+  ADD_SUBCATEGORY,
+  GET_CATEGORIES,
+} from '../../queries/graphQL';
 import styled from 'styled-components';
-import AddOutlined from '@mui/icons-material/AddOutlined';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
 
-import {
-  Button,
-  InputLabel,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import { Button, InputLabel, MenuItem, Select } from '@mui/material';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 
 function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [addSubcategory, setAddSubcategory] = useState(false);
   const { userProfile } = useContext(UserProfileContext);
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
+  const [
+    insertCategory,
+    { dataAddCategory, loadingAddCategory, errorAddCategory },
+  ] = useMutation(ADD_CATEGORY);
+
+  const [
+    insertSubcategory,
+    { dataAddSubcategory, loadingAddSubcategory, errorAddSubcategory },
+  ] = useMutation(ADD_SUBCATEGORY);
+
   const {
     loading: loadingCategories,
     error: errorCategories,
@@ -38,8 +45,26 @@ function EditCategories() {
   const onError = () => {
     console.error('Error in form submission');
   };
-  const handleNewItemSubmit = (data, e) => {
-    console.log('submit happened', data);
+  const handleNewItemSubmit = (data) => {
+    addCategory
+      ? insertCategory({ variables: { name: data.category } }).then(
+          ({
+            data: {
+              createCategory: { category },
+            },
+          }) => {
+            setCategories([
+              ...categories,
+              {
+                id: category.id,
+                name: category.name,
+              },
+            ]);
+          }
+        )
+      : insertSubcategory({
+          variables: { categoryId: data.categoryId, name: data.subcategory },
+        }).then((data) => data);
   };
   const handleClearForm = () => {
     setAddCategory(false);
@@ -48,12 +73,21 @@ function EditCategories() {
     setCategoryOptionSelected(false);
   };
   const handleAddSubcategoryCategorySelectChange = (e) => {
-    console.log(categoryOptionSelected);
     const categoryId = +e.target.value;
     if (categoryId) {
       setCategoryOptionSelected(true);
     }
   };
+  useEffect(() => {
+    if (dataCategories?.categoriesList) {
+      setCategories(
+        dataCategories.categoriesList.map((category) => ({
+          id: category.id,
+          name: category.name,
+        }))
+      );
+    }
+  }, [dataCategories]);
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
   return (
@@ -87,16 +121,20 @@ function EditCategories() {
       )}
       {addCategory && (
         <div role="add-category">
-          {dataCategories.categoriesList.map((category) => {
+          {categories.map((category) => {
             return <h4 key={category.id}>{category.name}</h4>;
           })}
-          <input role="category" />
+          <input
+            {...register('category', { required: false })}
+            role="category"
+          />
         </div>
       )}
       {addSubcategory && (
         <div role="add-subcategory">
           <InputLabel id="quantity-select-label">Select Category</InputLabel>
           <Select
+            {...register('categoryId', { required: false })}
             labelId="category-select-label"
             label="Category"
             onChange={handleAddSubcategoryCategorySelectChange}
@@ -111,7 +149,12 @@ function EditCategories() {
               </MenuItem>
             ))}
           </Select>
-          {categoryOptionSelected && <input data-testid="subcategory" />}
+          {categoryOptionSelected && (
+            <input
+              {...register('subcategory', { required: false })}
+              data-testid="subcategory"
+            />
+          )}
         </div>
       )}
 
