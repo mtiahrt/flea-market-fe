@@ -32,7 +32,7 @@ const addCategoryMock = {
 const addSubcategoryMock = {
   request: {
     query: ADD_SUBCATEGORY,
-    variables: { name: 'Mock Subcategory Name' },
+    variables: { name: 'Mock Subcategory Name', categoryId: 5 },
   },
   result: {
     data: {
@@ -45,7 +45,6 @@ const addSubcategoryMock = {
     },
   },
 };
-
 const apolloMock = [
   {
     request: {
@@ -239,11 +238,34 @@ describe('Edit Categories tests', () => {
     });
     userEvent.click(categoryDropdown);
     const categoryInput = screen.getByRole('category');
-    userEvent.type(categoryInput, 'High Value Coins');
+    userEvent.type(
+      categoryInput,
+      addCategoryMock.result.data.createCategory.category.name
+    );
     //submit
     userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     expect(await screen.findByText(categoryInput.value)).toBeInTheDocument();
   });
 
-  it('Adding subcategory - ????', async () => {});
+  it('Adding subcategory - New subcategory is added to the list', async () => {
+    setup();
+    expect(await screen.findByText('Submit')).toBeInTheDocument();
+    clickPlusButton();
+    clickSubcategoryAddOption();
+    const buttons = screen.getAllByRole('button');
+    const existingCategoriesDropdown = buttons.find((x) =>
+      x.classList.contains('MuiSelect-select')
+    );
+    userEvent.click(existingCategoriesDropdown);
+    //now select a dropdown option
+    const options = screen.getAllByRole('option');
+    userEvent.click(options[0]);
+    const subcategoryInput = screen.getByRole('subcategory');
+    userEvent.type(
+      subcategoryInput,
+      addSubcategoryMock.result.data.createSubcategory.subcategory.name
+    );
+    userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(await screen.findByText(subcategoryInput.value)).toBeInTheDocument();
+  });
 });

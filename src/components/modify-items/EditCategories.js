@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserProfileContext } from '../../contexts/UserContext';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import {
   ADD_CATEGORY,
   ADD_SUBCATEGORY,
   GET_CATEGORIES,
+  GET_SUBCATEGORIES,
 } from '../../queries/graphQL';
 import styled from 'styled-components';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
@@ -18,9 +19,14 @@ function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [proposedCategory, setProposedCategory] = useState('');
+  const [proposedSubcategory, setProposedSubcategory] = useState('');
   const [addSubcategory, setAddSubcategory] = useState(false);
   const { userProfile } = useContext(UserProfileContext);
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
+  const [getSubcategories, { loading, error, data }] =
+    useLazyQuery(GET_SUBCATEGORIES);
   const [
     insertCategory,
     { dataAddCategory, loadingAddCategory, errorAddCategory },
@@ -60,21 +66,37 @@ function EditCategories() {
                 name: category.name,
               },
             ]);
+            setProposedCategory('');
           }
         )
       : insertSubcategory({
           variables: { categoryId: data.categoryId, name: data.subcategory },
-        }).then((data) => data);
+        }).then(
+          ({
+            data: {
+              createSubcategory: { subcategory },
+            },
+          }) => {
+            setSubcategories([
+              ...subcategories,
+              { name: subcategory.name, id: subcategory.id },
+            ]);
+            setProposedSubcategory('');
+          }
+        );
   };
   const handleClearForm = () => {
     setAddCategory(false);
     setToggleAddOptions(false);
     setAddSubcategory(false);
     setCategoryOptionSelected(false);
+    setProposedCategory('');
+    setProposedSubcategory('');
   };
   const handleAddSubcategoryCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
     if (categoryId) {
+      getSubcategories({ variables: { categoryId } });
       setCategoryOptionSelected(true);
     }
   };
@@ -88,6 +110,19 @@ function EditCategories() {
       );
     }
   }, [dataCategories]);
+
+  useEffect(() => {
+    if (data) {
+      setSubcategories(
+        data.category.subcategoriesList.map((x) => ({ name: x.name, id: x.id }))
+      );
+    }
+  }, [data]);
+
+  const handleTextChangeInput = (e, setterFn) => {
+    setterFn(e.target.value);
+  };
+
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
   return (
@@ -127,6 +162,8 @@ function EditCategories() {
           <input
             {...register('category', { required: false })}
             role="category"
+            onChange={(e) => handleTextChangeInput(e, setProposedCategory)}
+            value={proposedCategory}
           />
         </div>
       )}
@@ -149,11 +186,21 @@ function EditCategories() {
               </MenuItem>
             ))}
           </Select>
+
           {categoryOptionSelected && (
-            <input
-              {...register('subcategory', { required: false })}
-              data-testid="subcategory"
-            />
+            <>
+              {subcategories.map((sub) => (
+                <h4 key={sub.id}>{sub.name}</h4>
+              ))}
+              <input
+                {...register('subcategory', { required: false })}
+                role="subcategory"
+                onChange={(e) =>
+                  handleTextChangeInput(e, setProposedSubcategory)
+                }
+                value={proposedSubcategory}
+              />
+            </>
           )}
         </div>
       )}
