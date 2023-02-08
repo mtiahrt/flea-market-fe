@@ -22,6 +22,22 @@ import CheckOut from './components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
 import EditCategories from './components/modify-items/EditCategories';
 
+function DropdownMenu() {
+  function DropDownItem(props) {
+    return (
+      <a href="#" className="menu-item">
+        <span className="icon-button">{props.icon}</span>
+        {props.children}
+      </a>
+    );
+  }
+  return (
+    <div className="dropdown">
+      <DropDownItem>My Profile</DropDownItem>
+      <DropDownItem>Cart 2</DropDownItem>
+    </div>
+  );
+}
 function App() {
   const [userProfile, setUserProfile] = useState({});
   console.log('App component is rendering');
@@ -33,7 +49,9 @@ function App() {
             <NavItemProfile imgURL={userProfile.photoURL} />
             <NavItem url={''} icon={<HomeIcon />}></NavItem>
             <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
-            <NavItem url={'AddItem'} icon={<PlusIcon />}></NavItem>
+            <NavItem url={'AddItem'} icon={<PlusIcon />}>
+              <DropdownMenu />
+            </NavItem>
             <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
           </NavBar>
           <CartContextProvider>
