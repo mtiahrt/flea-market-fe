@@ -23,27 +23,8 @@ import EditItem from './components/modify-items/EditItem';
 import CheckOut from './components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
 import EditCategories from './components/modify-items/EditCategories';
+import DropdownMenu from './nav/DropdownMenu';
 
-function DropdownMenu() {
-  function DropDownItem(props) {
-    return (
-      <Link to={props.url} className="menu-item">
-        <span className="icon-button">{props.icon}</span>
-        {props.children}
-      </Link>
-    );
-  }
-  return (
-    <div className="dropdown">
-      <DropDownItem url="/addItem" icon={<POSIcon />}>
-        Inventory Item
-      </DropDownItem>
-      <DropDownItem url="/editCategories" icon={<CategoryIcon />}>
-        Category
-      </DropDownItem>
-    </div>
-  );
-}
 function App() {
   const [userProfile, setUserProfile] = useState({});
   console.log('App component is rendering');
