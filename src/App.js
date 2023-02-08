@@ -3,7 +3,7 @@ import ItemList from './components/ItemList';
 import NavBar from './nav/NavBar';
 import NavItem from './nav/NavItem';
 import Login from './components/login/Login';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Modal from './components/shared/Modal';
 
 import Profile from './components/Profile';
@@ -12,6 +12,8 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
 import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
+import { ReactComponent as CategoryIcon } from './icons/category-svgrepo-com.svg';
+import { ReactComponent as POSIcon } from './icons/POS.svg';
 
 import { useState } from 'react';
 import { UserProfileContext } from './contexts/UserContext';
@@ -25,16 +27,20 @@ import EditCategories from './components/modify-items/EditCategories';
 function DropdownMenu() {
   function DropDownItem(props) {
     return (
-      <a href="#" className="menu-item">
+      <Link to={props.url} className="menu-item">
         <span className="icon-button">{props.icon}</span>
         {props.children}
-      </a>
+      </Link>
     );
   }
   return (
     <div className="dropdown">
-      <DropDownItem>My Profile</DropDownItem>
-      <DropDownItem>Cart 2</DropDownItem>
+      <DropDownItem url="/addItem" icon={<POSIcon />}>
+        Inventory Item
+      </DropDownItem>
+      <DropDownItem url="/editCategories" icon={<CategoryIcon />}>
+        Category
+      </DropDownItem>
     </div>
   );
 }
@@ -47,9 +53,9 @@ function App() {
         <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
           <NavBar>
             <NavItemProfile imgURL={userProfile.photoURL} />
-            <NavItem url={''} icon={<HomeIcon />}></NavItem>
+            <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
             <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
-            <NavItem url={'AddItem'} icon={<PlusIcon />}>
+            <NavItem url={''} icon={<PlusIcon />}>
               <DropdownMenu />
             </NavItem>
             <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>

@@ -106,6 +106,7 @@ html {
   width: 300px;
   transform: translateX(-45%);
   background-color: var(--bg);
+  color: #ffffffcc;
   border: var(--border);
   border-radius: var(--border-radius);
   padding: 1rem;
