@@ -12,8 +12,6 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
 import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
-import { ReactComponent as CategoryIcon } from './icons/category-svgrepo-com.svg';
-import { ReactComponent as POSIcon } from './icons/POS.svg';
 
 import { useState } from 'react';
 import { UserProfileContext } from './contexts/UserContext';

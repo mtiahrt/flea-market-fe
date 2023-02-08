@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ReactComponent as POSIcon } from '../icons/POS.svg';
+import { ReactComponent as POSIcon } from '../icons/sale-svgrepo-com.svg';
 import { ReactComponent as CategoryIcon } from '../icons/category-svgrepo-com.svg';
 
 function DropdownMenu() {
