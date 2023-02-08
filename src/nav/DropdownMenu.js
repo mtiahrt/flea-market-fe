@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ReactComponent as POSIcon } from '../icons/sale-svgrepo-com.svg';
+import { ReactComponent as SaleIcon } from '../icons/sale-svgrepo-com.svg';
 import { ReactComponent as CategoryIcon } from '../icons/category-svgrepo-com.svg';
 
 function DropdownMenu() {
@@ -13,7 +13,7 @@ function DropdownMenu() {
   }
   return (
     <div className="dropdown">
-      <DropDownItem url="/addItem" icon={<POSIcon />}>
+      <DropDownItem url="/addItem" icon={<SaleIcon />}>
         Inventory Item
       </DropDownItem>
       <DropDownItem url="/editCategories" icon={<CategoryIcon />}>
