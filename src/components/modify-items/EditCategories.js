@@ -23,7 +23,6 @@ function EditCategories() {
   const [proposedCategory, setProposedCategory] = useState('');
   const [proposedSubcategory, setProposedSubcategory] = useState('');
   const [addSubcategory, setAddSubcategory] = useState(false);
-  const { userProfile } = useContext(UserProfileContext);
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
   const [getSubcategories, { loading, error, data }] =
     useLazyQuery(GET_SUBCATEGORIES);
