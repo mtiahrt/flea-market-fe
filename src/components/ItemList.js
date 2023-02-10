@@ -14,7 +14,6 @@ const ItemList = () => {
     variables: {
       applicationUserId: userProfile.id,
     },
-    fetchPolicy: 'cache-and-network',
   });
 
   useEffect(() => {

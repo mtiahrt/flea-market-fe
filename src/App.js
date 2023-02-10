@@ -48,6 +48,9 @@ const FleamarketProvider = ({ children }) => {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: from([accessTokenMiddleware, httpLink]),
+    defaultOptions: {
+      query: { fetchPolicy: 'cache-and-network' },
+    },
   });
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

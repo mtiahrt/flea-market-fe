@@ -57,7 +57,6 @@ function DetailedItem() {
 
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { inventoryId },
-    fetchPolicy: 'cache-and-network',
   });
   useEffect(() => {
     let quantity = 1;
