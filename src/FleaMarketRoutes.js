@@ -9,7 +9,7 @@ import CheckOut from './components/checkout/CheckOut';
 import EditItem from './components/modify-items/EditItem';
 import EditCategories from './components/modify-items/EditCategories';
 
-const FleamarketRoutes = ({ userProfile }) => {
+const FleaMarketRoutes = ({ userProfile }) => {
   return (
     <Switch>
       <Route exact path="/">
@@ -37,4 +37,4 @@ const FleamarketRoutes = ({ userProfile }) => {
   );
 };
 
-export default FleamarketRoutes;
+export default FleaMarketRoutes;

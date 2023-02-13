@@ -13,8 +13,8 @@ import { UserProfileContext } from './contexts/UserContext';
 import CheckOut from './components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
-import FleamarketRoutes from './FleamarketRoutes';
-import FleamarketProvider from './FleamarketProvider';
+import FleaMarketRoutes from './FleaMarketRoutes';
+import FleaMarketProvider from './FleaMarketProvider';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <Router>
         <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
-          <FleamarketProvider>
+          <FleaMarketProvider>
             <NavBar>
               <NavItemProfile imgURL={userProfile.photoURL} />
               <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
@@ -34,9 +34,9 @@ function App() {
               <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
             </NavBar>
             <CartContextProvider>
-              <FleamarketRoutes userProfile={userProfile} />
+              <FleaMarketRoutes userProfile={userProfile} />
             </CartContextProvider>
-          </FleamarketProvider>
+          </FleaMarketProvider>
         </UserProfileContext.Provider>
       </Router>
     </div>
