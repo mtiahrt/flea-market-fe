@@ -35,6 +35,7 @@ export default function ShoppingCart() {
     variables: {
       user_id: userProfile.id,
     },
+    fetchPolicy: 'cache-and-network',
   });
   const {
     loading: loadingShippingCostItems,

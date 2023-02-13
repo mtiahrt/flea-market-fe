@@ -5,7 +5,10 @@ const NavItem = (props) => {
   const [open, setOpen] = useState(false);
   console.log('open is:', open);
   return (
-    <li onClick={() => setOpen(!open)} className="nav-item">
+    <li
+      onClick={props.isDropdown ? () => setOpen(!open) : null}
+      className="nav-item"
+    >
       <Link to={props.url ? `/${props.url}` : '#'} className="icon-button">
         {props.icon}
       </Link>

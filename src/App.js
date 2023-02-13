@@ -28,7 +28,7 @@ function App() {
               <NavItemProfile imgURL={userProfile.photoURL} />
               <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
               <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
-              <NavItem url={''} icon={<PlusIcon />}>
+              <NavItem isDropdown={true} url={''} icon={<PlusIcon />}>
                 <DropdownMenu />
               </NavItem>
               <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
