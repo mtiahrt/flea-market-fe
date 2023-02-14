@@ -31,7 +31,7 @@ function App() {
               <NavItem isDropdown={true} url={''} icon={<PlusIcon />}>
                 <DropdownMenu />
               </NavItem>
-              <NavItem url={'Filter'} icon={<FilterIcon />}></NavItem>
+              <NavItem url={'#'} icon={<FilterIcon />}></NavItem>
             </NavBar>
             <CartContextProvider>
               <FleaMarketRoutes userProfile={userProfile} />

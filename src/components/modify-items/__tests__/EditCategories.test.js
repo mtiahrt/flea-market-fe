@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import EditCategories from '../modify-items/EditCategories';
-import { UserProfileContext } from '../../contexts/UserContext';
+import EditCategories from '../EditCategories';
+import { UserProfileContext } from '../../../contexts/UserContext';
 import { MockedProvider } from '@apollo/client/testing';
 import {
   ADD_CATEGORY,
   ADD_SUBCATEGORY,
   GET_CATEGORIES,
-} from '../../queries/graphQL';
+} from '../../../queries/graphQL';
 import userEvent from '@testing-library/user-event';
 
 afterEach(() => {

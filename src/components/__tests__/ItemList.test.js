@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import ItemList from '../ItemList';
+import Inventory from '../Inventory';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { CartContextProvider } from '../../contexts/CartContext';
 import { MockedProvider } from '@apollo/client/testing';
@@ -89,7 +89,7 @@ const mocks = [
   },
 ];
 
-describe('ItemList tests', () => {
+describe('Inventory tests', () => {
   render(
     <BrowserRouter>
       <MockedProvider mocks={mocks} addTypename={false}>
@@ -97,7 +97,7 @@ describe('ItemList tests', () => {
           value={{ userProfile: { id: 1, isLoggedIn: true } }}
         >
           <CartContextProvider value={{ setCartItems: () => {} }}>
-            <ItemList />
+            <Inventory />
           </CartContextProvider>
         </UserProfileContext.Provider>
       </MockedProvider>

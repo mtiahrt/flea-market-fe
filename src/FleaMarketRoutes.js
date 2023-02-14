@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
-import ItemList from './components/ItemList';
+import Inventory from './components/Inventory';
 import Modal from './components/shared/Modal';
 import Login from './components/login/Login';
 import Profile from './components/Profile';
@@ -16,7 +16,7 @@ const FleaMarketRoutes = ({ userProfile }) => {
         <header>
           <h1>Wild Heather Shop</h1>
         </header>
-        <ItemList />
+        <Inventory />
         <Modal
           message="Please sign in"
           isOpen={userProfile.isLoggedIn ? !userProfile.isLoggedIn : true}

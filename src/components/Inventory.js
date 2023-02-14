@@ -6,8 +6,9 @@ import { INVENTORY_LIST } from '../queries/graphQL';
 import { UserProfileContext } from '../contexts/UserContext';
 import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
+import InventoryFilter from './InventoryFilter';
 
-const ItemList = () => {
+const Inventory = () => {
   const { userProfile } = useContext(UserProfileContext);
   const { loadCartItems } = useCart();
   const { loading, error, data } = useQuery(INVENTORY_LIST, {
@@ -39,23 +40,26 @@ const ItemList = () => {
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
   return (
-    <StyledList role="item-list">
-      {data.inventoriesList.map((item) => (
-        <BasicCard
-          key={`card${item.id.toString()}`}
-          isItemInCart={item.cartsList.length ? true : false}
-          link={`DetailedItem/${item.id}`}
-          inventoryItem={item}
-        ></BasicCard>
-      ))}
-    </StyledList>
+    <>
+      <StyledInventory role="item-list">
+        {data.inventoriesList.map((item) => (
+          <BasicCard
+            key={`card${item.id.toString()}`}
+            isItemInCart={item.cartsList.length ? true : false}
+            link={`DetailedItem/${item.id}`}
+            inventoryItem={item}
+          ></BasicCard>
+        ))}
+      </StyledInventory>
+      <InventoryFilter />
+    </>
   );
 };
-const StyledList = styled.div`
+const StyledInventory = styled.div`
   display: grid;
   margin: 25px;
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
   justify-items: center;
 `;
-export default ItemList;
+export default Inventory;

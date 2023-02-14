@@ -35,11 +35,9 @@ export function CartContextProvider(props) {
   function removeFromCart(cartId, crudFn) {
     crudFn().then(() => setCartItems(cartItems.filter((x) => x.id !== cartId)));
   }
-
   function loadCartItems(items) {
     setCartItems(items);
   }
-
   function updateQuantity(cartId, quantity, curdFn) {
     curdFn().then((res) => {
       const cartContextModel = new CartContextModel(

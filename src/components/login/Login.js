@@ -16,7 +16,6 @@ import UserContextModel from '../../models/UserContextModel';
 
 export default function Login() {
   const { setUserProfile } = useContext(UserProfileContext);
-  const updateCartContext = (user) => {};
   const updateUserContext = (user, accessToken) => {
     const {
       displayName,
@@ -62,7 +61,6 @@ export default function Login() {
         )
         .then((token) => {
           updateUserContext(userAuth.user, token.data);
-          updateCartContext(userAuth.user);
         });
     } catch (error) {
       console.error(error);
