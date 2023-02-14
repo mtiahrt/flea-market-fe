@@ -1,25 +1,22 @@
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-
-import Inventory from '../Inventory';
-import { UserProfileContext } from '../../contexts/UserContext';
-import { CartContextProvider } from '../../contexts/CartContext';
-import { MockedProvider } from '@apollo/client/testing';
-import { cleanup } from '@testing-library/react';
-import { INVENTORY_LIST } from '../../queries/graphQL';
 import { BrowserRouter } from 'react-router-dom';
+import { UserProfileContext } from '../../contexts/UserContext';
+import userEvent from '@testing-library/user-event';
+import FleaMarketRoutes from '../../FleaMarketRoutes';
+import { CartContextProvider } from '../../contexts/CartContext';
+import Inventory from '../Inventory';
+import { MockedProvider } from '@apollo/client/testing';
+import { INVENTORY_LIST } from '../../queries/graphQL';
 
 afterEach(() => {
   cleanup();
 });
-
-const mocks = [
+const apolloMock = [
   {
     request: {
       query: INVENTORY_LIST,
-      variables: {
-        applicationUserId: 1,
-      },
+      variables: { applicationUserId: 'abc' },
     },
     result: {
       data: {
@@ -40,14 +37,7 @@ const mocks = [
                 url: 'https://media.pnca.edu/system/assets/785aa38a-aea2-4613-9d01-2b700c184166/square/pnca_785aa38a-aea2-4613-9d01-2b700c184166_square.jpg?1437581001',
               },
             ],
-            cartsList: [
-              {
-                id: 7,
-                quantity: 2,
-                inventoryId: 1,
-                applicationUserId: '1',
-              },
-            ],
+            cartsList: [],
           },
           {
             id: 2,
@@ -56,32 +46,14 @@ const mocks = [
             name: 'Texas A&M',
             price: '23.30',
             itemImagesList: [],
-            cartsList: [],
-          },
-          {
-            id: 3,
-            description: 'adjustable back',
-            manufacturerName: 'Sweet hats',
-            name: 'Sinecurist golf cap',
-            price: '23.30',
-            itemImagesList: [],
             cartsList: [
               {
-                id: 8,
-                quantity: 5,
-                inventoryId: 3,
-                applicationUserId: 'yi0ZyXuTp8dZ0NQPx0HTqZjNFF02',
+                id: 68,
+                quantity: 4,
+                inventoryId: 2,
+                applicationUserId: 'abc',
               },
             ],
-          },
-          {
-            id: 4,
-            description: 'in the cut',
-            manufacturerName: 'my winter',
-            name: 'Camouflage jogger',
-            price: '15.00',
-            itemImagesList: [],
-            cartsList: [],
           },
         ],
       },
@@ -90,25 +62,26 @@ const mocks = [
 ];
 
 describe('Inventory tests', () => {
-  render(
-    <BrowserRouter>
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <UserProfileContext.Provider
-          value={{ userProfile: { id: 1, isLoggedIn: true } }}
-        >
-          <CartContextProvider value={{ setCartItems: () => {} }}>
-            <Inventory />
-          </CartContextProvider>
-        </UserProfileContext.Provider>
-      </MockedProvider>
-    </BrowserRouter>
-  );
-
-  it('renders loading without crashing', async () => {
+  const setup = () =>
+    render(
+      <UserProfileContext.Provider
+        value={{ userProfile: { id: 'abc', isLoggedIn: true } }}
+      >
+        <CartContextProvider>
+          <BrowserRouter>
+            <MockedProvider mocks={apolloMock}>
+              <Inventory />
+            </MockedProvider>
+          </BrowserRouter>
+        </CartContextProvider>
+      </UserProfileContext.Provider>
+    );
+  it('renders without crashing', async () => {
+    setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('High Sierra')).toBeInTheDocument();
     const cards = await screen.findAllByText('Total price:');
-    expect(cards).toHaveLength(4);
+    expect(cards).toHaveLength(2);
     expect(screen.getByRole('item-list')).toBeInTheDocument();
   });
 });

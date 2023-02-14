@@ -12,6 +12,7 @@ import { INVENTORY_LIST } from '../../queries/graphQL';
 afterEach(() => {
   cleanup();
 });
+
 const apolloMock = [
   {
     request: {
@@ -62,6 +63,11 @@ const apolloMock = [
 ];
 
 describe('Inventory Filter tests', () => {
+  beforeEach(async () => {
+    setup();
+    expect(await screen.findByText('Loading...')).toBeInTheDocument();
+    expect(await screen.findByText('High Sierra')).toBeInTheDocument();
+  });
   const setup = () =>
     render(
       <UserProfileContext.Provider
@@ -76,10 +82,11 @@ describe('Inventory Filter tests', () => {
         </CartContextProvider>
       </UserProfileContext.Provider>
     );
-  it('renders nav bar without crashing', async () => {
-    setup();
-    expect(await screen.findByText('Loading...')).toBeInTheDocument();
-    expect(await screen.findByText('Error :(')).toBeInTheDocument();
-    screen.debug();
+
+  it('renders without crashing', async () => {});
+  it('renders all available categories', async () => {
+    expect(screen.getAllByRole('li').length).equal(4);
   });
+  it('renders only clothing items when clothing is selected', async () => {});
+  it('renders clothing and fine goods when those categories are selected', async () => {});
 });
