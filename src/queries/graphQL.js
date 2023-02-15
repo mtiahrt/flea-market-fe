@@ -10,6 +10,21 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const GET_CATEGORIES_WITH_SUBCATEGORIES = gql`
+  query categoriesWithSubcategories {
+    categoriesList(orderBy: NAME_ASC) {
+      id
+      name
+      description
+      subcategoriesList {
+        id
+        name
+        description
+      }
+    }
+  }
+`;
+
 export const ADD_CATEGORY = gql`
   mutation createCategory($name: String!) {
     createCategory(input: { category: { name: $name } }) {
@@ -259,6 +274,7 @@ export const INVENTORY_LIST = gql`
   query inventoryListWithCartId($userId: String) {
     inventoriesList(condition: { inStock: true }) {
       id
+      subcategoryId
       description
       manufacturerName
       name

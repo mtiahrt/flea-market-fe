@@ -1,13 +1,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { UserProfileContext } from '../../contexts/UserContext';
-import userEvent from '@testing-library/user-event';
-import FleaMarketRoutes from '../../FleaMarketRoutes';
-import { CartContextProvider } from '../../contexts/CartContext';
-import Inventory from '../Inventory';
 import { MockedProvider } from '@apollo/client/testing';
-import { INVENTORY_LIST } from '../../queries/graphQL';
+import { GET_CATEGORIES_WITH_SUBCATEGORIES } from '../../queries/graphQL';
+import InventoryFilter from '../InventoryFilter';
 
 afterEach(() => {
   cleanup();
@@ -16,43 +11,47 @@ afterEach(() => {
 const apolloMock = [
   {
     request: {
-      query: INVENTORY_LIST,
-      variables: { applicationUserId: 'abc' },
+      query: GET_CATEGORIES_WITH_SUBCATEGORIES,
     },
     result: {
       data: {
-        inventoriesList: [
+        categoriesList: [
           {
             id: 1,
-            description: 'winter jacket',
-            manufacturerName: 'High Sierra',
-            name: 'Mens',
-            price: '102.25',
-            itemImagesList: [
+            name: 'Clothes',
+            description: 'Clothing Apparel',
+            subcategoriesList: [
               {
-                publicId: null,
-                url: 'https://media.pnca.edu/system/assets/5bf31603-1061-423b-a823-5ac478d67974/square/pnca_5bf31603-1061-423b-a823-5ac478d67974_square.jpg?1437580908',
+                id: 1,
+                name: 'Sweaters and Tops',
+                description: null,
               },
               {
-                publicId: null,
-                url: 'https://media.pnca.edu/system/assets/785aa38a-aea2-4613-9d01-2b700c184166/square/pnca_785aa38a-aea2-4613-9d01-2b700c184166_square.jpg?1437581001',
+                id: 2,
+                name: 'Dresses and Skirts',
+                description: null,
+              },
+              {
+                id: 3,
+                name: 'Coats and Jackets',
+                description: null,
               },
             ],
-            cartsList: [],
           },
           {
-            id: 2,
-            description: 'Captivating Headgear',
-            manufacturerName: 'Forever Summer',
-            name: 'Texas A&M',
-            price: '23.30',
-            itemImagesList: [],
-            cartsList: [
+            id: 5,
+            name: 'Books',
+            description: 'Good Reads',
+            subcategoriesList: [
               {
-                id: 68,
-                quantity: 4,
-                inventoryId: 2,
-                applicationUserId: 'abc',
+                id: 24,
+                name: 'kids',
+                description: null,
+              },
+              {
+                id: 25,
+                name: 'Young Adult',
+                description: null,
               },
             ],
           },
@@ -66,27 +65,17 @@ describe('Inventory Filter tests', () => {
   beforeEach(async () => {
     setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
-    expect(await screen.findByText('High Sierra')).toBeInTheDocument();
+    expect(await screen.findByRole('1')).toBeInTheDocument();
   });
   const setup = () =>
     render(
-      <UserProfileContext.Provider
-        value={{ userProfile: { id: 'abc', isLoggedIn: true } }}
-      >
-        <CartContextProvider>
-          <BrowserRouter>
-            <MockedProvider mocks={apolloMock}>
-              <Inventory />
-            </MockedProvider>
-          </BrowserRouter>
-        </CartContextProvider>
-      </UserProfileContext.Provider>
+      <MockedProvider mocks={apolloMock}>
+        <InventoryFilter />
+      </MockedProvider>
     );
 
   it('renders without crashing', async () => {});
   it('renders all available categories', async () => {
-    expect(screen.getAllByRole('li').length).equal(4);
+    expect(screen.getAllByRole('button').length).toEqual(2);
   });
-  it('renders only clothing items when clothing is selected', async () => {});
-  it('renders clothing and fine goods when those categories are selected', async () => {});
 });
