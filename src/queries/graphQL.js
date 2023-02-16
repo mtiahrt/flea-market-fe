@@ -289,6 +289,9 @@ export const INVENTORY_LIST = gql`
         inventoryId
         applicationUserId
       }
+      subcategory {
+        categoryId
+      }
     }
   }
 `;

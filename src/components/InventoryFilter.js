@@ -6,11 +6,28 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GET_CATEGORIES_WITH_SUBCATEGORIES } from '../queries/graphQL';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
-function InventoryFilter() {
+function InventoryFilter({ filter, setFilter }) {
   const { loading, error, data } = useQuery(GET_CATEGORIES_WITH_SUBCATEGORIES);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
+
+  const handleChangeEvent = (e, categoryId, subcategoryId) => {
+    setFilter((prevState) => {
+      return e.target.checked
+        ? {
+            categoryId: [...prevState.categoryId, categoryId],
+            subcategoryId: [...prevState.subcategoryId, subcategoryId],
+          }
+        : {
+            categoryId: prevState.categoryId.filter((x) => x !== categoryId),
+            subcategoryId: prevState.subcategoryId.filter(
+              (x) => x !== subcategoryId
+            ),
+          };
+    });
+  };
   return (
     <div role="filter-selections">
       {data.categoriesList.map((cat) => (
@@ -24,10 +41,17 @@ function InventoryFilter() {
           </AccordionSummary>
           <AccordionDetails>
             {cat.subcategoriesList.map((sub) => (
-              <label key={sub.id}>
-                <input type="checkbox" />
-                {sub.name}
-              </label>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e) => handleChangeEvent(e, cat.id, sub.id)}
+                    inputProps={{
+                      'aria-label': 'subcategory',
+                    }}
+                  />
+                }
+                label={sub.name}
+              />
             ))}
           </AccordionDetails>
         </Accordion>

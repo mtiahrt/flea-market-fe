@@ -10,7 +10,7 @@ import InventoryFilter from './InventoryFilter';
 
 const Inventory = () => {
   const [filter, setFilter] = useState({
-    categoryId: [1],
+    categoryId: [],
     subcategoryId: [],
   });
   const { userProfile } = useContext(UserProfileContext);
@@ -40,14 +40,13 @@ const Inventory = () => {
     }
   }, [userProfile.isLoggedIn]);
 
-  const filterFunction = (x) => {
-    if (filter.categoryId.length === 0) {
-    }
-    if (filter.subcategoryId.length === 0) {
+  const filterFunction = (inventoryItem) => {
+    if (filter.categoryId.length === 0 && filter.subcategoryId.length === 0) {
+      return true;
     }
     return (
-      filter.categoryId.includes(x.id) ||
-      filter.subcategoryId.includes(x.subcategoryId)
+      filter.categoryId.includes(inventoryItem.subcategory.categoryId) &&
+      filter.subcategoryId.includes(inventoryItem.subcategoryId)
     );
   };
   if (loading) return <p>Loading...</p>;
@@ -65,7 +64,7 @@ const Inventory = () => {
           ></BasicCard>
         ))}
       </StyledInventory>
-      <InventoryFilter setFilter={setFilter} />
+      <InventoryFilter filter={filter} setFilter={setFilter} />
     </>
   );
 };
