@@ -9,10 +9,7 @@ import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 
 const Inventory = () => {
-  const [filter, setFilter] = useState({
-    categoryId: [],
-    subcategoryId: [],
-  });
+  const [filter, setFilter] = useState([]);
   const { userProfile } = useContext(UserProfileContext);
   const { loadCartItems } = useCart();
   const { loading, error, data } = useQuery(INVENTORY_LIST, {
@@ -40,15 +37,14 @@ const Inventory = () => {
     }
   }, [userProfile.isLoggedIn]);
 
-  const filterFunction = (inventoryItem) => {
-    if (filter.categoryId.length === 0 && filter.subcategoryId.length === 0) {
-      return true;
-    }
-    return (
-      filter.categoryId.includes(inventoryItem.subcategory.categoryId) &&
-      filter.subcategoryId.includes(inventoryItem.subcategoryId)
-    );
-  };
+  const filterFunction = (inventoryItem) =>
+    filter.length === 0
+      ? true
+      : filter.some(
+          (x) =>
+            x.categoryId === inventoryItem.subcategory.categoryId &&
+            x.subcategoryIds.includes(inventoryItem.subcategoryId)
+        );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
@@ -64,7 +60,7 @@ const Inventory = () => {
           ></BasicCard>
         ))}
       </StyledInventory>
-      <InventoryFilter filter={filter} setFilter={setFilter} />
+      <InventoryFilter setFilter={setFilter} />
     </>
   );
 };
