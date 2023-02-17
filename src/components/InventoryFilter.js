@@ -24,6 +24,8 @@ function InventoryFilter({ setFilter }) {
                 categoryId: categoryId,
                 subcategoryIds: [...item.subcategoryIds, subcategoryId],
               };
+            } else {
+              return item;
             }
           })
         : [
@@ -36,6 +38,11 @@ function InventoryFilter({ setFilter }) {
     setFilter((prev) => {
       if (prev.length === 1 && prev[0].subcategoryIds.length === 1) {
         return [];
+      }
+      if (
+        prev.find((x) => x.categoryId === categoryId).subcategoryIds.length <= 1
+      ) {
+        return prev.filter((x) => x.categoryId !== categoryId);
       }
       return prev.map((item) => {
         if (item.categoryId === categoryId) {
@@ -53,23 +60,22 @@ function InventoryFilter({ setFilter }) {
       });
     });
   };
-  const handleChangeEvent = (e, categoryId, subcategoryId) => {
-    setFilter((prevState) => {
-      return e.target.checked
-        ? {
-            categoryId: [...prevState.categoryId, categoryId],
-            subcategoryId: [...prevState.subcategoryId, subcategoryId],
-          }
-        : {
-            categoryId: prevState.categoryId.filter((x) => x !== categoryId),
-            subcategoryId: prevState.subcategoryId.filter(
-              (x) => x !== subcategoryId
-            ),
-          };
-    });
-  };
 
-  function handleSwitchChange() {}
+  const handleSwitchChange = (e, categoryId) => {
+    return e.target.checked
+      ? setFilter((prev) => {
+          return [
+            ...prev,
+            {
+              categoryId: categoryId,
+              subcategoryIds: data.categoriesList
+                .find((x) => x.id === categoryId)
+                .subcategoriesList.map((x) => x.id),
+            },
+          ];
+        })
+      : setFilter((prev) => prev.filter((x) => x.categoryId !== categoryId));
+  };
 
   return (
     <div role="filter-selections">
@@ -84,13 +90,19 @@ function InventoryFilter({ setFilter }) {
           </AccordionSummary>
           <FormControlLabel
             value="All"
-            control={<Switch onChange={handleSwitchChange} color="primary" />}
+            control={
+              <Switch
+                onChange={(e) => handleSwitchChange(e, cat.id)}
+                color="primary"
+              />
+            }
             label="All"
             labelPlacement="end"
           />
           <AccordionDetails>
             {cat.subcategoriesList.map((sub) => (
               <FormControlLabel
+                key={sub.id}
                 control={
                   <Checkbox
                     onChange={(e) =>
