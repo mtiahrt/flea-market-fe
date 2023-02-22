@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useReducer } from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
@@ -8,8 +8,69 @@ import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 
+function filterReducer(state, action) {
+  switch (action.type) {
+    case 'added_subcategory': {
+      return state.find((c) => c.categoryId === action.categoryId)
+        ? state.map((item) => {
+            if (item.categoryId === action.categoryId) {
+              return {
+                categoryId: action.categoryId,
+                subcategoryIds: [...item.subcategoryIds, action.subcategoryId],
+              };
+            } else {
+              return item;
+            }
+          })
+        : [
+            ...state,
+            {
+              categoryId: action.categoryId,
+              subcategoryIds: [action.subcategoryId],
+            },
+          ];
+    }
+    case 'removed_subcategory': {
+      if (state.length === 1 && state[0].subcategoryIds.length === 1) {
+        return [];
+      }
+      if (
+        state.find((x) => x.categoryId === action.categoryId).subcategoryIds
+          .length <= 1
+      ) {
+        return state.filter((x) => x.categoryId !== action.categoryId);
+      }
+      return state.map((item) => {
+        if (item.categoryId === action.categoryId) {
+          return item.subcategoryIds.length <= 1
+            ? state.filter((x) => x.categoryId !== action.categoryId)
+            : {
+                ...item,
+                subcategoryIds: item.subcategoryIds.filter(
+                  (x) => x !== action.subcategoryId
+                ),
+              };
+        } else {
+          return item;
+        }
+      });
+    }
+    case 'added_category': {
+      return [
+        ...state,
+        {
+          categoryId: action.categoryId,
+          subcategoryIds: action.subcategoryIds,
+        },
+      ];
+    }
+    case 'removed_category': {
+      return state.filter((x) => x.categoryId !== action.categoryId);
+    }
+  }
+}
 const Inventory = () => {
-  const [filter, setFilter] = useState([]);
+  const [state, dispatch] = useReducer(filterReducer, []);
   const { userProfile } = useContext(UserProfileContext);
   const { loadCartItems } = useCart();
   const { loading, error, data } = useQuery(INVENTORY_LIST, {
@@ -35,12 +96,12 @@ const Inventory = () => {
           )
       );
     }
-  }, [userProfile.isLoggedIn]);
+  }, [userProfile.isLoggedIn, data]);
 
   const filterFunction = (inventoryItem) =>
-    filter.length === 0
+    state.length === 0
       ? true
-      : filter.some(
+      : state.some(
           (x) =>
             x.categoryId === inventoryItem.subcategory.categoryId &&
             x.subcategoryIds.includes(inventoryItem.subcategoryId)
@@ -60,7 +121,39 @@ const Inventory = () => {
           ></BasicCard>
         ))}
       </StyledInventory>
-      <InventoryFilter setFilter={setFilter} />
+      <InventoryFilter
+        categories={
+          data
+            ? data.inventoriesList
+                .map((item) => ({
+                  id: item.subcategory.category.id,
+                  name: item.subcategory.category.name,
+                  subcategories: data.inventoriesList
+                    .filter(
+                      (x) =>
+                        x.subcategory.category.id ===
+                        item.subcategory.category.id
+                    )
+                    .filter((obj, index, self) => {
+                      return (
+                        index ===
+                        self.findIndex(
+                          (t) => t.subcategoryId === obj.subcategoryId
+                        )
+                      );
+                    })
+                    .map((x) => ({
+                      id: x.subcategory.id,
+                      name: x.subcategory.name,
+                    })),
+                }))
+                .filter((obj, index, self) => {
+                  return index === self.findIndex((t) => t.id === obj.id);
+                })
+            : []
+        }
+        dispatchFilter={dispatch}
+      />
     </>
   );
 };

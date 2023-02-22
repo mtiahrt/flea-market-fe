@@ -290,7 +290,12 @@ export const INVENTORY_LIST = gql`
         applicationUserId
       }
       subcategory {
-        categoryId
+        id
+        name
+        category {
+          id
+          name
+        }
       }
     }
   }
