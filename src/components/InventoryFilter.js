@@ -1,11 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { GET_CATEGORIES_WITH_SUBCATEGORIES } from '../queries/graphQL';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Switch from '@mui/material/Switch';
 

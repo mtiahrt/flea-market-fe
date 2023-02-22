@@ -1,24 +1,35 @@
 export default function filterReducer(state, action) {
+  const isCategoryInList = (categoryId) =>
+    state.some((i) => i.categoryId === categoryId);
+
+  const getItemIndex = (categoryId) =>
+    state.findIndex((x) => x.categoryId === categoryId);
+
+  const updateSubcategoryIds = (categoryId, subcategoryIds) => {
+    return state.map((item) => {
+      if (item.categoryId === categoryId) {
+        return { ...item, subcategoryIds: subcategoryIds };
+      } else {
+        return item;
+      }
+    });
+  };
+
   switch (action.type) {
     case 'added_subcategory': {
-      return state.find((c) => c.categoryId === action.categoryId)
-        ? state.map((item) => {
-            if (item.categoryId === action.categoryId) {
-              return {
-                categoryId: action.categoryId,
-                subcategoryIds: [...item.subcategoryIds, action.subcategoryId],
-              };
-            } else {
-              return item;
-            }
-          })
-        : [
-            ...state,
-            {
-              categoryId: action.categoryId,
-              subcategoryIds: [action.subcategoryId],
-            },
-          ];
+      if (isCategoryInList(action.categoryId)) {
+        return updateSubcategoryIds(action.categoryId, [
+          ...state[getItemIndex(action.categoryId)].subcategoryIds,
+          action.subcategoryId,
+        ]);
+      }
+      return [
+        ...state,
+        {
+          categoryId: action.categoryId,
+          subcategoryIds: [action.subcategoryId],
+        },
+      ];
     }
     case 'removed_subcategory': {
       if (state.length === 1 && state[0].subcategoryIds.length === 1) {
@@ -30,21 +41,13 @@ export default function filterReducer(state, action) {
       ) {
         return state.filter((x) => x.categoryId !== action.categoryId);
       }
-      return state.map((item) => {
-        if (item.categoryId === action.categoryId) {
-          return item.subcategoryIds.length <= 1
-            ? state.filter((x) => x.categoryId !== action.categoryId)
-            : {
-                ...item,
-                subcategoryIds: item.subcategoryIds.filter(
-                  (x) => x !== action.subcategoryId
-                ),
-              };
-        } else {
-          return item;
-        }
-      });
+      return updateSubcategoryIds(action.categoryId, [
+        ...state[getItemIndex(action.categoryId)].subcategoryIds.filter(
+          (x) => x !== action.subcategoryId
+        ),
+      ]);
     }
+
     case 'added_category': {
       return [
         ...state,
