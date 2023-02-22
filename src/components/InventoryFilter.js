@@ -20,7 +20,9 @@ function InventoryFilter({ categories, dispatchFilter }) {
     const dispatchObject = e.target.checked
       ? {
           type: 'added_category',
-          subcategoryIds: categories.map((x) => x.subcategory),
+          subcategoryIds: categories
+            .find((x) => x.id === categoryId)
+            .subcategories.map((x) => x.id),
         }
       : { type: 'removed_category' };
     dispatchFilter({ ...dispatchObject, categoryId });
