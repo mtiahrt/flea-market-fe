@@ -64,17 +64,17 @@ const apolloMock = [
 describe('Inventory tests', () => {
   const setup = () =>
     render(
-      <UserProfileContext.Provider
-        value={{ userProfile: { id: 'abc', isLoggedIn: true } }}
-      >
-        <CartContextProvider>
-          <BrowserRouter>
-            <MockedProvider mocks={apolloMock}>
+      <MockedProvider mocks={apolloMock}>
+        <UserProfileContext.Provider
+          value={{ userProfile: { id: 'abc', isLoggedIn: true } }}
+        >
+          <CartContextProvider>
+            <BrowserRouter>
               <Inventory />
-            </MockedProvider>
-          </BrowserRouter>
-        </CartContextProvider>
-      </UserProfileContext.Provider>
+            </BrowserRouter>
+          </CartContextProvider>
+        </UserProfileContext.Provider>{' '}
+      </MockedProvider>
     );
   it('renders without crashing', async () => {
     setup();

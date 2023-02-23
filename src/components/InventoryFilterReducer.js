@@ -17,19 +17,18 @@ export default function filterReducer(state, action) {
 
   switch (action.type) {
     case 'added_subcategory': {
-      if (isCategoryInList(action.categoryId)) {
-        return updateSubcategoryIds(action.categoryId, [
-          ...state[getItemIndex(action.categoryId)].subcategoryIds,
-          action.subcategoryId,
-        ]);
-      }
-      return [
-        ...state,
-        {
-          categoryId: action.categoryId,
-          subcategoryIds: [action.subcategoryId],
-        },
-      ];
+      return isCategoryInList(action.categoryId)
+        ? updateSubcategoryIds(action.categoryId, [
+            ...state[getItemIndex(action.categoryId)].subcategoryIds,
+            action.subcategoryId,
+          ])
+        : [
+            ...state,
+            {
+              categoryId: action.categoryId,
+              subcategoryIds: [action.subcategoryId],
+            },
+          ];
     }
     case 'removed_subcategory': {
       if (state.length === 1 && state[0].subcategoryIds.length === 1) {
