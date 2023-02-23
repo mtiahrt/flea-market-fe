@@ -34,7 +34,6 @@ function InventoryFilter({ categories, dispatchFilter }) {
       style={{
         display: displayFilter ? 'flex' : 'none',
         flexDirection: 'column',
-        border: '5px solid darkgoldenrod',
       }}
       role="filter-selections"
     >

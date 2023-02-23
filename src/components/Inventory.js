@@ -106,7 +106,6 @@ const StyledDiv = styled.div`
   display: flex;
   gap: 5px;
   flex-direction: row;
-  border: 5px solid red;
 `;
 const StyledInventory = styled.div`
   display: grid;
@@ -114,6 +113,5 @@ const StyledInventory = styled.div`
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
   justify-items: center;
-  border: 5px solid blue;
 `;
 export default Inventory;
