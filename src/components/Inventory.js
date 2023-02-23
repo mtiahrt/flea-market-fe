@@ -53,17 +53,7 @@ const Inventory = () => {
   if (error) return <p>Error :(</p>;
   console.log('Item List data is :', data);
   return (
-    <>
-      <StyledInventory role="item-list">
-        {data.inventoriesList.filter(filterFunction).map((item) => (
-          <BasicCard
-            key={`card${item.id.toString()}`}
-            isItemInCart={item.cartsList.length ? true : false}
-            link={`DetailedItem/${item.id}`}
-            inventoryItem={item}
-          ></BasicCard>
-        ))}
-      </StyledInventory>
+    <StyledDiv>
       <InventoryFilter
         categories={
           data
@@ -99,14 +89,31 @@ const Inventory = () => {
         }
         dispatchFilter={dispatch}
       />
-    </>
+      <StyledInventory role="item-list">
+        {data.inventoriesList.filter(filterFunction).map((item) => (
+          <BasicCard
+            key={`card${item.id.toString()}`}
+            isItemInCart={item.cartsList.length ? true : false}
+            link={`DetailedItem/${item.id}`}
+            inventoryItem={item}
+          ></BasicCard>
+        ))}
+      </StyledInventory>
+    </StyledDiv>
   );
 };
+const StyledDiv = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  border: 5px solid red;
+`;
 const StyledInventory = styled.div`
   display: grid;
-  margin: 25px;
+  width: 100%;
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
   justify-items: center;
+  border: 5px solid blue;
 `;
 export default Inventory;

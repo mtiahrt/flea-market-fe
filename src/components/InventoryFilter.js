@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import styled from 'styled-components';
+import { NavBarContext } from '../contexts/NavBarContext';
 
 function InventoryFilter({ categories, dispatchFilter }) {
+  const { displayFilter } = useContext(NavBarContext);
   const handleChangeEventChecked = (categoryId, subcategoryId) => {
     dispatchFilter({ type: 'added_subcategory', categoryId, subcategoryId });
   };
@@ -27,7 +30,14 @@ function InventoryFilter({ categories, dispatchFilter }) {
   };
 
   return (
-    <div role="filter-selections">
+    <div
+      style={{
+        display: displayFilter ? 'flex' : 'none',
+        flexDirection: 'column',
+        border: '5px solid darkgoldenrod',
+      }}
+      role="filter-selections"
+    >
       {categories?.map((cat) => (
         <Accordion key={cat.id} role={cat.id}>
           <AccordionSummary
@@ -38,6 +48,7 @@ function InventoryFilter({ categories, dispatchFilter }) {
             <Typography>{cat.name}</Typography>
           </AccordionSummary>
           <FormControlLabel
+            style={{ marginLeft: '2px', marginBottom: '10px' }}
             value="All"
             control={
               <Switch

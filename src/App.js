@@ -15,28 +15,36 @@ import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
 import FleaMarketRoutes from './FleaMarketRoutes';
 import FleaMarketProvider from './FleaMarketProvider';
+import { NavBarContext } from './contexts/NavBarContext';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
+  const [displayFilter, setDisplayFilter] = useState(false);
   console.log('App component is rendering');
   return (
     <div className="App">
       <Router>
         <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
-          <FleaMarketProvider>
-            <NavBar>
-              <NavItemProfile imgURL={userProfile.photoURL} />
-              <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
-              <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
-              <NavItem isDropdown={true} url={''} icon={<PlusIcon />}>
-                <DropdownMenu />
-              </NavItem>
-              <NavItem url={'#'} icon={<FilterIcon />}></NavItem>
-            </NavBar>
-            <CartContextProvider>
-              <FleaMarketRoutes userProfile={userProfile} />
-            </CartContextProvider>
-          </FleaMarketProvider>
+          <NavBarContext.Provider value={{ displayFilter, setDisplayFilter }}>
+            <FleaMarketProvider>
+              <NavBar>
+                <NavItemProfile imgURL={userProfile.photoURL} />
+                <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
+                <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
+                <NavItem isDropdown={true} url={''} icon={<PlusIcon />}>
+                  <DropdownMenu />
+                </NavItem>
+                <NavItem
+                  clickHandler={() => setDisplayFilter(!displayFilter)}
+                  url={'#'}
+                  icon={<FilterIcon />}
+                ></NavItem>
+              </NavBar>
+              <CartContextProvider>
+                <FleaMarketRoutes userProfile={userProfile} />
+              </CartContextProvider>
+            </FleaMarketProvider>
+          </NavBarContext.Provider>
         </UserProfileContext.Provider>
       </Router>
     </div>
