@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
@@ -19,9 +19,10 @@ const Inventory = () => {
     },
     fetchPolicy: 'cache-and-network',
   });
+  const categories = useMemo(() => reduceCategories(data), [data]);
 
   useEffect(() => {
-    console.log('Item List use effect fired...');
+    console.log('Inventory use effect fired...');
     if (data?.inventoriesList && userProfile.isLoggedIn) {
       loadCartItems(
         data?.inventoriesList
@@ -39,7 +40,6 @@ const Inventory = () => {
   }, [userProfile.isLoggedIn, data]);
 
   const filterFunction = (inventoryItem) => {
-    console.log(inventoryItem);
     return state.length === 0
       ? true
       : state.some(
@@ -51,42 +51,42 @@ const Inventory = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log('Item List data is :', data);
+  console.log('Inventory is rendering');
+
+  function reduceCategories(data) {
+    if (!data) {
+      return [];
+    }
+    console.log('reduce fired');
+    const categoriesMap = data.inventoriesList.reduce((map, item) => {
+      const categoryId = item.subcategory.category.id;
+      const subcategoryId = item.subcategory.id;
+
+      if (!map.has(categoryId)) {
+        map.set(categoryId, {
+          id: categoryId,
+          name: item.subcategory.category.name,
+          subcategories: [],
+        });
+      }
+
+      const category = map.get(categoryId);
+      if (!category.subcategories.some((x) => x.id === subcategoryId)) {
+        category.subcategories.push({
+          id: subcategoryId,
+          name: item.subcategory.name,
+        });
+      }
+
+      return map;
+    }, new Map());
+
+    return Array.from(categoriesMap.values());
+  }
   return (
     <StyledDiv>
       <InventoryFilter
-        categories={
-          data
-            ? data.inventoriesList
-                //create objects category with its subcategories
-                .map((item) => ({
-                  id: item.subcategory.category.id,
-                  name: item.subcategory.category.name,
-                  subcategories: data.inventoriesList
-                    .filter(
-                      //match to only the category in question
-                      (x) =>
-                        x.subcategory.category.id ===
-                        item.subcategory.category.id
-                    ) //create unique list of subcategories
-                    .filter((obj, index, self) => {
-                      return (
-                        index ===
-                        self.findIndex(
-                          (t) => t.subcategoryId === obj.subcategoryId
-                        )
-                      );
-                    }) //build a subcategories array
-                    .map((x) => ({
-                      id: x.subcategory.id,
-                      name: x.subcategory.name,
-                    })),
-                })) //create a unique list of categories
-                .filter((obj, index, self) => {
-                  return index === self.findIndex((t) => t.id === obj.id);
-                })
-            : []
-        }
+        categories={categories ? categories : []}
         dispatchFilter={dispatch}
       />
       <StyledInventory role="item-list">

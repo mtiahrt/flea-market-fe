@@ -123,8 +123,6 @@ function DetailedItem() {
     }
   };
   console.log('detailItem component is rendering');
-  console.log('data is', data);
-
   return (
     <StyledDiv className="container">
       <StyledH2>Item Details</StyledH2>
