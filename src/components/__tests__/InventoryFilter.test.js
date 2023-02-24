@@ -46,7 +46,10 @@ describe('Inventory Filter tests', () => {
     setup();
     expect(screen.queryByRole('filter-selections')).toBeInTheDocument();
   });
-  const setup = () => render(<InventoryFilter categories={categoriesMock} />);
+  const setup = () =>
+    render(
+      <InventoryFilter dispatchFilter={() => {}} categories={categoriesMock} />
+    );
 
   it('renders without crashing', async () => {});
 });

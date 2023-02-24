@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import styled from 'styled-components';
 import { NavBarContext } from '../contexts/NavBarContext';
 
 function InventoryFilter({ categories, dispatchFilter }) {
