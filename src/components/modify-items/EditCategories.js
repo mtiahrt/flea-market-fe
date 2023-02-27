@@ -1,5 +1,6 @@
+import * as React from 'react';
+import { useForm, useFormState } from 'react-hook-form';
 import { useContext, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import {
@@ -10,18 +11,13 @@ import {
 } from '../../queries/graphQL';
 import styled from 'styled-components';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
-
 import { Button, InputLabel, MenuItem, Select } from '@mui/material';
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
-
-function EditCategories() {
+export default function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [proposedCategory, setProposedCategory] = useState('');
-  const [proposedSubcategory, setProposedSubcategory] = useState('');
   const [addSubcategory, setAddSubcategory] = useState(false);
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
   const [getSubcategories, { loading, error, data }] =
@@ -42,55 +38,25 @@ function EditCategories() {
     data: dataCategories,
   } = useQuery(GET_CATEGORIES);
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit, control, reset } = useForm({
+    defaultValues: {
+      category: '',
+    },
+  });
+
+  const { dirtyFields } = useFormState({
+    control,
+  });
+
   const onError = () => {
     console.error('Error in form submission');
-  };
-  const handleNewItemSubmit = (data) => {
-    addCategory
-      ? insertCategory({ variables: { name: data.category } }).then(
-          ({
-            data: {
-              createCategory: { category },
-            },
-          }) => {
-            setCategories([
-              ...categories,
-              {
-                id: category.id,
-                name: category.name,
-              },
-            ]);
-            setProposedCategory('');
-          }
-        )
-      : insertSubcategory({
-          variables: { categoryId: data.categoryId, name: data.subcategory },
-        }).then(
-          ({
-            data: {
-              createSubcategory: { subcategory },
-            },
-          }) => {
-            setSubcategories([
-              ...subcategories,
-              { name: subcategory.name, id: subcategory.id },
-            ]);
-            setProposedSubcategory('');
-          }
-        );
   };
   const handleClearForm = () => {
     setAddCategory(false);
     setToggleAddOptions(false);
     setAddSubcategory(false);
     setCategoryOptionSelected(false);
-    setProposedCategory('');
-    setProposedSubcategory('');
+    reset();
   };
   const handleAddSubcategoryCategorySelectChange = (e) => {
     const categoryId = +e.target.value;
@@ -118,10 +84,38 @@ function EditCategories() {
     }
   }, [data]);
 
-  const handleTextChangeInput = (e, setterFn) => {
-    setterFn(e.target.value);
+  const handleNewItemSubmit = (data) => {
+    addCategory
+      ? insertCategory({ variables: { name: data.category } }).then(
+          ({
+            data: {
+              createCategory: { category },
+            },
+          }) => {
+            setCategories([
+              ...categories,
+              {
+                id: category.id,
+                name: category.name,
+              },
+            ]);
+          }
+        )
+      : insertSubcategory({
+          variables: { categoryId: data.categoryId, name: data.subcategory },
+        }).then(
+          ({
+            data: {
+              createSubcategory: { subcategory },
+            },
+          }) => {
+            setSubcategories([
+              ...subcategories,
+              { name: subcategory.name, id: subcategory.id },
+            ]);
+          }
+        );
   };
-
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
   return (
@@ -137,32 +131,36 @@ function EditCategories() {
       </StyledIconButton>
       {toggleAddOptions && (
         <div role="dropdown-options">
-          <option
+          <Button
+            style={{ display: 'block' }}
             role="category-selection"
-            data-testid="category-selection"
             onClick={() => setAddCategory(!addCategory)}
+            href="#"
           >
             Add Category
-          </option>
-          <option
+          </Button>
+          <Button
+            disabled={dirtyFields.category ? true : false}
+            style={{ display: 'block' }}
             role="subcategory-selection"
-            data-testid="subcategory-selection"
             onClick={() => setAddSubcategory(!addSubcategory)}
+            href="#"
           >
             Add Subcategory
-          </option>
+          </Button>
         </div>
       )}
       {addCategory && (
         <div role="add-category">
-          {categories.map((category) => {
-            return <h4 key={category.id}>{category.name}</h4>;
-          })}
+          <ul>
+            {categories.map((category) => {
+              return <li key={category.id}>{category.name}</li>;
+            })}
+          </ul>
           <input
-            {...register('category', { required: false })}
+            {...register('category')}
+            placeholder="Add Category"
             role="category"
-            onChange={(e) => handleTextChangeInput(e, setProposedCategory)}
-            value={proposedCategory}
           />
         </div>
       )}
@@ -188,22 +186,19 @@ function EditCategories() {
 
           {categoryOptionSelected && (
             <>
-              {subcategories.map((sub) => (
-                <h4 key={sub.id}>{sub.name}</h4>
-              ))}
+              <ul>
+                {subcategories.map((sub) => (
+                  <li key={sub.id}>{sub.name}</li>
+                ))}
+              </ul>
               <input
                 {...register('subcategory', { required: false })}
                 role="subcategory"
-                onChange={(e) =>
-                  handleTextChangeInput(e, setProposedSubcategory)
-                }
-                value={proposedSubcategory}
               />
             </>
           )}
         </div>
       )}
-
       <Button type="submit" variant="contained">
         Submit
       </Button>
@@ -217,6 +212,7 @@ function EditCategories() {
     </StyledForm>
   );
 }
+
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -242,4 +238,12 @@ const StyledIconButton = styled.a`
     }
   }
 `;
-export default EditCategories;
+const StyledLink = styled.a`
+  display: block;
+  color: #1976d2;
+  font-size: 1.4em;
+  margin-bottom: 0.6em;
+  :hover {
+    color: #7fb0e2;
+  }
+`;

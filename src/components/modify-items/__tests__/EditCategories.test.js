@@ -86,6 +86,9 @@ const apolloMock = [
 ];
 
 describe('Edit Categories tests', () => {
+  beforeEach(() => {
+    setup();
+  });
   const setup = () =>
     render(
       <MockedProvider mocks={apolloMock}>
@@ -98,11 +101,7 @@ describe('Edit Categories tests', () => {
     );
 
   const clickSubcategoryAddOption = () =>
-    userEvent.click(
-      screen.getByTestId('subcategory-selection', {
-        hidden: true,
-      })
-    );
+    userEvent.click(screen.getByRole('subcategory-selection'));
 
   const clickCancelButton = () =>
     userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
@@ -114,13 +113,11 @@ describe('Edit Categories tests', () => {
   }
 
   it('renders without crashing', async () => {
-    setup();
     expect(await screen.findByText('Loading...')).toBeInTheDocument();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
   });
 
   it('renders categories and subcategories dropdown options when plus button is clicked', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     clickPlusButton();
     //did the dropdown render
@@ -129,14 +126,12 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding a category - renders category input and existing categories when category dropdown is selected', async () => {
-    setup();
+    // setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     //page rendered now get the plus button
     clickPlusButton();
     //click the category option
-    const categoryDropdown = screen.getByTestId('category-selection', {
-      hidden: true,
-    });
+    const categoryDropdown = screen.getByRole('category-selection');
     userEvent.click(categoryDropdown);
     //Is the category input rendered
     expect(screen.getByRole('category', { hidden: true })).toBeInTheDocument();
@@ -144,7 +139,6 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding subcategory - renders existing categories dropdown and options when add subcategory is selected', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     //page rendered now get the plus button
     clickPlusButton();
@@ -164,7 +158,6 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding subcategory - user must select a category first', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     clickPlusButton();
     clickSubcategoryAddOption();
@@ -173,13 +166,10 @@ describe('Edit Categories tests', () => {
   });
 
   it('clears the screen back to a plus sign when cancel is clicked', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     const plusIcon = clickPlusButton();
     //click the category option
-    const categoryDropdown = screen.getByTestId('category-selection', {
-      hidden: true,
-    });
+    const categoryDropdown = screen.getByRole('category-selection');
     userEvent.click(categoryDropdown);
     clickCancelButton();
     //is the form cleared
@@ -207,7 +197,6 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding subcategory - subcategory input is disabled if no category is selected', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     clickPlusButton();
     clickSubcategoryAddOption();
@@ -230,12 +219,9 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding category - New category is added to the list', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     clickPlusButton();
-    const categoryDropdown = screen.getByTestId('category-selection', {
-      hidden: true,
-    });
+    const categoryDropdown = screen.getByRole('category-selection');
     userEvent.click(categoryDropdown);
     const categoryInput = screen.getByRole('category');
     userEvent.type(
@@ -248,7 +234,6 @@ describe('Edit Categories tests', () => {
   });
 
   it('Adding subcategory - New subcategory is added to the list', async () => {
-    setup();
     expect(await screen.findByText('Submit')).toBeInTheDocument();
     clickPlusButton();
     clickSubcategoryAddOption();
