@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useForm, useFormState } from 'react-hook-form';
+import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useContext, useEffect, useState } from 'react';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
 import { Button, InputLabel, MenuItem, Select } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { FormInputDropdown } from '../shared/FormInputDropdown';
 export default function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
@@ -41,6 +42,7 @@ export default function EditCategories() {
   const { register, handleSubmit, control, reset } = useForm({
     defaultValues: {
       category: '',
+      categoryId: '',
     },
   });
 
@@ -102,7 +104,10 @@ export default function EditCategories() {
           }
         )
       : insertSubcategory({
-          variables: { categoryId: data.categoryId, name: data.subcategory },
+          variables: {
+            categoryId: data.categoryId.props.value,
+            name: data.subcategory,
+          },
         }).then(
           ({
             data: {
@@ -132,6 +137,7 @@ export default function EditCategories() {
       {toggleAddOptions && (
         <div role="dropdown-options">
           <Button
+            disabled={dirtyFields.categoryId ? true : false}
             style={{ display: 'block' }}
             role="category-selection"
             onClick={() => setAddCategory(!addCategory)}
@@ -148,8 +154,10 @@ export default function EditCategories() {
           >
             Add Subcategory
           </Button>
+          <p>{dirtyFields.category}</p>
         </div>
       )}
+
       {addCategory && (
         <div role="add-category">
           <ul>
@@ -167,23 +175,18 @@ export default function EditCategories() {
       {addSubcategory && (
         <div role="add-subcategory">
           <InputLabel id="quantity-select-label">Select Category</InputLabel>
-          <Select
-            {...register('categoryId', { required: false })}
-            labelId="category-select-label"
-            label="Category"
-            onChange={handleAddSubcategoryCategorySelectChange}
-          >
-            {dataCategories.categoriesList.map((category) => (
-              <MenuItem
-                role="add-subcategory-category-option"
-                key={category.id}
-                value={category.id}
-              >
-                {category.name}
-              </MenuItem>
-            ))}
-          </Select>
-
+          <FormInputDropdown
+            name="categoryId"
+            control={control}
+            options={dataCategories.categoriesList.map((x) => ({
+              roleName: 'add-subcategory-category-option',
+              key: x.id,
+              value: x.id,
+              label: x.name,
+            }))}
+            changeHandler={handleAddSubcategoryCategorySelectChange}
+            label="Select Category"
+          />
           {categoryOptionSelected && (
             <>
               <ul>
