@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Controller, useForm, useFormState } from 'react-hook-form';
+import { useForm, useFormState, Controller } from 'react-hook-form';
 import { useContext, useEffect, useState } from 'react';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
@@ -11,18 +11,22 @@ import {
 } from '../../queries/graphQL';
 import styled from 'styled-components';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
-import { Button, InputLabel, MenuItem, Select } from '@mui/material';
+import { ReactComponent as MinusIcon } from '../../icons/minus.svg';
+import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { FormInputDropdown } from '../shared/FormInputDropdown';
+import TextField from '@mui/material/TextField';
 export default function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
   const [addSubcategory, setAddSubcategory] = useState(false);
+  const [subcategories, setSubcategories] = useState([]);
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
-  const [getSubcategories, { loading, error, data }] =
-    useLazyQuery(GET_SUBCATEGORIES);
+  const [getSubcategories, { loading, error, data }] = useLazyQuery(
+    GET_SUBCATEGORIES,
+    { fetchPolicy: 'cache-and-network' }
+  );
   const [
     insertCategory,
     { dataAddCategory, loadingAddCategory, errorAddCategory },
@@ -45,11 +49,6 @@ export default function EditCategories() {
       categoryId: '',
     },
   });
-
-  const { dirtyFields } = useFormState({
-    control,
-  });
-
   const onError = () => {
     console.error('Error in form submission');
   };
@@ -67,6 +66,25 @@ export default function EditCategories() {
       setCategoryOptionSelected(true);
     }
   };
+  const StyledIconButton = styled.a`
+     {
+      display: ${addCategory || addSubcategory ? 'none' : 'flex'};
+      --button-size: calc(var(--nav-size) * 0.5);
+      width: var(--button-size);
+      height: var(--button-size);
+      background-color: #b9bcc0;
+      border-radius: 50%;
+      padding: 5px;
+      margin: 2px;
+      align-items: center;
+      justify-content: center;
+      transition: filter 300ms;
+      :hover {
+        filter: brightness(1.2);
+      }
+    }
+  `;
+
   useEffect(() => {
     if (dataCategories?.categoriesList) {
       setCategories(
@@ -123,6 +141,7 @@ export default function EditCategories() {
   };
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
+
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
       <Typography variant="h4" gutterBottom>
@@ -134,10 +153,13 @@ export default function EditCategories() {
           onClick={() => setToggleAddOptions(!toggleAddOptions)}
         />
       </StyledIconButton>
+      <StyledIconButton style={{ display: 'none' }}>
+        <MinusIcon role="minus-icon" />
+      </StyledIconButton>
       {toggleAddOptions && (
         <div role="dropdown-options">
           <Button
-            disabled={dirtyFields.categoryId ? true : false}
+            disabled={addSubcategory}
             style={{ display: 'block' }}
             role="category-selection"
             onClick={() => setAddCategory(!addCategory)}
@@ -146,7 +168,7 @@ export default function EditCategories() {
             Add Category
           </Button>
           <Button
-            disabled={dirtyFields.category ? true : false}
+            disabled={addCategory}
             style={{ display: 'block' }}
             role="subcategory-selection"
             onClick={() => setAddSubcategory(!addSubcategory)}
@@ -154,28 +176,29 @@ export default function EditCategories() {
           >
             Add Subcategory
           </Button>
-          <p>{dirtyFields.category}</p>
         </div>
       )}
 
       {addCategory && (
         <div role="add-category">
-          <ul>
+          <StyledH3>Categories:</StyledH3>
+          <StyledUl>
             {categories.map((category) => {
-              return <li key={category.id}>{category.name}</li>;
+              return <StyledLi key={category.id}>{category.name}</StyledLi>;
             })}
-          </ul>
-          <input
-            {...register('category')}
-            placeholder="Add Category"
+          </StyledUl>
+          <TextField
+            fullWidth
+            {...register('category', { required: true, minLength: 1 })}
+            placeholder="New Category"
             role="category"
           />
         </div>
       )}
       {addSubcategory && (
         <div role="add-subcategory">
-          <InputLabel id="quantity-select-label">Select Category</InputLabel>
           <FormInputDropdown
+            label="Category"
             name="categoryId"
             control={control}
             options={dataCategories.categoriesList.map((x) => ({
@@ -185,16 +208,18 @@ export default function EditCategories() {
               label: x.name,
             }))}
             changeHandler={handleAddSubcategoryCategorySelectChange}
-            label="Select Category"
           />
           {categoryOptionSelected && (
             <>
-              <ul>
+              <StyledH3>Subcategories:</StyledH3>
+              <StyledUl>
                 {subcategories.map((sub) => (
-                  <li key={sub.id}>{sub.name}</li>
+                  <StyledLi key={sub.id}>{sub.name}</StyledLi>
                 ))}
-              </ul>
-              <input
+              </StyledUl>
+              <TextField
+                label="New Subcategory"
+                fullWidth
                 {...register('subcategory', { required: false })}
                 role="subcategory"
               />
@@ -222,31 +247,16 @@ const StyledForm = styled.form`
   gap: 1rem;
   margin: 0 20%;
 `;
-
-const StyledIconButton = styled.a`
-   {
-    --button-size: calc(var(--nav-size) * 0.5);
-    width: var(--button-size);
-    height: var(--button-size);
-    background-color: #b9bcc0;
-    border-radius: 50%;
-    padding: 5px;
-    margin: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: filter 300ms;
-    :hover {
-      filter: brightness(1.2);
-    }
-  }
+const StyledH3 = styled.h3`
+  margin: 0;
 `;
-const StyledLink = styled.a`
-  display: block;
-  color: #1976d2;
-  font-size: 1.4em;
-  margin-bottom: 0.6em;
-  :hover {
-    color: #7fb0e2;
-  }
+const StyledUl = styled.ul`
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  font-size: large;
+  margin: 0.6em 0 1em 0.6em;
+`;
+const StyledLi = styled.li`
+  margin-bottom: 0.3em;
 `;

@@ -230,7 +230,11 @@ describe('Edit Categories tests', () => {
     );
     //submit
     userEvent.click(screen.getByRole('button', { name: 'Submit' }));
-    expect(await screen.findByText(categoryInput.value)).toBeInTheDocument();
+    expect(
+      await screen.findByText(
+        addCategoryMock.result.data.createCategory.category.name
+      )
+    ).toBeInTheDocument();
   });
 
   it('Adding subcategory - New subcategory is added to the list', async () => {

@@ -56,7 +56,7 @@ export const ADD_SUBCATEGORY = gql`
 export const GET_SUBCATEGORIES = gql`
   query ($categoryId: Int!) {
     category(id: $categoryId) {
-      subcategoriesList {
+      subcategoriesList(orderBy: NAME_ASC) {
         description
         name
         id

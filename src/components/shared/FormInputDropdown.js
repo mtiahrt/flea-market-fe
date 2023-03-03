@@ -28,15 +28,20 @@ export const FormInputDropdown = ({
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <Select
-          onChange={(e, newValue) => {
-            onChange(newValue);
-            changeHandler(e);
-          }}
-          label={'Category'}
-        >
-          {generateSelectOptions()}
-        </Select>
+        <FormControl fullWidth={true}>
+          <InputLabel id="form-input-label">{label}</InputLabel>
+          <Select
+            labelId="form-input-label"
+            label={label}
+            style={{ marginBottom: '1em' }}
+            onChange={(e, newValue) => {
+              onChange(newValue);
+              changeHandler(e);
+            }}
+          >
+            {generateSelectOptions()}
+          </Select>
+        </FormControl>
       )}
     />
   );
