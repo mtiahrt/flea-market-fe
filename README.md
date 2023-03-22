@@ -1,4 +1,4 @@
-zz# Getting Started
+## Setting up Development environment
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 To get started first install on the app using node.  Open a command line prompt and type:
 This Repo depends on the BE being set up already.  If you have not done so start there first.  
@@ -34,7 +34,7 @@ In keychain access
 2. double-click on the local host cert
 3. expand the `Trust` option 
 4. Select "When using this certificate: Always Trust"  
-   - This should set all the drop downs items to "Always Trust"
+   - This should set all the dropdowns items to "Always Trust"
 5. save and close
 6. close and restart chrome.
 
@@ -45,3 +45,16 @@ Open [https://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+## Production Environment
+The front end app is stored on a S3 bucket on AWS.  This bucket is private and only
+accessible through AWS Cloudfront service.  The Cloudfront service will distribute the 
+React files to the requesting browser over https.  The SSL cert was created using AWS Certificate manager.
+The domain was purchased on www.GoDaddy.com.  I changed the nameservers on GoDaddy to the 
+values I received from Cloudfront.  
+
+I followed this tutorial to set up the production
+environment for this app.  [Deploy React App to CloudFront with HTTPS Custom Domain
+](https://www.youtube.com/watch?v=lPVgfSXTE1Y&list=WL&index=3&ab_channel=SamMeech-Ward)
+All environment variables stored in these files .env is ok to be served to the browser.  
+They are public values, and they alone will not give unauthorized access. 

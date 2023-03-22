@@ -50,7 +50,7 @@ export default function AddItem() {
   const [
     getSubcategories,
     { loading: loadingSubs, error: errorSubs, data: dataSubs },
-  ] = useLazyQuery(GET_SUBCATEGORIES);
+  ] = useLazyQuery(GET_SUBCATEGORIES, { fetchPolicy: 'cache-and-network' });
 
   const onError = () => {
     console.error('Error in form submission');
