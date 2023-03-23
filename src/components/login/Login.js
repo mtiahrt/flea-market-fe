@@ -51,7 +51,7 @@ export default function Login() {
       const userAuth = await signInWithPopup(auth, authProvider);
       axios
         .post(
-          `https://localhost:8080/user/generateAccessToken`,
+          `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/generateAccessToken`,
           {},
           {
             headers: {

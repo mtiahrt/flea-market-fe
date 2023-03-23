@@ -75,14 +75,17 @@ export default function ShoppingCart() {
       return { cartId: i.cartId, inventoryItem: true };
     });
     requestBody.push({ shippingId: shippingCost.id, inventoryItem: false });
-    fetch('https://localhost:8080/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Token': userProfile.accessToken,
-      },
-      body: JSON.stringify(requestBody),
-    })
+    fetch(
+      `${process.env.REACT_APP_BACKEND_SERVER_URI}/create-checkout-session`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Token': userProfile.accessToken,
+        },
+        body: JSON.stringify(requestBody),
+      }
+    )
       .then((res) => {
         if (res.ok) return res.json();
         return res.json().then((json) => Promise.reject(json));

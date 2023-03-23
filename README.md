@@ -10,7 +10,7 @@ First clone this repo
 followed by 
 `npm install`
 
-
+Create env file.  ```.env.development```
 ### SSL certs
 You will need to add the ssl cert that was created for the Node backend app to be added to this project also.  2 key value pairs in the .env.example need to be added to the .env file. 
 ```
@@ -52,6 +52,8 @@ accessible through AWS Cloudfront service.  The Cloudfront service will distribu
 React files to the requesting browser over https.  The SSL cert was created using AWS Certificate manager.
 The domain was purchased on www.GoDaddy.com.  I changed the nameservers on GoDaddy to the 
 values I received from Cloudfront.  
+
+Create env file.  ```.env.production```  remove the values mentioned in the ```env.example```
 
 I followed this tutorial to set up the production
 environment for this app.  [Deploy React App to CloudFront with HTTPS Custom Domain

@@ -14,7 +14,7 @@ const ImagesTile = ({ fileDataURL, deleteHandler, allowDelete }) => {
             {allowDelete && (
               <a
                 onClick={() => deleteHandler(item.publicId, item.id)}
-                href="src/components/sharedComponents#"
+                href="#"
                 className="close image-delete"
               >
                 X

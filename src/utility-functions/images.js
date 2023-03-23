@@ -17,7 +17,7 @@ export const postImage = async (image, accessToken) => {
 
 const getSecureURL = async (accessToken) => {
   return axios
-    .get('https://localhost:8080/secureImageURL', {
+    .get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/secureImageURL`, {
       headers: { 'Access-Token': accessToken },
     })
     .then((response) => response.data);
@@ -25,9 +25,12 @@ const getSecureURL = async (accessToken) => {
 
 const getSecureDeleteURL = async (publicId, accessToken) => {
   return axios
-    .get(`https://localhost:8080/secureImageDeleteURL/?publicId=${publicId}`, {
-      headers: { 'Access-Token': accessToken },
-    })
+    .get(
+      `${process.env.REACT_APP_BACKEND_SERVER_URI}/secureImageDeleteURL/?publicId=${publicId}`,
+      {
+        headers: { 'Access-Token': accessToken },
+      }
+    )
     .then((x) => x.data);
 };
 

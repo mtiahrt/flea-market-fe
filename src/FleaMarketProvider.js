@@ -10,7 +10,7 @@ import {
 import { useContext } from 'react';
 
 const httpLink = new HttpLink({
-  uri: process.env[`REACT_APP_${process.env.NODE_ENV}_GRAPHQL_END_POINT_URI`],
+  uri: process.env.REACT_APP_GRAPHQL_END_POINT_URI,
 });
 const FleaMarketProvider = ({ children }) => {
   const { userProfile } = useContext(UserProfileContext);
