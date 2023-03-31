@@ -18,7 +18,7 @@ SSL_CRT_FILE=server.cert
 SSL_KEY_FILE=server.key
 ```
  Add Server.cert and server.key to the root of this project.  This should be a copy of the files you generated for the Backend project.  
- Next you will have to add the cert to the mac key chain of the development machine.  You will do this by going into 
+ Next you will have to add the cert to the mac keychain of the development machine.  You will do this by going into 
  Chrome settings/Privacy and security/Security/Manage certificates.  This will bring up the keychain access.
 ### Facebook and Google OAuth
 environment variables for firebase are in the env file.  Facebook appId and app secret are in Firebase under Authentication.  Facebook needs the redirect URI you get from Firebase.  This redirect from firebase has to be added in Facebook for developers site.  Click facebook login/settings under "Valid OAuth Redirect URIs"
@@ -59,4 +59,13 @@ I followed this tutorial to set up the production
 environment for this app.  [Deploy React App to CloudFront with HTTPS Custom Domain
 ](https://www.youtube.com/watch?v=lPVgfSXTE1Y&list=WL&index=3&ab_channel=SamMeech-Ward)
 All environment variables stored in these files .env is ok to be served to the browser.  
-They are public values, and they alone will not give unauthorized access. 
+They are public values, and they alone will not give unauthorized access.
+
+## Deployment
+This app can be deployed through npm commands.  Before that is done you will need to set up the CLI on your machine.  [Install AWS CLI.](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+The IAM user used to update the s3 bucket is  `app-sync-s3`.  You will need to create an access key in AWS to finish the CLI configuration.  
+This can be completed in 4 easy steps.
+1. Commit your changes to the git repo
+2. Build the app by running `npm run build` This creates the package bundles in the build folder.  These files need to be uploaded to S3.
+3. Upload the files `npm run sync` 
+4. To make these changes visible immediately the cloudfront cache need to be refreshed. `npm run invalidate`
