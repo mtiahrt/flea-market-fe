@@ -25,7 +25,7 @@ export default function EditCategories() {
   const [categoryOptionSelected, setCategoryOptionSelected] = useState(false);
   const [getSubcategories, { loading, error, data }] = useLazyQuery(
     GET_SUBCATEGORIES,
-    { fetchPolicy: 'cache-and-network' }
+    { fetchPolicy: 'network-only' }
   );
   const [
     insertCategory,

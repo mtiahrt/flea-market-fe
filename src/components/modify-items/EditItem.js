@@ -38,12 +38,14 @@ const EditItem = () => {
   const { id } = useParams();
   const location = useLocation();
   const { fileDataURL, isInCart } = location.state ? location.state : [];
-  const saleId = +id;
+  const inventoryId = +id;
   const {
     loading: loadinginventory,
     error: errorinventory,
     data: datainventory,
-  } = useQuery(GET_SALE_ITEM_AND_CATEGORIES, { variables: { saleId } });
+  } = useQuery(GET_SALE_ITEM_AND_CATEGORIES, {
+    variables: { saleId: inventoryId },
+  });
 
   const [categoryId, setCategoryId] = useState(
     datainventory?.inventory.subcategory.category.id
@@ -97,12 +99,12 @@ const EditItem = () => {
 
   const handleEditItemImage = (values) => {
     if (values.length > 1) {
-      return saveItemImage(saleId, values, addItemImage);
+      return saveItemImage(inventoryId, values, addItemImage);
     }
   };
 
   const handleEditInventory = (data) => {
-    return saveInventory(saleId, data, editinventory);
+    return saveInventory(inventoryId, data, editinventory);
   };
 
   const handleCategorySelectChange = (e) => {
@@ -116,7 +118,7 @@ const EditItem = () => {
 
   const deleteInventoryItem = () => {
     deleteInventory({
-      variables: { id: saleId },
+      variables: { id: inventoryId },
     }).then(() => console.log('Item deleted successfully'));
     history.push(`/`);
   };
@@ -251,7 +253,12 @@ const EditItem = () => {
           Save
         </Button>
         <Button
-          onClick={() => history.push(`/DetailedItem/${saleId}`, { isInCart })}
+          onClick={() =>
+            history.push(`/DetailedItem/${inventoryId}`, {
+              isInCart,
+              inventoryId,
+            })
+          }
           style={{ backgroundColor: '#B8BDBB' }}
           variant="contained"
         >
