@@ -25,9 +25,6 @@ const FleaMarketRoutes = ({ userProfile }) => {
           <Login />
         </Modal>
       </Route>
-      <Route path="/Profile">
-        <Profile userProfile={userProfile} />
-      </Route>
       <Route path="/DetailedItem/:id" children={<DetailedItem />}></Route>
       <Route path="/AddItem" children={<AddItem />}></Route>
       <Route path="/CheckOut" children={<CheckOut />}></Route>

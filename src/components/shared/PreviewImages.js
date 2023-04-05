@@ -38,15 +38,22 @@ const PreviewImages = ({ fileDataURL: urls }) => {
       });
     }
   }
+  const imageIsNotLocal = (imageId) => {
+    const image = fileDataURL.find((x) => x.id === imageId);
+    const result = new URL(image.url);
+    return result?.hostname ? true : false;
+  };
 
   const deleteImage = (publicId, imageId) => {
     const promises = [];
-    promises.push(deleteImageFromS3(publicId, userProfile.accessToken));
-    promises.push(
-      deleteItemImage({
-        variables: { id: imageId },
-      })
-    );
+    if (imageIsNotLocal(imageId)) {
+      promises.push(deleteImageFromS3(publicId, userProfile.accessToken));
+      promises.push(
+        deleteItemImage({
+          variables: { id: imageId },
+        })
+      );
+    }
     Promise.all(promises).then(
       setFileDataURL((prev) => prev.filter((item) => item.id !== imageId))
     );

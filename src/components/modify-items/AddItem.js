@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useContext, useState, useEffect } from 'react';
+import { useForm, useFormState } from 'react-hook-form';
 import {
   Button,
   InputAdornment,
@@ -36,7 +36,12 @@ export default function AddItem() {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
+    control,
   } = useForm();
+  const { isSubmitSuccessful } = useFormState({
+    control,
+  });
   const [addInventory, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] =
     useMutation(ADD_ITEM_IMAGE);
@@ -100,7 +105,17 @@ export default function AddItem() {
   const handleSubcategorySelectChange = (e) => {
     setSubcategory(+e.target.value);
   };
+  const handleClearForm = () => {
+    setCategory(-1);
+    setSubcategory(-1);
+    reset();
+  };
   console.log('Add Item is rendering...');
+
+  useEffect(() => {
+    handleClearForm();
+  }, [isSubmitSuccessful]);
+
   if (loadingCategories) return 'Loading...';
   if (errorCategories) return `Error! ${errorCategories.message}`;
 
@@ -193,7 +208,7 @@ export default function AddItem() {
         Submit
       </Button>
       <Button
-        onClick={() => history.push(`/`)}
+        onClick={handleClearForm}
         style={{ backgroundColor: '#B8BDBB' }}
         variant="contained"
       >

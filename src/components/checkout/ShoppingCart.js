@@ -91,7 +91,7 @@ export default function ShoppingCart() {
         return res.json().then((json) => Promise.reject(json));
       })
       .then(({ url }) => {
-        //todo: send to handled route
+        //todo: send to handled successful purchase route
         window.location = url;
       })
       .catch((e) => {

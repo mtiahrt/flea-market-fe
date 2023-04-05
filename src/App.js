@@ -29,15 +29,22 @@ function App() {
             <FleaMarketProvider>
               <NavBar>
                 <NavItemProfile imgURL={userProfile.photoURL} />
-                <NavItem url={'#'} icon={<HomeIcon />}></NavItem>
-                <NavItem url={'CheckOut'} icon={<ShoppingCartIcon />}></NavItem>
-                <NavItem isDropdown={true} url={''} icon={<PlusIcon />}>
+                <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
+                <NavItem
+                  url={'CheckOut'}
+                  icon={<ShoppingCartIcon name="shoppingCart" />}
+                ></NavItem>
+                <NavItem
+                  isDropdown={true}
+                  url={''}
+                  icon={<PlusIcon name="plus" />}
+                >
                   <DropdownMenu />
                 </NavItem>
                 <NavItem
                   clickHandler={() => setDisplayFilter(!displayFilter)}
                   url={'#'}
-                  icon={<FilterIcon />}
+                  icon={<FilterIcon name="filter" />}
                 ></NavItem>
               </NavBar>
               <CartContextProvider>

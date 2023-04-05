@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const NavItem = (props) => {
   const [open, setOpen] = useState(false);
   const handleClickEvent = (e) => {
+    props.setActive(props.icon?.props.name);
     if (props.isDropdown) {
       setOpen(!open);
     }
@@ -14,7 +15,15 @@ const NavItem = (props) => {
 
   return (
     <li onClick={handleClickEvent} className="nav-item">
-      <Link to={props.url ? `/${props.url}` : '#'} className="icon-button">
+      <Link
+        name={props.name}
+        to={props.url ? `/${props.url}` : '#'}
+        className={
+          props.isActive === props.icon.props.name
+            ? 'icon-button active'
+            : 'icon-button'
+        }
+      >
         {props.icon}
       </Link>
       {open && props.children}

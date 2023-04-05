@@ -84,6 +84,10 @@ html {
   justify-content: center;
   transition: filter 300ms;
 }
+.icon-button.active {
+  border: 2px solid #1976d2;
+  --button-size: calc(var(--nav-size) * 0.6);
+}
 
 .icon-button:hover {
   filter: brightness(1.2);

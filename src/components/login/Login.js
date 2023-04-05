@@ -60,6 +60,8 @@ export default function Login() {
           }
         )
         .then((token) => {
+          // console.log('auth token', userAuth.user.accessToken);
+          // console.log('access token', token.data);
           updateUserContext(userAuth.user, token.data);
         });
     } catch (error) {

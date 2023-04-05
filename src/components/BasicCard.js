@@ -34,6 +34,7 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   const inventoryId = inventoryItem.id;
 
   function handleCartClick() {
+    //TODO: Add snackbar messaging
     isInCart
       ? removeFromCart(cartId, () =>
           deleteingCartItem({ variables: { cartId } })
