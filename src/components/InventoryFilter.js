@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,10 +6,10 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import { NavBarContext } from '../contexts/NavBarContext';
 
 function InventoryFilter({ categories, dispatchFilter }) {
-  const { displayFilter } = useContext(NavBarContext);
+  const [displayFilter, setDisplayFilter] = useState(false);
+
   const handleChangeEventChecked = (categoryId, subcategoryId) => {
     dispatchFilter({ type: 'added_subcategory', categoryId, subcategoryId });
   };

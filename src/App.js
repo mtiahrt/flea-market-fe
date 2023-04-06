@@ -6,7 +6,7 @@ import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
-import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
+// import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
 
 import { useState } from 'react';
 import { UserProfileContext } from './contexts/UserContext';
@@ -15,43 +15,34 @@ import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
 import FleaMarketRoutes from './FleaMarketRoutes';
 import FleaMarketProvider from './FleaMarketProvider';
-import { NavBarContext } from './contexts/NavBarContext';
 
 function App() {
   const [userProfile, setUserProfile] = useState({});
-  const [displayFilter, setDisplayFilter] = useState(false);
   console.log('App component is rendering');
   return (
     <div className="App">
       <Router>
         <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
-          <NavBarContext.Provider value={{ displayFilter, setDisplayFilter }}>
-            <FleaMarketProvider>
-              <NavBar>
-                <NavItemProfile imgURL={userProfile.photoURL} />
-                <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
-                <NavItem
-                  url={'CheckOut'}
-                  icon={<ShoppingCartIcon name="shoppingCart" />}
-                ></NavItem>
-                <NavItem
-                  isDropdown={true}
-                  url={''}
-                  icon={<PlusIcon name="plus" />}
-                >
-                  <DropdownMenu />
-                </NavItem>
-                <NavItem
-                  clickHandler={() => setDisplayFilter(!displayFilter)}
-                  url={'#'}
-                  icon={<FilterIcon name="filter" />}
-                ></NavItem>
-              </NavBar>
-              <CartContextProvider>
-                <FleaMarketRoutes userProfile={userProfile} />
-              </CartContextProvider>
-            </FleaMarketProvider>
-          </NavBarContext.Provider>
+          <FleaMarketProvider>
+            <NavBar>
+              <NavItemProfile imgURL={userProfile.photoURL} />
+              <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
+              <NavItem
+                url={'CheckOut'}
+                icon={<ShoppingCartIcon name="shoppingCart" />}
+              ></NavItem>
+              <NavItem
+                isDropdown={true}
+                url={''}
+                icon={<PlusIcon name="plus" />}
+              >
+                <DropdownMenu />
+              </NavItem>
+            </NavBar>
+            <CartContextProvider>
+              <FleaMarketRoutes userProfile={userProfile} />
+            </CartContextProvider>
+          </FleaMarketProvider>
         </UserProfileContext.Provider>
       </Router>
     </div>

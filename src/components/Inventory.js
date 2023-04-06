@@ -8,6 +8,7 @@ import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
+import { ReactComponent as FilterIcon } from '../icons/filter-solid.svg';
 
 const Inventory = () => {
   const [state, dispatch] = useReducer(filterReducer, []);
@@ -84,24 +85,41 @@ const Inventory = () => {
     return Array.from(categoriesMap.values());
   }
   return (
-    <StyledDiv>
-      <InventoryFilter
-        categories={categories ? categories : []}
-        dispatchFilter={dispatch}
-      />
-      <StyledInventory role="item-list">
-        {data.inventoriesList.filter(filterFunction).map((item) => (
-          <BasicCard
-            key={`card${item.id.toString()}`}
-            isItemInCart={item.cartsList.length ? true : false}
-            link={`DetailedItem/${item.id}`}
-            inventoryItem={item}
-          ></BasicCard>
-        ))}
-      </StyledInventory>
-    </StyledDiv>
+    <>
+      <StyledFilterIcon name="filter" />
+      <StyledDiv>
+        <InventoryFilter
+          categories={categories ? categories : []}
+          dispatchFilter={dispatch}
+        />
+        <StyledInventory role="item-list">
+          {data.inventoriesList.filter(filterFunction).map((item) => (
+            <BasicCard
+              key={`card${item.id.toString()}`}
+              isItemInCart={item.cartsList.length ? true : false}
+              link={`DetailedItem/${item.id}`}
+              inventoryItem={item}
+            ></BasicCard>
+          ))}
+        </StyledInventory>
+      </StyledDiv>
+    </>
   );
 };
+const StyledFilterIcon = styled(FilterIcon)`
+  --button-size: calc(var(--nav-size) * 0.7);
+  width: var(--button-size);
+  height: var(--button-size);
+  border-radius: 50%;
+  padding: 5px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 300ms;
+  fill: rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+`;
 const StyledDiv = styled.div`
   display: flex;
   gap: 5px;
