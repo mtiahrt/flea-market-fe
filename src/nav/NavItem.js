@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 const NavItem = (props) => {
   const [open, setOpen] = useState(false);
   const handleClickEvent = (e) => {
-    props.setActive(props.icon?.props.name);
+    props.setActive((prev) => {
+      return props.icon?.props.name === 'filter' &&
+        props.icon?.props.name === prev
+        ? 'home'
+        : props.icon?.props.name;
+    });
     if (props.isDropdown) {
       setOpen(!open);
     }
