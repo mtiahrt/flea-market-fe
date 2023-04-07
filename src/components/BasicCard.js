@@ -1,14 +1,17 @@
 import * as React from 'react';
-import Card from '@mui/joy/Card';
-import IconButton from '@mui/joy/IconButton';
-import { ShoppingCart } from '@mui/icons-material';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import NoImage from '../assets/no-image-available.jpg';
 import { useContext, useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
-
-import ProductDetails from './ProductDetails';
 import { useMutation } from '@apollo/client';
 import { UserProfileContext } from '../contexts/UserContext';
+import { Link } from 'react-router-dom';
 
 export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   const { userProfile } = useContext(UserProfileContext);
@@ -52,34 +55,37 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
     setIsInCart((prev) => !prev);
   }
   return (
-    <div>
-      <Card data-cart-id={cartId} variant="outlined" sx={{ width: 320 }}>
-        <IconButton
-          style={buttonStyles}
-          aria-label={inventoryItem.manufacturerName}
-          variant="plain"
-          color="neutral"
-          size="sm"
-          onClick={handleCartClick}
-          sx={{ position: 'absolute', top: '0.5rem', right: '-3.5rem' }}
-        >
-          <ShoppingCart
-            role="cart-icon"
-            color={isInCart ? 'primary' : 'disabled'}
-          />
-        </IconButton>
-        <ProductDetails
-          productDetails={inventoryItem}
-          link={link}
-          isInCart={isInCart}
+    <Card sx={{ maxWidth: 345 }}>
+      <Link
+        to={{
+          pathname: link,
+          state: { inventoryId: inventoryItem.id, isInCart: isInCart },
+        }}
+      >
+        <CardMedia
+          sx={{ height: 140 }}
+          image={
+            inventoryItem.itemImagesList[0]?.url
+              ? inventoryItem.itemImagesList[0].url
+              : NoImage
+          }
+          title="green iguana"
         />
-      </Card>
-    </div>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {inventoryItem.manufacturerName}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {inventoryItem.description}
+          </Typography>
+        </CardContent>
+      </Link>
+      <CardActions>
+        <Button onClick={handleCartClick} size="small">
+          Add To Cart
+        </Button>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
   );
 }
-
-const buttonStyles = {
-  width: '48%',
-  margin: '.5% 0 .5% 0 !important',
-  alignSelf: 'center',
-};
