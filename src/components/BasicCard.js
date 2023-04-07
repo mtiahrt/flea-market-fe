@@ -54,6 +54,7 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
 
     setIsInCart((prev) => !prev);
   }
+  const hasImage = inventoryItem.itemImagesList[0]?.url;
   return (
     <Card sx={{ maxWidth: 345 }}>
       <Link
@@ -63,13 +64,10 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
         }}
       >
         <CardMedia
-          sx={{ height: 140 }}
-          image={
-            inventoryItem.itemImagesList[0]?.url
-              ? inventoryItem.itemImagesList[0].url
-              : NoImage
-          }
-          title="green iguana"
+          style={hasImage ? {} : { backgroundSize: 'contain' }}
+          sx={{ height: 200 }}
+          image={hasImage ? inventoryItem.itemImagesList[0].url : NoImage}
+          title={inventoryItem.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -84,7 +82,6 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
         <Button onClick={handleCartClick} size="small">
           Add To Cart
         </Button>
-        <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
   );
