@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,10 +6,11 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import styled from 'styled-components';
+
+//ToDo: add color schemes
 
 function InventoryFilter({ categories, dispatchFilter }) {
-  const [displayFilter, setDisplayFilter] = useState(false);
-
   const handleChangeEventChecked = (categoryId, subcategoryId) => {
     dispatchFilter({ type: 'added_subcategory', categoryId, subcategoryId });
   };
@@ -29,13 +30,7 @@ function InventoryFilter({ categories, dispatchFilter }) {
   };
 
   return (
-    <div
-      style={{
-        display: displayFilter ? 'flex' : 'none',
-        flexDirection: 'column',
-      }}
-      role="filter-selections"
-    >
+    <StyledDiv role="filter-selections">
       {categories?.map((cat) => (
         <Accordion key={cat.id} role={cat.id}>
           <AccordionSummary
@@ -79,8 +74,13 @@ function InventoryFilter({ categories, dispatchFilter }) {
           </AccordionDetails>
         </Accordion>
       ))}
-    </div>
+    </StyledDiv>
   );
 }
 
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 3%;
+`;
 export default InventoryFilter;

@@ -5,9 +5,9 @@
   border-bottom: var(--border);
 }
 
-html {
-  font-family: Arial, Helvetica, sans-serif;
-}
+/*html {*/
+/*  font-family: Arial, Helvetica, sans-serif;*/
+/*}*/
 
 .login {
   margin: 1rem;

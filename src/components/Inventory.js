@@ -8,7 +8,6 @@ import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
-import { ReactComponent as FilterIcon } from '../icons/filter-solid.svg';
 
 const Inventory = () => {
   const [state, dispatch] = useReducer(filterReducer, []);
@@ -86,7 +85,6 @@ const Inventory = () => {
   }
   return (
     <>
-      <StyledFilterIcon name="filter" />
       <StyledDiv>
         <InventoryFilter
           categories={categories ? categories : []}
@@ -106,20 +104,7 @@ const Inventory = () => {
     </>
   );
 };
-const StyledFilterIcon = styled(FilterIcon)`
-  --button-size: calc(var(--nav-size) * 0.7);
-  width: var(--button-size);
-  height: var(--button-size);
-  border-radius: 50%;
-  padding: 5px;
-  margin: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: filter 300ms;
-  fill: rgba(0, 0, 0, 0.26);
-  cursor: pointer;
-`;
+
 const StyledDiv = styled.div`
   display: flex;
   gap: 5px;
@@ -129,7 +114,6 @@ const StyledInventory = styled.div`
   display: grid;
   width: 100%;
   gap: 25px;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 0.7fr));
-  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 0.7fr));
 `;
 export default Inventory;
