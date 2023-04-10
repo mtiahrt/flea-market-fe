@@ -129,6 +129,11 @@
   transition: background var(--speed);
   padding: 0.5rem;
 }
+
+.nav-item.nav-left {
+  margin-right: auto;
+  display: none;
+}
 .menu-item .icon-button {
   margin-right: 0.5rem;
 }

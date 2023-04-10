@@ -9,6 +9,7 @@ const NavItem = ({
   isDropdown,
   url,
   children,
+  className,
 }) => {
   const [open, setOpen] = useState(false);
   const handleClickEvent = (e) => {
@@ -19,7 +20,10 @@ const NavItem = ({
   };
 
   return (
-    <li onClick={handleClickEvent} className="nav-item">
+    <li
+      onClick={handleClickEvent}
+      className={`nav-item ${className ? className : ''}`}
+    >
       <Link
         name={name}
         to={url ? `/${url}` : '#'}
