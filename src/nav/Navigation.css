@@ -126,17 +126,16 @@
   padding: 0.5rem;
 }
 
-.nav-item.nav-left {
+.nav-item.chevron-left {
   display: none;
 }
 @media (max-width: 40em) {
-  .nav-item.nav-left{
+  .nav-item.chevron-left{
     display: flex;
   }
 }
 .menu-item .icon-button {
   margin-right: 0.5rem;
-
 }
 
 .menu-item .icon-button:hover {

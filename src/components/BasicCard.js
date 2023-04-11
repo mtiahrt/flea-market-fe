@@ -13,7 +13,12 @@ import { useMutation } from '@apollo/client';
 import { UserProfileContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 
-export default function BasicCard({ inventoryItem, link, isItemInCart }) {
+export default function BasicCard({
+  inventoryItem,
+  link,
+  isItemInCart,
+  isMobleView,
+}) {
   const { userProfile } = useContext(UserProfileContext);
   const [
     addingCartItem,
@@ -56,7 +61,7 @@ export default function BasicCard({ inventoryItem, link, isItemInCart }) {
   }
   const hasImage = inventoryItem.itemImagesList[0]?.url;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: isMobleView ? 290 : 345 }}>
       <Link
         to={{
           pathname: link,

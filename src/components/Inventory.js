@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useReducer, useMemo } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useMemo,
+  useState,
+} from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
@@ -8,10 +14,9 @@ import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
-import { ReactComponent as FilterIcon } from '../icons/filter-solid.svg';
-import NavItem from '../nav/NavItem';
 
 const Inventory = () => {
+  const [showFilter, setShowFilter] = useState(false);
   const [state, dispatch] = useReducer(filterReducer, []);
   const { userProfile } = useContext(UserProfileContext);
   const { loadCartItems } = useCart();
@@ -88,18 +93,14 @@ const Inventory = () => {
   return (
     <>
       <StyledHeader>
-        <NavItem
-          className="nav-left"
-          backgroundColor="#9da0a375"
-          url={'#'}
-          icon={<FilterIcon name="filter" />}
-        ></NavItem>
         <StyledH1>Wild Heather Shop</StyledH1>
       </StyledHeader>
       <StyledDiv>
         <InventoryFilter
           categories={categories ? categories : []}
           dispatchFilter={dispatch}
+          showComponent={showFilter}
+          showComponentClickHandler={() => setShowFilter(!showFilter)}
         />
         <StyledInventory role="item-list">
           {data.inventoriesList.filter(filterFunction).map((item) => (
@@ -108,6 +109,7 @@ const Inventory = () => {
               isItemInCart={item.cartsList.length ? true : false}
               link={`DetailedItem/${item.id}`}
               inventoryItem={item}
+              isMobleView={showFilter}
             ></BasicCard>
           ))}
         </StyledInventory>

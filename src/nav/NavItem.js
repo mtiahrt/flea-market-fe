@@ -11,17 +11,25 @@ const NavItem = ({
   children,
   backgroundColor,
   className,
+  clickHandler,
+  style,
 }) => {
   const [open, setOpen] = useState(false);
   const handleClickEvent = (e) => {
-    setActive(icon?.props.name);
+    if (setActive) {
+      setActive(icon?.props.name);
+    }
     if (isDropdown) {
       setOpen(!open);
+    }
+    if (clickHandler) {
+      clickHandler();
     }
   };
 
   return (
     <li
+      style={style}
       onClick={handleClickEvent}
       className={`nav-item ${className ? className : ''}`}
     >
