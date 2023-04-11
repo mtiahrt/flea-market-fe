@@ -8,6 +8,8 @@ import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
+import { ReactComponent as FilterIcon } from '../icons/filter-solid.svg';
+import NavItem from '../nav/NavItem';
 
 const Inventory = () => {
   const [state, dispatch] = useReducer(filterReducer, []);
@@ -85,6 +87,15 @@ const Inventory = () => {
   }
   return (
     <>
+      <StyledHeader>
+        <NavItem
+          className="nav-left"
+          backgroundColor="#9da0a375"
+          url={'#'}
+          icon={<FilterIcon name="filter" />}
+        ></NavItem>
+        <StyledH1>Wild Heather Shop</StyledH1>
+      </StyledHeader>
       <StyledDiv>
         <InventoryFilter
           categories={categories ? categories : []}
@@ -105,6 +116,17 @@ const Inventory = () => {
   );
 };
 
+const StyledHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  @media (max-width: 40em) {
+    justify-content: flex-start;
+  }
+`;
+const StyledH1 = styled.h1`
+  margin-left: 15%;
+`;
 const StyledDiv = styled.div`
   display: flex;
   gap: 5px;
@@ -115,5 +137,6 @@ const StyledInventory = styled.div`
   width: 100%;
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 0.7fr));
+  justify-content: center;
 `;
 export default Inventory;

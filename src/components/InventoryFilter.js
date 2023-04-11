@@ -81,6 +81,9 @@ function InventoryFilter({ categories, dispatchFilter }) {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 3%;
+  margin-right: 1%;
+  @media (max-width: 40em) {
+    display: none;
+  }
 `;
 export default InventoryFilter;

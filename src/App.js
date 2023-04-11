@@ -6,7 +6,6 @@ import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
-import { ReactComponent as FilterIcon } from './icons/filter-solid.svg';
 import { useState } from 'react';
 import { UserProfileContext } from './contexts/UserContext';
 import CheckOut from './components/checkout/CheckOut';
@@ -43,11 +42,6 @@ function App() {
           <FleaMarketProvider>
             <ThemeProvider theme={theme}>
               <NavBar>
-                <NavItem
-                  className="nav-left"
-                  url={'#'}
-                  icon={<FilterIcon name="filter" />}
-                ></NavItem>
                 <NavItemProfile imgURL={userProfile.photoURL} />
                 <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
                 <NavItem

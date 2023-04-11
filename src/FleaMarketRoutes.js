@@ -2,7 +2,6 @@ import { Route, Switch } from 'react-router-dom';
 import Inventory from './components/Inventory';
 import Modal from './components/shared/Modal';
 import Login from './components/login/Login';
-import Profile from './components/Profile';
 import DetailedItem from './components/DetailedItem';
 import AddItem from './components/modify-items/AddItem';
 import CheckOut from './components/checkout/CheckOut';
@@ -13,9 +12,6 @@ const FleaMarketRoutes = ({ userProfile }) => {
   return (
     <Switch>
       <Route exact path="/">
-        <header>
-          <h1>Wild Heather Shop</h1>
-        </header>
         <Inventory />
         <Modal
           message="Please sign in"
