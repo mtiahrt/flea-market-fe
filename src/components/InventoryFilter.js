@@ -10,9 +10,9 @@ import styled from 'styled-components';
 import NavItem from '../nav/NavItem';
 import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
 import { ReactComponent as ChevronLeft } from '../icons/chevron-left.svg';
+import './InventoryFilter.css';
 
 //ToDo: add color schemes
-
 function InventoryFilter({
   categories,
   dispatchFilter,
@@ -39,17 +39,14 @@ function InventoryFilter({
   function handleRightChevronClick() {
     showComponentClickHandler();
   }
-  const StyledDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-right: 1%;
-    @media (max-width: 40em) {
-      display: ${showComponent ? 'flex' : 'none'};
-    }
-  `;
+
   return (
     <StyledDivContainer className="filterContainer">
-      <StyledDiv role="filter-selections">
+      <div
+        className={`${showComponent ? 'show-filter' : 'hide-filter'}`}
+        style={{ flexDirection: 'column', marginRight: '1%' }}
+        role="filter-selections"
+      >
         {categories?.map((cat) => (
           <Accordion key={cat.id} role={cat.id}>
             <AccordionSummary
@@ -93,7 +90,7 @@ function InventoryFilter({
             </AccordionDetails>
           </Accordion>
         ))}{' '}
-      </StyledDiv>
+      </div>
       <NavItem
         style={{ alignSelf: 'flex-start' }}
         className="chevron-left"
@@ -110,6 +107,7 @@ function InventoryFilter({
     </StyledDivContainer>
   );
 }
+
 const StyledDivContainer = styled.div`
   display: flex;
   flex-direction: row;
