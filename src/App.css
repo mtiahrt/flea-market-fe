@@ -1,7 +1,14 @@
 :root {
-  --bg: #242526;
-  --bg-accent: #484a4d;
-  --text-color: #484a4d1;
+  --header-color: #7D6389;
+  --nav-bar-color: #FBCDE7;
+  --text-color-header: #BFB1C5;
+  --text-color-body: #848484;
+  --selected-color: #71415B;
+  --logo-background-color: #50385C;
+  --logo-fill-color: white;
+  --icon-background-color: #50385C;
+  --bullet-points-color: #EDF7D8;
+
   --nav-size: 60px;
   --border: 1px solid #474a4d;
   --border-radius: 8px;
@@ -10,7 +17,10 @@
   --font-family-body: "Work Sans", sans-serif;
   --font-family-monospace: "Roboto Mono", "Courier New", monospace;
   --font-size-body: clamp(1rem, 0.9599rem + 0.169vw, 1.15rem);
-
+}
+h1{
+  font-size: 2em;
+  font-weight: 300;
 }
 body {
   margin: 0;
@@ -27,6 +37,5 @@ ul {
 }
 
 a {
-  color: var(--text-color);
   text-decoration: none;
 }

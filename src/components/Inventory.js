@@ -92,9 +92,6 @@ const Inventory = () => {
   }
   return (
     <>
-      <StyledHeader>
-        <StyledH1>Wild Heather Shop</StyledH1>
-      </StyledHeader>
       <StyledDiv>
         <InventoryFilter
           categories={categories ? categories : []}
@@ -118,17 +115,6 @@ const Inventory = () => {
   );
 };
 
-const StyledHeader = styled.header`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  @media (max-width: 40em) {
-    justify-content: flex-start;
-  }
-`;
-const StyledH1 = styled.h1`
-  margin-left: 15%;
-`;
 const StyledDiv = styled.div`
   display: flex;
   gap: 5px;

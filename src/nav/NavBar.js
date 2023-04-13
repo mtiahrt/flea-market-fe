@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './Navigation.css';
+import styled from 'styled-components';
 
 const NavBar = (props) => {
   const [active, setActive] = useState('home');
   return (
-    <nav className="navbar">
+    <StyledNav style={{ margin: '2px 0 1em 0' }} className="navbar">
       <ul className="navbar-nav">
         {React.Children.map(props.children, (child) =>
           React.cloneElement(child, {
@@ -13,8 +14,11 @@ const NavBar = (props) => {
           })
         )}
       </ul>
-    </nav>
+    </StyledNav>
   );
 };
 
+const StyledNav = styled.nav`
+  margin: 2px 0 1em 0;
+`;
 export default NavBar;

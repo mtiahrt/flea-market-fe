@@ -9,7 +9,6 @@ const NavItem = ({
   isDropdown,
   url,
   children,
-  backgroundColor,
   className,
   clickHandler,
   style,
@@ -34,7 +33,6 @@ const NavItem = ({
       className={`nav-item ${className ? className : ''}`}
     >
       <Link
-        style={{ backgroundColor: backgroundColor ? backgroundColor : {} }}
         name={name}
         to={url ? `/${url}` : '#'}
         className={

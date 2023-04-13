@@ -1,8 +1,7 @@
 .navbar {
   height: var(--nav-size);
-  background-color: var(--bg);
+  background-color: var(--nav-bar-color);
   padding: 0 1rem;
-  border-bottom: var(--border);
 }
 
 .login {
@@ -70,7 +69,7 @@
   --button-size: calc(var(--nav-size) * 0.5);
   width: var(--button-size);
   height: var(--button-size);
-  background-color: #64676cb8;
+  background-color: var(--icon-background-color);
   border-radius: 50%;
   padding: 5px;
   margin: 2px;
@@ -89,7 +88,7 @@
 }
 
 .icon-button svg {
-  fill: var(--text-color);
+  fill: var(--logo-fill-color);
   width: 20px;
   height: 20px;
 }
@@ -101,17 +100,17 @@
 
 .dropdown {
   position: absolute;
-  top: 58px;
+  top: 165px;
   width: 300px;
   transform: translateX(-45%);
-  background-color: var(--bg);
-  color: #ffffffcc;
+  background-color: var(--nav-bar-color);
+  color: var(--icon-background-color);
   border: var(--border);
   border-radius: var(--border-radius);
   padding: 1rem;
   overflow: hidden;
   transition: height var(--speed) ease;
-  z-index: 1;
+  z-index: 2;
 }
 .menu {
   width: 100%;
@@ -142,7 +141,8 @@
   filter: none;
 }
 .menu-item:hover {
-  background-color: #525357;
+  background-color: var(--selected-color);
+  color: white;
 }
 
 /* CSSTransition classes  */

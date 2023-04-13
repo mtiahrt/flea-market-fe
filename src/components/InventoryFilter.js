@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -97,7 +97,6 @@ function InventoryFilter({
       <NavItem
         style={{ alignSelf: 'flex-start' }}
         className="chevron-left"
-        backgroundColor="#9da0a375"
         url={'#'}
         icon={
           showComponent ? (
