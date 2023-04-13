@@ -114,7 +114,7 @@ export default function CustomerBillingInformation() {
       </Typography>
       <FormControlLabel
         style={{ width: '100%' }}
-        control={<Checkbox defaultChecked />}
+        control={<Checkbox color="secondary" defaultChecked />}
         label="Same as Shipping address"
       />
       <TextField

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const NavItem = ({
   setActive,
@@ -13,6 +13,7 @@ const NavItem = ({
   clickHandler,
   style,
 }) => {
+  let history = useHistory();
   const [open, setOpen] = useState(false);
   const handleClickEvent = (e) => {
     if (setActive) {
@@ -24,23 +25,25 @@ const NavItem = ({
     if (clickHandler) {
       clickHandler();
     }
+    if (!isDropdown) {
+      history.push(url ? `/${url}` : '#');
+    }
   };
 
   return (
     <li
-      style={style}
+      style={{ ...style, cursor: 'pointer' }}
       onClick={handleClickEvent}
       className={`nav-item ${className ? className : ''}`}
     >
-      <Link
+      <a
         name={name}
-        to={url ? `/${url}` : '#'}
         className={
           isActive === icon.props.name ? 'icon-button active' : 'icon-button'
         }
       >
         {icon}
-      </Link>
+      </a>
       {open && children}
     </li>
   );

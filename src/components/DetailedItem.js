@@ -52,8 +52,8 @@ function DetailedItem() {
   const history = useHistory();
   const location = useLocation();
   const [quantity, setQuantity] = useState(0);
-  const [isInCart, setIsInCart] = useState(location.state.isInCart);
-  const inventoryId = location.state.inventoryId;
+  const [isInCart, setIsInCart] = useState(location.state?.isInCart);
+  const inventoryId = location.state?.inventoryId;
 
   const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
     variables: { inventoryId },

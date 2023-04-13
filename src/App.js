@@ -13,8 +13,6 @@ import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
 import FleaMarketRoutes from './FleaMarketRoutes';
 import FleaMarketProvider from './FleaMarketProvider';
-
-import { red } from '@mui/material/colors';
 import {
   ThemeProvider,
   createTheme,
@@ -25,7 +23,10 @@ import styled from 'styled-components';
 let theme = createTheme({
   palette: {
     primary: {
-      main: red[500],
+      main: '#50385C',
+    },
+    secondary: {
+      main: '#BFB1C5',
     },
   },
   typography: {
@@ -34,6 +35,7 @@ let theme = createTheme({
 });
 theme = responsiveFontSizes(theme);
 function App() {
+  //Todo: add and remove administrator buttons based on user type
   const [userProfile, setUserProfile] = useState({});
   console.log('App component is rendering');
   return (
@@ -52,11 +54,7 @@ function App() {
                   url={'CheckOut'}
                   icon={<ShoppingCartIcon name="shoppingCart" />}
                 ></NavItem>
-                <NavItem
-                  isDropdown={true}
-                  url={''}
-                  icon={<PlusIcon name="plus" />}
-                >
+                <NavItem isDropdown={true} icon={<PlusIcon name="plus" />}>
                   <DropdownMenu />
                 </NavItem>
               </NavBar>

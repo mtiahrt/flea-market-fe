@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useForm, useFormState, Controller } from 'react-hook-form';
-import { useContext, useEffect, useState } from 'react';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import {
   ADD_CATEGORY,
@@ -70,17 +69,17 @@ export default function EditCategories() {
      {
       display: ${addCategory || addSubcategory ? 'none' : 'flex'};
       --button-size: calc(var(--nav-size) * 0.5);
+      fill: var(--logo-fill-color);
       width: var(--button-size);
       height: var(--button-size);
-      background-color: #b9bcc0;
+      background-color: var(--text-color-header);
       border-radius: 50%;
       padding: 5px;
       margin: 2px;
       align-items: center;
       justify-content: center;
-      transition: filter 300ms;
       :hover {
-        filter: brightness(1.2);
+        cursor: pointer;
       }
     }
   `;
@@ -158,24 +157,30 @@ export default function EditCategories() {
       </StyledIconButton>
       {toggleAddOptions && (
         <div role="dropdown-options">
-          <Button
-            disabled={addSubcategory}
-            style={{ display: 'block' }}
-            role="category-selection"
-            onClick={() => setAddCategory(!addCategory)}
-            href="#"
-          >
-            Add Category
-          </Button>
-          <Button
-            disabled={addCategory}
-            style={{ display: 'block' }}
-            role="subcategory-selection"
-            onClick={() => setAddSubcategory(!addSubcategory)}
-            href="#"
-          >
-            Add Subcategory
-          </Button>
+          {!addSubcategory && (
+            <Button
+              color="secondary"
+              disabled={addCategory}
+              style={{ display: 'block' }}
+              role="category-selection"
+              onClick={() => setAddCategory(!addCategory)}
+              href="#"
+            >
+              Add Category
+            </Button>
+          )}
+          {!addCategory && (
+            <Button
+              color="secondary"
+              disabled={addSubcategory}
+              style={{ display: 'block' }}
+              role="subcategory-selection"
+              onClick={() => setAddSubcategory(!addSubcategory)}
+              href="#"
+            >
+              Add Subcategory
+            </Button>
+          )}
         </div>
       )}
 

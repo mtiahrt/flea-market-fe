@@ -111,8 +111,8 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
               ${cartItems?.find((x) => x.id === item.id).totalPrice.toFixed(2)}
             </h4>
             <DeleteIcon
+              color="secondary"
               onClick={() => handleDeleteCartItemClick(cartItems[index].id)}
-              color="error"
             />
           </StyledCartRowItemDiv>
         </React.Fragment>
