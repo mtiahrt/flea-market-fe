@@ -124,7 +124,8 @@ const StyledInventory = styled.div`
   display: grid;
   width: 100%;
   gap: 25px;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 0.7fr));
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 0.7fr));
   justify-content: center;
+  margin-right: 1rem;
 `;
 export default Inventory;
