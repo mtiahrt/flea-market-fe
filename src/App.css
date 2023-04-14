@@ -15,16 +15,27 @@
   --font-family-headings: "Quicksand", sans-serif;
   --font-family-body: "Work Sans", sans-serif;
   --font-family-monospace: "Roboto Mono", "Courier New", monospace;
-  --font-size-body: clamp(1rem, 0.9599rem + 0.169vw, 1.15rem);
+  /*font sizes came from this artical https://enzedonline.com/en/tech-blog/create-responsive-font-sizes-based-on-the-viewport/*/
+  --font-size-body: clamp(1rem, 0.9599rem, 1.15rem);
+  --font-size-1: clamp(2rem, 1.7993rem, 2.75rem);
+  --font-size-2: clamp(1.6rem, 1.4662rem, 2.1rem);
 }
 h1{
-  font-size: 2em;
+  font-size: var(--font-size-1);
   font-weight: 300;
 }
+h2{
+  margin: 0;
+  font-size: var(--font-size-2);
+  font-weight: 400;
+  color: black;
+}
+
 body {
   margin: 0;
   font-family: var(--font-family-body);
   font-size: var(--font-size-body);
+  color: var(--text-color-body);
   font-weight: 400;
   line-height: 1.5;
 }
@@ -37,4 +48,5 @@ ul {
 
 a {
   text-decoration: none;
+  color: black;
 }

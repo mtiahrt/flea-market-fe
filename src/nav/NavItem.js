@@ -19,13 +19,13 @@ const NavItem = ({
     if (setActive) {
       setActive(icon?.props.name);
     }
-    if (isDropdown) {
-      setOpen(!open);
-    }
     if (clickHandler) {
       clickHandler();
     }
-    if (!isDropdown) {
+    if (isDropdown) {
+      setOpen(!open);
+    }
+    if (url) {
       history.push(url ? `/${url}` : '#');
     }
   };

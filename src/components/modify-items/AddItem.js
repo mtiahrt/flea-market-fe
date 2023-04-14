@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import {
   GET_CATEGORIES,
@@ -121,9 +120,7 @@ export default function AddItem() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
-      <Typography variant="h4" gutterBottom>
-        New Sale Item
-      </Typography>
+      <h2>New Sale Item</h2>
       <TextField
         {...register('name', { required: true })}
         id="name"
@@ -222,5 +219,5 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 0 20%;
+  margin: 2rem;
 `;

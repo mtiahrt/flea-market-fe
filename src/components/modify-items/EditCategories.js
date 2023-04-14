@@ -12,9 +12,9 @@ import styled from 'styled-components';
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
 import { ReactComponent as MinusIcon } from '../../icons/minus.svg';
 import { Button } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import { FormInputDropdown } from '../shared/FormInputDropdown';
 import TextField from '@mui/material/TextField';
+import NavItem from '../../nav/NavItem';
 export default function EditCategories() {
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
@@ -143,15 +143,12 @@ export default function EditCategories() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
-      <Typography variant="h4" gutterBottom>
-        Edit Categories and Subcategories
-      </Typography>
-      <StyledIconButton>
-        <PlusIcon
-          role="plus-icon"
-          onClick={() => setToggleAddOptions(!toggleAddOptions)}
-        />
-      </StyledIconButton>
+      <h2>Add Categories and Subcategories</h2>
+      <NavItem
+        isDropdown={true}
+        clickHandler={() => setToggleAddOptions(!toggleAddOptions)}
+        icon={<PlusIcon name="plus" role="plus-icon" />}
+      ></NavItem>
       <StyledIconButton style={{ display: 'none' }}>
         <MinusIcon role="minus-icon" />
       </StyledIconButton>
@@ -250,7 +247,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 0 20%;
+  margin: 2rem;
 `;
 const StyledH3 = styled.h3`
   margin: 0;

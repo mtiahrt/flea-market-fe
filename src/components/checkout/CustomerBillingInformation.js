@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -41,9 +40,7 @@ export default function CustomerBillingInformation() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handlePaymentSubmit, onError)}>
-      <Typography style={{ width: '100%' }} variant="h4">
-        Customer Information
-      </Typography>
+      <h2 style={{ width: '100%' }}>Customer Information</h2>
       <TextField
         style={textFieldStyles}
         {...register('firstName', { required: true })}
@@ -91,7 +88,6 @@ export default function CustomerBillingInformation() {
           {...register('state', { required: true })}
           labelId="state-select-label"
           label="State"
-          // onChange={handleStateSelectChange}
         >
           {getStates()}
         </Select>
@@ -105,13 +101,7 @@ export default function CustomerBillingInformation() {
         variant="standard"
       />
       <Divider style={{ flexGrow: '1', flexShrink: '1', width: '100%' }} />
-      <Typography
-        style={{ margin: '10px 0px 0px 0px', width: '100%' }}
-        variant="h4"
-        gutterBottom
-      >
-        Billing Address
-      </Typography>
+      <h2>Billing Address</h2>
       <FormControlLabel
         style={{ width: '100%' }}
         control={<Checkbox color="secondary" defaultChecked />}
@@ -156,7 +146,6 @@ export default function CustomerBillingInformation() {
           {...register('state', { required: true })}
           id="billingState"
           label="State"
-          // onChange={handleStateSelectChange}
         >
           {getStates()}
         </Select>
@@ -187,7 +176,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
   flex: 1 1 20rem;
   padding: 0.5rem;
   border: 2px solid #e3e5e8;

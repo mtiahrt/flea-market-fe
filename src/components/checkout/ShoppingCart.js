@@ -100,19 +100,22 @@ export default function ShoppingCart() {
   }
   return (
     <StyledContainerDiv>
-      <Typography variant="h4" gutterBottom>
-        Cart Items
-      </Typography>
+      <h2 style={{ marginBottom: '3%' }}>Cart Items</h2>
       <ShoppingCartItems
         shoppingCartItems={dataCartItems.cartsList}
         setCartTotal={setCartTotal}
       ></ShoppingCartItems>
       <Divider style={dividerStyle}></Divider>
       <StyledShipping>
-        <Typography variant="h5" gutterBottom>
-          Shipping Options
-        </Typography>
-        <FormControl style={{ flexGrow: '0', flexShrink: '1', width: '90%' }}>
+        <h2>Shipping Options</h2>
+        <FormControl
+          style={{
+            marginTop: '4%',
+            flexGrow: '0',
+            flexShrink: '1',
+            width: '90%',
+          }}
+        >
           <InputLabel>Select Shipping Option</InputLabel>
           <Select
             onChange={(e) => handleShippingSelectChange(e)}
@@ -128,12 +131,10 @@ export default function ShoppingCart() {
         </FormControl>
       </StyledShipping>
       <StyledSummation>
-        <Typography variant="h5" gutterBottom>
-          Cart Total
-        </Typography>
-        <h2 style={{ margin: '0', marginBottom: '3%' }}>
+        <h2>Cart Total</h2>
+        <h3 style={{ margin: '0', marginBottom: '3%' }}>
           ${cartTotal === 0 ? 0 : (cartTotal + +shippingCost.price).toFixed(2)}
-        </h2>
+        </h3>
       </StyledSummation>
       <Button onClick={handleBuyNowClick} variant="contained">
         Buy Now
