@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useOutsideClickNotifier from '../hooks/useOutsideClickNotifier';
 
 const NavItem = ({
   setActive,
@@ -15,6 +16,9 @@ const NavItem = ({
 }) => {
   let history = useHistory();
   const [open, setOpen] = useState(false);
+  const clickRef = useRef(null);
+  useOutsideClickNotifier(clickRef, setOpen);
+
   const handleClickEvent = (e) => {
     if (setActive) {
       setActive(icon?.props.name);
@@ -32,6 +36,7 @@ const NavItem = ({
 
   return (
     <li
+      ref={isDropdown ? clickRef : null}
       style={{ ...style, cursor: 'pointer' }}
       onClick={handleClickEvent}
       className={`nav-item ${className ? className : ''}`}

@@ -99,7 +99,7 @@
 
 .dropdown {
   position: absolute;
-  top: 165px;
+  top: 156px;
   width: 300px;
   transform: translateX(-45%);
   background-color: var(--nav-bar-color);
