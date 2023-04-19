@@ -130,7 +130,18 @@ function DetailedItem() {
       <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
       <StyledH4>Description: {data.inventory.description}</StyledH4>
       <StyledH4>Price: {data.inventory.price}</StyledH4>
-      <FormControl style={quantitySelectStyles}>
+      <FormControl
+        sx={{
+          margin: '.4em 0 .4em 0',
+          width: {
+            xs: 100, // theme.breakpoints.up('xs')
+            sm: 200, // theme.breakpoints.up('sm')
+            md: 300, // theme.breakpoints.up('md')
+            lg: 400, // theme.breakpoints.up('lg')
+            xl: 500, // theme.breakpoints.up('xl')
+          },
+        }}
+      >
         <InputLabel id="quantity-select-label">Quantity</InputLabel>
         <Select
           labelId="quantity-select-label"
@@ -192,7 +203,7 @@ const StyledH4 = styled.h4`
   margin: 0.5rem;
 `;
 const quantitySelectStyles = {
-  width: '25%',
+  // width: '100%',
   margin: '.4em 0 .4em 0',
 };
 const StyledButtonsDiv = styled.div`
