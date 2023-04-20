@@ -27,7 +27,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { useSnackbar } from '../../hooks/useSnackbar';
-import { MySnackbar } from '../shared/MySnackbar';
+import { Snackbar } from '../shared/Snackbar';
 
 export default function AddItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
@@ -214,7 +214,7 @@ export default function AddItem() {
       >
         Cancel
       </Button>
-      <MySnackbar isActive={isActive} message={message} />
+      <Snackbar isActive={isActive} message={message} />
     </StyledForm>
   );
 }

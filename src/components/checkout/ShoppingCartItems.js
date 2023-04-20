@@ -5,8 +5,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useMutation } from '@apollo/client';
 import { useCart } from '../../contexts/CartContext';
 import { DELETE_CART_ITEM, UPDATE_CART_QUANTITY } from '../../queries/graphQL';
+import { Snackbar } from '../shared/Snackbar';
+import { useSnackbar } from '../../hooks/useSnackbar';
 
 const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
+  const { isActive, message, openSnackBar } = useSnackbar();
   const [
     deleteingCartItem,
     {
@@ -61,12 +64,19 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   };
 
   const handleDeleteCartItemClick = (cartId) => {
-    const totalPrice = cartItems.find((x) => x.id === cartId).totalPrice;
-    cartItems.lenth === 1
-      ? setCartTotal(0)
-      : setCartTotal((prev) => prev - totalPrice);
-    removeFromCart(cartId, () => deleteingCartItem({ variables: { cartId } }));
-    setCartItems((prev) => prev.filter((x) => x.id !== cartId));
+    try {
+      const totalPrice = cartItems.find((x) => x.id === cartId).totalPrice;
+      cartItems.lenth === 1
+        ? setCartTotal(0)
+        : setCartTotal((prev) => prev - totalPrice);
+      removeFromCart(cartId, () =>
+        deleteingCartItem({ variables: { cartId } })
+      );
+      setCartItems((prev) => prev.filter((x) => x.id !== cartId));
+      openSnackBar('Item was removed from cart successfully');
+    } catch (e) {
+      openSnackBar('Something went wrong');
+    }
   };
 
   function getCartItemQuantity(id) {
@@ -115,6 +125,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
               onClick={() => handleDeleteCartItemClick(cartItems[index].id)}
             />
           </StyledCartRowItemDiv>
+          <Snackbar isActive={isActive} message={message} />
         </React.Fragment>
       ))}
     </>

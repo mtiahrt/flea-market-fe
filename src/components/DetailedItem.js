@@ -18,8 +18,11 @@ import {
 } from '@mui/material';
 import { useCart } from '../contexts/CartContext';
 import { UserProfileContext } from '../contexts/UserContext';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { Snackbar } from './shared/Snackbar';
 
 function DetailedItem() {
+  const { isActive, message, openSnackBar } = useSnackbar();
   const { removeFromCart, updateQuantity, addToCart } = useCart();
   const { userProfile } = useContext(UserProfileContext);
 
@@ -121,6 +124,11 @@ function DetailedItem() {
     if (refetchData) {
       refetch({ inventoryId });
     }
+    openSnackBar(
+      isInCart
+        ? 'Item was removed from cart successfully'
+        : 'Item was added to cart successfully'
+    );
   };
   console.log('detailItem component is rendering');
   return (
@@ -165,6 +173,7 @@ function DetailedItem() {
           Edit Item
         </Button>
       </StyledButtonsDiv>
+      <Snackbar isActive={isActive} message={message} />
     </StyledDiv>
   );
 }

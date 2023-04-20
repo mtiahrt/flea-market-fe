@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import Styles from './MySnackbar.module.css';
+import Styles from './Snackbar.module.css';
 
-export class MySnackbar extends PureComponent {
+export class Snackbar extends PureComponent {
   render() {
     const { isActive, message } = this.props;
 

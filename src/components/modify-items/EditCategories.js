@@ -15,7 +15,10 @@ import { Button } from '@mui/material';
 import { FormInputDropdown } from '../shared/FormInputDropdown';
 import TextField from '@mui/material/TextField';
 import NavItem from '../../nav/NavItem';
+import { useSnackbar } from '../../hooks/useSnackbar';
+import { Snackbar } from '../shared/Snackbar';
 export default function EditCategories() {
+  const { isActive, message, openSnackBar } = useSnackbar();
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
   const [addCategory, setAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -104,39 +107,44 @@ export default function EditCategories() {
   }, [data]);
 
   const handleNewItemSubmit = (data) => {
-    addCategory
-      ? insertCategory({ variables: { name: data.category } }).then(
-          ({
-            data: {
-              createCategory: { category },
-            },
-          }) => {
-            setCategories([
-              ...categories,
-              {
-                id: category.id,
-                name: category.name,
+    try {
+      addCategory
+        ? insertCategory({ variables: { name: data.category } }).then(
+            ({
+              data: {
+                createCategory: { category },
               },
-            ]);
-          }
-        )
-      : insertSubcategory({
-          variables: {
-            categoryId: data.categoryId.props.value,
-            name: data.subcategory,
-          },
-        }).then(
-          ({
-            data: {
-              createSubcategory: { subcategory },
+            }) => {
+              setCategories([
+                ...categories,
+                {
+                  id: category.id,
+                  name: category.name,
+                },
+              ]);
+            }
+          )
+        : insertSubcategory({
+            variables: {
+              categoryId: data.categoryId.props.value,
+              name: data.subcategory,
             },
-          }) => {
-            setSubcategories([
-              ...subcategories,
-              { name: subcategory.name, id: subcategory.id },
-            ]);
-          }
-        );
+          }).then(
+            ({
+              data: {
+                createSubcategory: { subcategory },
+              },
+            }) => {
+              setSubcategories([
+                ...subcategories,
+                { name: subcategory.name, id: subcategory.id },
+              ]);
+            }
+          );
+      openSnackBar('Category item was saved successfully');
+    } catch (e) {
+      openSnackBar('Something went wrong.');
+    }
   };
   if (loadingCategories) return <p>Loading...</p>;
   if (errorCategories) return <p>{errorCategories.message}</p>;
@@ -239,6 +247,7 @@ export default function EditCategories() {
       >
         Cancel
       </Button>
+      <Snackbar isActive={isActive} message={message} />
     </StyledForm>
   );
 }
