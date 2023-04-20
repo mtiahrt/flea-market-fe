@@ -26,8 +26,11 @@ import {
 } from '../../utility-functions/images';
 import { useHistory } from 'react-router-dom';
 import { UserProfileContext } from '../../contexts/UserContext';
+import { useSnackbar } from '../../hooks/useSnackbar';
+import MySnackbar from '../shared/MySnackbar';
 
 export default function AddItem() {
+  const { isActive, message, openSnackBar } = useSnackbar();
   const { userProfile } = useContext(UserProfileContext);
   const [category, setCategory] = useState(-1);
   const [subcategory, setSubcategory] = useState(-1);
@@ -60,29 +63,36 @@ export default function AddItem() {
     console.error('Error in form submission');
   };
   const handleNewItemSubmit = (inventoryData, e) => {
-    const promises = [];
-    promises.push(handleAddInventory(inventoryData));
-    const fileInputs = Array.from(e.target.elements).find(
-      ({ name }) => name === 'imageFile'
-    );
-    [...fileInputs.files].map(async (file) => {
-      promises.push(postImage(file, userProfile.accessToken));
-    });
-    Promise.all(promises).then((data) => {
-      const inventoryId = data.find((x) => x.data?.createInventory.inventory.id)
-        ?.data.createInventory.inventory.id;
-      const promises = handleAddItemImage(data, inventoryId);
+    try {
+      const promises = [];
+      promises.push(handleAddInventory(inventoryData));
+      const fileInputs = Array.from(e.target.elements).find(
+        ({ name }) => name === 'imageFile'
+      );
+      [...fileInputs.files].map(async (file) => {
+        promises.push(postImage(file, userProfile.accessToken));
+      });
       Promise.all(promises).then((data) => {
-        history.push({
-          pathname: `/EditItem/${inventoryId}`,
-          state: {
-            fileDataURL: data?.map(
-              (item) => item.data.createItemImage.itemImage
-            ),
-          },
+        const inventoryId = data.find(
+          (x) => x.data?.createInventory.inventory.id
+        )?.data.createInventory.inventory.id;
+        const promises = handleAddItemImage(data, inventoryId);
+        Promise.all(promises).then((data) => {
+          history.push({
+            pathname: `/EditItem/${inventoryId}`,
+            state: {
+              fileDataURL: data?.map(
+                (item) => item.data.createItemImage.itemImage
+              ),
+            },
+          });
         });
       });
-    });
+    } catch (e) {
+      openSnackBar('Something went wrong saving new item');
+    } finally {
+      openSnackBar('Success');
+    }
   };
 
   const handleAddItemImage = (values, newInventoryId) => {
@@ -211,6 +221,7 @@ export default function AddItem() {
       >
         Cancel
       </Button>
+      <MySnackbar isActive={isActive} message={message} />
     </StyledForm>
   );
 }
