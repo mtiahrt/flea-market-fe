@@ -1,42 +1,20 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import React, { PureComponent } from 'react';
+import Styles from './MySnackbar.module.css';
 
-export default function MySnackbar({ isActive, message }) {
-  const handleClick = () => {
-    // setOpen(true);
-  };
+export class MySnackbar extends PureComponent {
+  render() {
+    const { isActive, message } = this.props;
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    // setOpen(false);
-  };
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        // onClick={handleClose}
+    return (
+      <div
+        className={
+          isActive
+            ? [Styles.snackbar, Styles.fadeIn].join(' ')
+            : [Styles.snackbar, Styles.fadeOut].join(' ')
+        }
       >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-
-  return (
-    <Snackbar
-      open={isActive}
-      autoHideDuration={6000}
-      onClose={handleClose}
-      message={message}
-      action={action}
-    />
-  );
+        {message}
+      </div>
+    );
+  }
 }

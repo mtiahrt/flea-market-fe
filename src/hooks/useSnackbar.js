@@ -1,13 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 
 export function useSnackbar() {
-  debugger;
   const [isActive, setIsActive] = React.useState(false);
   const [message, setMessage] = React.useState();
 
   React.useEffect(() => {
     if (isActive === true) {
-      setIsActive(false);
+      setTimeout(() => {
+        setIsActive(false);
+      }, 6000);
     }
   }, [isActive]);
 

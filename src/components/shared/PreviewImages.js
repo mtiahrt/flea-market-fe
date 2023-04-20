@@ -6,7 +6,7 @@ import { DELETE_ITEM_IMAGE } from '../../queries/graphQL';
 import { deleteImageFromS3 } from '../../utility-functions/images';
 import { UserProfileContext } from '../../contexts/UserContext';
 
-const PreviewImages = ({ fileDataURL: urls }) => {
+const PreviewImages = ({ fileDataURL: urls, clearImages }) => {
   const [
     deleteItemImage,
     { deleteImageData, deleteImageLoading, deleteImageError },
@@ -19,6 +19,12 @@ const PreviewImages = ({ fileDataURL: urls }) => {
       setFileDataURL(urls);
     }
   }, [urls]);
+
+  useEffect(() => {
+    if (clearImages) {
+      removeImages();
+    }
+  }, [clearImages]);
 
   function handleOnChangeForImages(changeEvent) {
     if (changeEvent.target.files.length) {
@@ -43,7 +49,9 @@ const PreviewImages = ({ fileDataURL: urls }) => {
     const result = new URL(image.url);
     return result?.hostname ? true : false;
   };
-
+  const removeImages = () => {
+    setFileDataURL([]);
+  };
   const deleteImage = (publicId, imageId) => {
     const promises = [];
     if (imageIsNotLocal(imageId)) {

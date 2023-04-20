@@ -27,7 +27,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { UserProfileContext } from '../../contexts/UserContext';
 import { useSnackbar } from '../../hooks/useSnackbar';
-import MySnackbar from '../shared/MySnackbar';
+import { MySnackbar } from '../shared/MySnackbar';
 
 export default function AddItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
@@ -78,20 +78,12 @@ export default function AddItem() {
         )?.data.createInventory.inventory.id;
         const promises = handleAddItemImage(data, inventoryId);
         Promise.all(promises).then((data) => {
-          history.push({
-            pathname: `/EditItem/${inventoryId}`,
-            state: {
-              fileDataURL: data?.map(
-                (item) => item.data.createItemImage.itemImage
-              ),
-            },
-          });
+          openSnackBar('New item saved successfully');
         });
       });
     } catch (e) {
-      openSnackBar('Something went wrong saving new item');
+      openSnackBar('Something went wrong while saving this item');
     } finally {
-      openSnackBar('Success');
     }
   };
 
@@ -120,7 +112,6 @@ export default function AddItem() {
     reset();
   };
   console.log('Add Item is rendering...');
-
   useEffect(() => {
     handleClearForm();
   }, [isSubmitSuccessful]);
@@ -190,8 +181,10 @@ export default function AddItem() {
         placeholder="Item Description"
       />
       <TextField
-        {...register('price', { required: true })}
-        type="number"
+        {...register('price', {
+          required: true,
+          pattern: /(?<=^| )\d+(\.\d+)?(?=$| [^a-z])/gms,
+        })}
         id="price"
         label="Price"
         autoComplete="price"
@@ -200,7 +193,7 @@ export default function AddItem() {
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
       />
-      {errors.price?.type === 'required' && 'Price is required'}
+      {errors.price && 'Please enter a valid number'}
 
       <TextField
         {...register('quantity')}
@@ -210,7 +203,7 @@ export default function AddItem() {
         variant="standard"
       />
 
-      <PreviewImages />
+      <PreviewImages clearImages={isSubmitSuccessful} />
       <Button type="submit" variant="contained">
         Submit
       </Button>
