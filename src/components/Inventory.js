@@ -57,6 +57,7 @@ const Inventory = () => {
   };
 
   if (loading) return <p>Loading...</p>;
+  if (!userProfile.isLoggedIn) return null;
   if (error) return <p>Error :(</p>;
   console.log('Inventory is rendering');
 
@@ -100,7 +101,7 @@ const Inventory = () => {
           showComponentClickHandler={() => setShowFilter(!showFilter)}
         />
         <StyledInventory role="item-list">
-          {data.inventoriesList.filter(filterFunction).map((item) => (
+          {data?.inventoriesList.filter(filterFunction).map((item) => (
             <BasicCard
               key={`card${item.id.toString()}`}
               isItemInCart={item.cartsList.length ? true : false}
