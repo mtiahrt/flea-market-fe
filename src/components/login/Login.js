@@ -99,7 +99,7 @@ const StyledDiv = styled.div`
 const StyledDivButtons = styled.div`
   display: flex;
   flex-direction: column;
-  flex-gap: 4;
+  gap: 0.5rem;
 `;
 
 const iconStyle = {

@@ -105,8 +105,15 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
           <StyledCartRowItemDiv>
             <h3>{item.manufacturerName}</h3>
             <h4>${item.price}</h4>
-            <FormControl>
-              <InputLabel id="quantity-select-label">Quantity</InputLabel>
+            <FormControl
+              sx={{
+                width: {
+                  xs: 55, // theme.breakpoints.up('xs')
+                  sm: 70, // theme.breakpoints.up('sm')
+                },
+              }}
+            >
+              <InputLabel id="quantity-select-label">Qty</InputLabel>
               <Select
                 style={{ height: '2.5em' }}
                 value={cartItems ? getCartItemQuantity(item.id) : item.quantity}
@@ -117,7 +124,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
                 {getQuantityDropDownOption(item.totalQuantity)}
               </Select>
             </FormControl>
-            <h4 style={{ marginRight: '1em' }}>
+            <h4>
               ${cartItems?.find((x) => x.id === item.id).totalPrice.toFixed(2)}
             </h4>
             <DeleteIcon
@@ -142,7 +149,7 @@ const StyledCartRowItemDiv = styled.div`
   h3 {
     margin: 0;
     font-weight: 100;
-    font-size: 100%;
+    font-size: var(--font-size-6);
   }
 
   h4 {

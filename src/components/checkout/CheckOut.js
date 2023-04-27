@@ -19,5 +19,6 @@ const StyledDiv = styled.div`
   gap: 2rem;
   @media (max-width: 768px) {
     flex-direction: column;
+    margin: 0.5rem;
   }
 `;
