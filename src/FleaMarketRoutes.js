@@ -1,12 +1,12 @@
 import { Route, Switch } from 'react-router-dom';
-import Inventory from './components/Inventory';
-import Modal from './components/shared/Modal';
-import Login from './components/login/Login';
-import DetailedItem from './components/DetailedItem';
-import AddItem from './components/modify-items/AddItem';
-import CheckOut from './components/checkout/CheckOut';
-import EditItem from './components/modify-items/EditItem';
-import EditCategories from './components/modify-items/EditCategories';
+import Inventory from './Components/Inventory';
+import Modal from './Components/shared/Modal';
+import Login from './Components/login/Login';
+import DetailedItem from './Components/DetailedItem';
+import AddItem from './Components/modify-items/AddItem';
+import CheckOut from './Components/checkout/CheckOut';
+import EditItem from './Components/modify-items/EditItem';
+import EditCategories from './Components/modify-items/EditCategories';
 
 const FleaMarketRoutes = ({ userProfile }) => {
   return (

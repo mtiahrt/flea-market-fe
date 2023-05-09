@@ -8,7 +8,7 @@ import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
 import React, { useState } from 'react';
 import { UserProfileContext } from './contexts/UserContext';
-import CheckOut from './components/checkout/CheckOut';
+import CheckOut from './Components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
 import FleaMarketRoutes from './FleaMarketRoutes';
