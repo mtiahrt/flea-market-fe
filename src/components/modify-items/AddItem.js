@@ -200,9 +200,8 @@ export default function AddItem() {
           required: true,
           pattern: /^\d+$/,
         })}
-        type="number"
-        label="Quantity"
         id="quantity"
+        label="Quantity"
         variant="standard"
       />
       {errors.quantity && 'Please enter a valid whole number'}
