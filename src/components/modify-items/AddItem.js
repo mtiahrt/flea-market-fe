@@ -183,7 +183,7 @@ export default function AddItem() {
       <TextField
         {...register('price', {
           required: true,
-          pattern: /(?<=^| )\d+(\.\d+)?(?=$| [^a-z])/gms,
+          pattern: /^[0-9]*\.[0-9]{2}$/g,
         })}
         id="price"
         label="Price"
@@ -193,16 +193,19 @@ export default function AddItem() {
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
       />
-      {errors.price && 'Please enter a valid number'}
+      {errors.price && 'Please enter a valid price'}
 
       <TextField
-        {...register('quantity')}
+        {...register('quantity', {
+          required: true,
+          pattern: /^\d+$/,
+        })}
         type="number"
         label="Quantity"
         id="quantity"
         variant="standard"
       />
-
+      {errors.quantity && 'Please enter a valid whole number'}
       <PreviewImages clearImages={isSubmitSuccessful} />
       <Button type="submit" variant="contained">
         Submit
