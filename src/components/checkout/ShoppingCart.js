@@ -13,7 +13,6 @@ import {
   GET_CART_ITEMS,
   GET_SHIPPING_COSTS_ITEMS,
 } from '../../queries/graphQL';
-import Typography from '@mui/material/Typography';
 import { UserProfileContext } from '../../contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
 import { useCart } from '../../contexts/CartContext';

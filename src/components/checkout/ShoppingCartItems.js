@@ -113,12 +113,14 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
                 },
               }}
             >
-              <InputLabel id="quantity-select-label">Qty</InputLabel>
+              <InputLabel style={{ zIndex: '0' }} id="quantity-select-label">
+                Qty
+              </InputLabel>
               <Select
                 style={{ height: '2.5em' }}
                 value={cartItems ? getCartItemQuantity(item.id) : item.quantity}
                 labelId="quantity-select-label"
-                label="Quantity"
+                label="Qty"
                 onChange={(e, id) => handleQuantitySelectChange(e, item.id)}
               >
                 {getQuantityDropDownOption(item.totalQuantity)}
