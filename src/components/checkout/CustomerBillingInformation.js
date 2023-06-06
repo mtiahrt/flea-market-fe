@@ -173,6 +173,7 @@ const textFieldStyles = {
 };
 
 const StyledForm = styled.form`
+  background-color: white;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

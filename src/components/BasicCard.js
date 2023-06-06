@@ -61,7 +61,13 @@ export default function BasicCard({
   }
   const hasImage = inventoryItem.itemImagesList[0]?.url;
   return (
-    <Card sx={{ maxWidth: isMobleView ? 290 : 345 }}>
+    <Card
+      sx={{
+        boxShadow: 5,
+        borderRadius: '8px',
+        maxWidth: isMobleView ? 290 : 345,
+      }}
+    >
       <Link
         to={{
           pathname: link,
@@ -74,8 +80,13 @@ export default function BasicCard({
           image={hasImage ? inventoryItem.itemImagesList[0].url : NoImage}
           title={inventoryItem.name}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent sx={{ borderTop: '1px solid #eee' }}>
+          <Typography
+            color="text.secondary"
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
             {inventoryItem.manufacturerName}
           </Typography>
           <Typography variant="body2" color="text.secondary">

@@ -151,6 +151,7 @@ const StyledSummation = styled.div`
 `;
 
 const StyledContainerDiv = styled.div`
+  background-color: white;
   display: flex;
   flex: 1 1 20em;
   flex-direction: column;

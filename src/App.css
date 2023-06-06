@@ -1,11 +1,12 @@
 :root {
   --header-color: #7D6389;
-  --nav-bar-color: #FBCDE7;
+  --nav-bar-color: #8EA489;
   --text-color-header: #BFB1C5;
   --text-color-body: #848484;
   --selected-color: #71415B;
   --logo-background-color: #50385C;
   --logo-fill-color: white;
+  --backdrop-color: #BEB9C2;
   --icon-background-color: #50385C;
   --bullet-points-color: #EDF7D8;
   --nav-size: 60px;
@@ -40,8 +41,8 @@ body {
   font-family: var(--font-family-body);
   font-size: var(--font-size-body);
   color: var(--text-color-body);
-  font-weight: 400;
-  line-height: 1.5;
+  background-color: var(--backdrop-color);
+
 }
 
 ul {

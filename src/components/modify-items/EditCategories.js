@@ -153,6 +153,7 @@ export default function EditCategories() {
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
       <h2>Add Categories and Subcategories</h2>
       <NavItem
+        style={{ listStyle: 'none' }}
         isDropdown={true}
         clickHandler={() => setToggleAddOptions(!toggleAddOptions)}
         icon={<PlusIcon name="plus" role="plus-icon" />}
@@ -254,9 +255,11 @@ export default function EditCategories() {
 
 const StyledForm = styled.form`
   display: flex;
+  background-color: white;
   flex-direction: column;
   gap: 1rem;
   margin: 2rem;
+  padding: 2rem;
 `;
 const StyledH3 = styled.h3`
   margin: 0;

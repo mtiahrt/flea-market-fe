@@ -222,8 +222,10 @@ export default function AddItem() {
 }
 
 const StyledForm = styled.form`
+  background-color: white;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin: 2rem;
+  padding: 2rem;
 `;

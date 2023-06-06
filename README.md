@@ -62,10 +62,4 @@ All environment variables stored in these files .env is ok to be served to the b
 They are public values, and they alone will not give unauthorized access.
 
 ## Deployment
-This app can be deployed through npm commands.  Before that is done you will need to set up the CLI on your machine.  [Install AWS CLI.](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-The IAM user used to update the s3 bucket is  `app-sync-s3`.  You will need to create an access key in AWS to finish the CLI configuration.  
-This can be completed in 4 easy steps.
-1. Commit your changes to the git repo
-2. Build the app by running `npm run build` This creates the package bundles in the build folder.  These files need to be uploaded to S3.
-3. Upload the files `npm run sync` 
-4. To make these changes visible immediately the cloudfront cache need to be refreshed. `npm run invalidate`
+This app can be deployed to vercel though GitHub.  Just commit code to the GitHub Master Repo. 

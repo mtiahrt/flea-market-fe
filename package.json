@@ -29,8 +29,6 @@
     "start": "react-scripts start .env.development",
     "start-prod": "react-scripts start .env.production",
     "build": "react-scripts build",
-    "sync": "aws s3 sync ./build 's3://fleamarket-fe-app/'",
-    "invalidate": "aws cloudfront create-invalidation --distribution-id E2D144N3C5UM56 --paths '/*'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress-open": "cypress open",
