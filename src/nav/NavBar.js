@@ -33,7 +33,7 @@ const StyledDiv = styled.div`
 const StyledH1 = styled.h1`
   align-content: flex-start;
   font-size: var(--font-size-5);
-  color: white;
+  color: var(--logo-fill-color);
 `;
 
 const StyledNav = styled.nav`

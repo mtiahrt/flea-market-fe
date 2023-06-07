@@ -181,6 +181,9 @@ function DetailedItem() {
 export default DetailedItem;
 const StyledDiv = styled.div`
   display: flex;
+  background-color: var(--logo-fill-color);
+  margin: 2rem;
+  padding: 2rem;
   flex-direction: column;
   align-items: flex-start;
   margin: 0 20%;
@@ -211,10 +214,7 @@ const StyledH2 = styled.h2`
 const StyledH4 = styled.h4`
   margin: 0.5rem;
 `;
-const quantitySelectStyles = {
-  // width: '100%',
-  margin: '.4em 0 .4em 0',
-};
+
 const StyledButtonsDiv = styled.div`
   display: flex;
   width: 100%;

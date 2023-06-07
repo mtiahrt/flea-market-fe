@@ -222,7 +222,7 @@ export default function AddItem() {
 }
 
 const StyledForm = styled.form`
-  background-color: white;
+  background-color: var(--logo-fill-color);
   display: flex;
   flex-direction: column;
   gap: 1rem;
