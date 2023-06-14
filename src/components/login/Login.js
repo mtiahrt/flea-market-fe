@@ -6,6 +6,8 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
   TwitterAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 import styled from 'styled-components';
 import { auth } from '../../utils/firebase/firebase';
@@ -47,26 +49,35 @@ export default function Login() {
 
   const login = async (provider) => {
     const authProvider = loginProviderFactory(provider.currentTarget.value);
-    try {
-      const userAuth = await signInWithPopup(auth, authProvider);
-      axios
-        .post(
-          `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/generateAccessToken`,
-          {},
-          {
-            headers: {
-              'Auth-Token': userAuth.user.accessToken,
-            },
-          }
-        )
-        .then((token) => {
-          // console.log('auth token', userAuth.user.accessToken);
-          // console.log('access token', token.data);
-          updateUserContext(userAuth.user, token.data);
-        });
-    } catch (error) {
-      console.error(error);
-    }
+    setPersistence(auth, browserLocalPersistence)
+      .then(async () => {
+        try {
+          const userAuth = await signInWithPopup(auth, authProvider);
+          axios
+            .post(
+              `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/generateAccessToken`,
+              {},
+              {
+                headers: {
+                  'Auth-Token': userAuth.user.accessToken,
+                },
+              }
+            )
+            .then((token) => {
+              // console.log('auth token', userAuth.user.accessToken);
+              // console.log('access token', token.data);
+              updateUserContext(userAuth.user, token.data);
+            });
+        } catch (error) {
+          console.error(error);
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+      });
   };
 
   return (

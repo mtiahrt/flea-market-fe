@@ -44,7 +44,7 @@ function App() {
         <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
           <FleaMarketProvider>
             <ThemeProvider theme={theme}>
-              <NavBar title="Wild Heather">
+              <NavBar title="Mark Tiahrt">
                 <NavItemProfile imgURL={userProfile.photoURL} />
                 <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
                 <NavItem
