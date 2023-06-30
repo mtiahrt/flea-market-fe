@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import DetailedItem from '../DetailedItem';
 import { CartContextProvider } from '../../contexts/CartContext';
 import { MockedProvider } from '@apollo/client/testing';
@@ -66,11 +66,11 @@ describe('DetailItems tests', () => {
               addToCart: () => console.log('addToCart was fired'),
             }}
           >
-            <UserProfileContext.Provider
+            <UserContext.Provider
               value={{ userProfile: { id: 1, isLoggedIn: true } }}
             >
               <DetailedItem />
-            </UserProfileContext.Provider>
+            </UserContext.Provider>
           </CartContextProvider>
         </MemoryRouter>
       </MockedProvider>

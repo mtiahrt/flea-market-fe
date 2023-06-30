@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import EditCategories from '../EditCategories';
-import { UserProfileContext } from '../../../contexts/UserContext';
+import { UserContext } from '../../../contexts/UserContext';
 import { MockedProvider } from '@apollo/client/testing';
 import {
   ADD_CATEGORY,
@@ -92,11 +92,11 @@ describe('Edit Categories tests', () => {
   const setup = () =>
     render(
       <MockedProvider mocks={apolloMock}>
-        <UserProfileContext.Provider
+        <UserContext.Provider
           value={{ userProfile: { id: 1, isLoggedIn: true } }}
         >
           <EditCategories />
-        </UserProfileContext.Provider>
+        </UserContext.Provider>
       </MockedProvider>
     );
 

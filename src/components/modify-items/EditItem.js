@@ -30,10 +30,10 @@ import {
   saveItemImage,
   saveInventory,
 } from '../../utility-functions/images';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 
 const EditItem = () => {
-  const { userProfile } = useContext(UserProfileContext);
+  const { user } = useContext(UserContext);
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation();
@@ -89,7 +89,7 @@ const EditItem = () => {
       ({ name }) => name === 'imageFile'
     );
     [...fileInputs.files].map(async (file) => {
-      promises.push(postImage(file, userProfile.accessToken));
+      promises.push(postImage(file, user.accessToken));
     });
 
     Promise.all(promises)
@@ -278,9 +278,12 @@ const EditItem = () => {
 };
 const StyledForm = styled.form`
   display: flex;
+  background-color: var(--logo-fill-color);
   flex-direction: column;
   gap: 1rem;
   margin: 0 20%;
+  margin: 2rem;
+  padding: 2rem;
 `;
 
 const StyledButtonDiv = styled.div`

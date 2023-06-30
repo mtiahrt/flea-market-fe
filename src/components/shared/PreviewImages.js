@@ -4,7 +4,7 @@ import ImagesTile from './ImagesTile';
 import { useMutation } from '@apollo/client';
 import { DELETE_ITEM_IMAGE } from '../../queries/graphQL';
 import { deleteImageFromS3 } from '../../utility-functions/images';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 
 const PreviewImages = ({ fileDataURL: urls, clearImages }) => {
   const [
@@ -12,7 +12,7 @@ const PreviewImages = ({ fileDataURL: urls, clearImages }) => {
     { deleteImageData, deleteImageLoading, deleteImageError },
   ] = useMutation(DELETE_ITEM_IMAGE);
   const [fileDataURL, setFileDataURL] = useState([]);
-  const { userProfile } = useContext(UserProfileContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (urls) {
@@ -55,7 +55,7 @@ const PreviewImages = ({ fileDataURL: urls, clearImages }) => {
   const deleteImage = (publicId, imageId) => {
     const promises = [];
     if (imageIsNotLocal(imageId)) {
-      promises.push(deleteImageFromS3(publicId, userProfile.accessToken));
+      promises.push(deleteImageFromS3(publicId, user.accessToken));
       promises.push(
         deleteItemImage({
           variables: { id: imageId },

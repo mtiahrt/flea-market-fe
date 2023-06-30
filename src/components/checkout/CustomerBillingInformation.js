@@ -12,6 +12,7 @@ import {
   Divider,
 } from '@mui/material';
 import states from '../../assets/data/states.json';
+import Typography from '@mui/material/Typography';
 
 export default function CustomerBillingInformation() {
   const {
@@ -40,7 +41,9 @@ export default function CustomerBillingInformation() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handlePaymentSubmit, onError)}>
-      <h2 style={{ width: '100%' }}>Customer Information</h2>
+      <Typography style={{ marginRight: '35%' }} variant="h4" gutterBottom>
+        Customer Information
+      </Typography>
       <TextField
         style={textFieldStyles}
         {...register('firstName', { required: true })}
@@ -101,7 +104,9 @@ export default function CustomerBillingInformation() {
         variant="standard"
       />
       <Divider style={{ flexGrow: '1', flexShrink: '1', width: '100%' }} />
-      <h2>Billing Address</h2>
+      <Typography variant="h4" gutterBottom>
+        Billing Address
+      </Typography>
       <FormControlLabel
         style={{ width: '100%' }}
         control={<Checkbox color="secondary" defaultChecked />}

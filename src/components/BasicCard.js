@@ -10,7 +10,7 @@ import { useContext, useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { ADD_CART_ITEM, DELETE_CART_ITEM } from '../queries/graphQL';
 import { useMutation } from '@apollo/client';
-import { UserProfileContext } from '../contexts/UserContext';
+import { UserContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 
 export default function BasicCard({
@@ -19,7 +19,7 @@ export default function BasicCard({
   isItemInCart,
   isMobleView,
 }) {
-  const { userProfile } = useContext(UserProfileContext);
+  const { user, setUser } = useContext(UserContext);
   const [
     addingCartItem,
     {
@@ -43,6 +43,11 @@ export default function BasicCard({
 
   function handleCartClick() {
     //TODO: Add snackbar messaging
+    if (!user) {
+      setUser({ ...user, displayLogin: true });
+      return;
+    }
+
     isInCart
       ? removeFromCart(cartId, () =>
           deleteingCartItem({ variables: { cartId } })
@@ -52,7 +57,7 @@ export default function BasicCard({
             variables: {
               inventoryId: inventoryId,
               quantity: 1,
-              userId: userProfile.id,
+              userId: user?.id,
             },
           })
         );
@@ -96,7 +101,7 @@ export default function BasicCard({
       </Link>
       <CardActions>
         <Button onClick={handleCartClick} size="small">
-          Add To Cart
+          {isInCart && user?.id ? 'Remove from Cart' : 'Add To Cart'}
         </Button>
       </CardActions>
     </Card>

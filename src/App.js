@@ -7,18 +7,22 @@ import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
 import React, { useState } from 'react';
-import { UserProfileContext } from './contexts/UserContext';
+import { UserContext } from './contexts/UserContext';
 import CheckOut from './components/checkout/CheckOut';
 import { CartContextProvider } from './contexts/CartContext';
 import DropdownMenu from './nav/DropdownMenu';
 import FleaMarketRoutes from './FleaMarketRoutes';
 import FleaMarketProvider from './FleaMarketProvider';
+import Modal from './components/shared/Modal';
+import Login from './components/login/Login';
+import auth from './utils/firebase/firebase';
 import {
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import styled from 'styled-components';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useUser } from './hooks/useUser';
 
 let theme = createTheme({
   palette: {
@@ -34,18 +38,43 @@ let theme = createTheme({
   },
 });
 theme = responsiveFontSizes(theme);
+
 function App() {
+  const handleSignin = () => {
+    console.log('in sign in');
+    signInWithPopup(auth, new GoogleAuthProvider()).then((user) =>
+      console.log(user)
+    );
+  };
+  const handleSignOut = () => {
+    auth.signOut().then(() => console.log('signed out'));
+  };
   //Todo: add and remove administrator buttons based on user type
-  const [userProfile, setUserProfile] = useState({});
+  const [user, setUser] = useState(undefined);
+  const { loadUserContext, isUserInLocalStorage } = useUser();
   console.log('App component is rendering');
+  const currentUser = loadUserContext();
+  if (!user && isUserInLocalStorage()) {
+    //check if user is in storage or not.
+    setUser(currentUser);
+  }
   return (
     <div className="App">
+      {/*<button onClick={handleSignin}>Sign in</button>*/}
+      {/*<button onClick={handleSignOut}>Sign out</button>*/}
       <Router>
-        <UserProfileContext.Provider value={{ userProfile, setUserProfile }}>
+        <UserContext.Provider value={{ user, setUser }}>
           <FleaMarketProvider>
             <ThemeProvider theme={theme}>
+              <Modal
+                message="Please sign in"
+                isOpen={user?.displayLogin}
+                onClose={null}
+              >
+                <Login />
+              </Modal>
               <NavBar title="Mark Tiahrt">
-                <NavItemProfile imgURL={userProfile.photoURL} />
+                <NavItemProfile imgURL={user?.photoURL}></NavItemProfile>
                 <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
                 <NavItem
                   url={'CheckOut'}
@@ -56,20 +85,13 @@ function App() {
                 </NavItem>
               </NavBar>
               <CartContextProvider>
-                <FleaMarketRoutes userProfile={userProfile} />
+                <FleaMarketRoutes />
               </CartContextProvider>
             </ThemeProvider>
           </FleaMarketProvider>
-        </UserProfileContext.Provider>
+        </UserContext.Provider>
       </Router>
     </div>
   );
 }
-const StyledHeader = styled.header`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: var(--header-color);
-  color: var(--text-color-header);
-`;
 export default App;

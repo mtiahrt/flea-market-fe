@@ -1,36 +1,38 @@
 import React, {
-  useContext,
   useEffect,
   useReducer,
   useMemo,
   useState,
+  useContext,
 } from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import { INVENTORY_LIST } from '../queries/graphQL';
-import { UserProfileContext } from '../contexts/UserContext';
+import { INVENTORY_LIST_AND_CART_ITEMS } from '../queries/graphQL';
 import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
+import { UserContext } from '../contexts/UserContext';
 
 const Inventory = () => {
   const [showFilter, setShowFilter] = useState(false);
+  const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(filterReducer, []);
-  const { userProfile } = useContext(UserProfileContext);
   const { loadCartItems } = useCart();
-  const { loading, error, data } = useQuery(INVENTORY_LIST, {
+
+  const { loading, error, data } = useQuery(INVENTORY_LIST_AND_CART_ITEMS, {
     variables: {
-      applicationUserId: userProfile.id,
+      applicationUserId: user?.id,
     },
     fetchPolicy: 'cache-and-network',
   });
+
   const categories = useMemo(() => reduceCategories(data), [data]);
 
   useEffect(() => {
     console.log('Inventory use effect fired...');
-    if (data?.inventoriesList && userProfile.isLoggedIn) {
+    if (data?.inventoriesList.cartItems) {
       loadCartItems(
         data?.inventoriesList
           ?.filter((item) => item.cartsList.length)
@@ -44,7 +46,7 @@ const Inventory = () => {
           )
       );
     }
-  }, [userProfile.isLoggedIn, data]);
+  }, [data]);
 
   const filterFunction = (inventoryItem) => {
     return state.length === 0
@@ -57,8 +59,10 @@ const Inventory = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (!userProfile.isLoggedIn) return null;
   if (error) return <p>Error :(</p>;
+  if (error) {
+    console.error(error);
+  }
   console.log('Inventory is rendering');
 
   function reduceCategories(data) {
@@ -104,7 +108,7 @@ const Inventory = () => {
           {data?.inventoriesList.filter(filterFunction).map((item) => (
             <BasicCard
               key={`card${item.id.toString()}`}
-              isItemInCart={item.cartsList.length ? true : false}
+              isItemInCart={item.cartsList?.length && user ? true : false}
               link={`DetailedItem/${item.id}`}
               inventoryItem={item}
               isMobleView={showFilter}

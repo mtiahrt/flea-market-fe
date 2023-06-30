@@ -13,12 +13,13 @@ import {
   GET_CART_ITEMS,
   GET_SHIPPING_COSTS_ITEMS,
 } from '../../queries/graphQL';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
 import { useCart } from '../../contexts/CartContext';
+import Typography from '@mui/material/Typography';
 
 export default function ShoppingCart() {
-  const { userProfile } = useContext(UserProfileContext);
+  const { user } = useContext(UserContext);
   const { items } = useCart();
   const [shippingCost, setShippingCost] = useState({
     id: 0,
@@ -32,7 +33,7 @@ export default function ShoppingCart() {
     data: dataCartItems,
   } = useQuery(GET_CART_ITEMS, {
     variables: {
-      user_id: userProfile.id,
+      user_id: user?.id,
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -80,7 +81,7 @@ export default function ShoppingCart() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Token': userProfile.accessToken,
+          'Access-Token': user.accessToken,
         },
         body: JSON.stringify(requestBody),
       }
@@ -99,14 +100,18 @@ export default function ShoppingCart() {
   }
   return (
     <StyledContainerDiv>
-      <h2 style={{ marginBottom: '3%' }}>Cart Items</h2>
+      <Typography variant="h4" gutterBottom>
+        Cart Items
+      </Typography>
       <ShoppingCartItems
         shoppingCartItems={dataCartItems.cartsList}
         setCartTotal={setCartTotal}
       ></ShoppingCartItems>
       <Divider style={dividerStyle}></Divider>
       <StyledShipping>
-        <h2>Shipping Options</h2>
+        <Typography variant="h4" gutterBottom>
+          Shipping Options
+        </Typography>
         <FormControl
           style={{
             marginTop: '4%',
@@ -130,7 +135,9 @@ export default function ShoppingCart() {
         </FormControl>
       </StyledShipping>
       <StyledSummation>
-        <h2>Cart Total</h2>
+        <Typography variant="h4" gutterBottom>
+          Cart Total
+        </Typography>
         <h3 style={{ margin: '0', marginBottom: '3%' }}>
           ${cartTotal === 0 ? 0 : (cartTotal + +shippingCost.price).toFixed(2)}
         </h3>

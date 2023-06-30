@@ -17,14 +17,14 @@ import {
   Select,
 } from '@mui/material';
 import { useCart } from '../contexts/CartContext';
-import { UserProfileContext } from '../contexts/UserContext';
+import { UserContext } from '../contexts/UserContext';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { Snackbar } from './shared/Snackbar';
 
 function DetailedItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
   const { removeFromCart, updateQuantity, addToCart } = useCart();
-  const { userProfile } = useContext(UserProfileContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [
     addingCartItem,
@@ -104,18 +104,22 @@ function DetailedItem() {
   }
 
   const handleAddOrRemoveFromCartClick = () => {
+    if (!user) {
+      setUser({ ...user, displayLogin: true });
+      return;
+    }
     const refetchData = !isInCart;
     setIsInCart(!isInCart);
     isInCart
       ? removeFromCart(cartId, () =>
           deleteingCartItem({ variables: { cartId } })
         )
-      : addToCart(inventoryId, 1, () =>
+      : addToCart(inventoryId, quantity, () =>
           addingCartItem({
             variables: {
               inventoryId: inventoryId,
-              quantity: 1,
-              userId: userProfile.id,
+              quantity: quantity,
+              userId: user?.id,
             },
           })
         );
@@ -213,10 +217,7 @@ const StyledH2 = styled.h2`
 const StyledH4 = styled.h4`
   margin: 0.5rem;
 `;
-const quantitySelectStyles = {
-  // width: '100%',
-  margin: '.4em 0 .4em 0',
-};
+
 const StyledButtonsDiv = styled.div`
   display: flex;
   width: 100%;

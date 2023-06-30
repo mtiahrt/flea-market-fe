@@ -1,19 +1,12 @@
 export default class UserContextModel {
-  constructor(
-    accessToken,
-    authenticationToken,
-    displayName,
-    email,
-    photoURL,
-    id,
-    isLoggedIn
-  ) {
+  constructor(user, accessToken) {
     this.accessToken = accessToken;
-    this.authenticationToken = authenticationToken;
-    this.displayName = displayName;
-    this.email = email;
-    this.photoURL = photoURL;
-    this.id = id;
-    this.isLoggedIn = isLoggedIn;
+    this.authenticationToken = user?.accessToken;
+    this.displayName = user?.displayName;
+    this.email = user?.email;
+    this.photoURL = user?.photoURL;
+    this.id = user?.uid;
+    this.isLoggedIn = user?.uid ? true : false;
+    this.displayLogin = false;
   }
 }

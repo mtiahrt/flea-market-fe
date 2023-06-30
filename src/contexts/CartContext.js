@@ -13,7 +13,7 @@ export function useCart() {
   return contextValue;
 }
 export function CartContextProvider(props) {
-  const [cartItems, setCartItems] = useState([new CartContextModel()]);
+  const [cartItems, setCartItems] = useState(undefined);
 
   function addToCart(inventoryId, quantity, crudFn) {
     crudFn().then(
@@ -28,12 +28,16 @@ export function CartContextProvider(props) {
           cart.quantity,
           cart.inventory.price
         );
-        setCartItems([...cartItems, cartContextModel]);
+        setCartItems(
+          cartItems ? [...cartItems, cartContextModel] : [cartContextModel]
+        );
       }
     );
   }
   function removeFromCart(cartId, crudFn) {
-    crudFn().then(() => setCartItems(cartItems.filter((x) => x.id !== cartId)));
+    crudFn().then(() =>
+      setCartItems(cartItems?.filter((x) => x.id !== cartId))
+    );
   }
   function loadCartItems(items) {
     setCartItems(items);
@@ -43,17 +47,17 @@ export function CartContextProvider(props) {
       const cartContextModel = new CartContextModel(
         cartId,
         res.data.updateCart.cart.quantity,
-        cartItems.find((x) => x.cartId === cartId).price
+        cartItems?.find((x) => x.cartId === cartId).price
       );
       const updatedItems = [
-        ...cartItems.filter((x) => x.cartId !== cartId),
+        ...cartItems?.filter((x) => x.cartId !== cartId),
         cartContextModel,
       ];
       setCartItems(updatedItems);
     });
   }
 
-  const items = [...cartItems];
+  const items = cartItems ? [...cartItems] : null;
   const value = {
     items,
     loadCartItems,

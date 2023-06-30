@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import userEvent from '@testing-library/user-event';
 import FleaMarketRoutes from '../../FleaMarketRoutes';
 import { CartContextProvider } from '../../contexts/CartContext';
@@ -65,7 +65,7 @@ describe('Inventory tests', () => {
   const setup = () =>
     render(
       <MockedProvider mocks={apolloMock}>
-        <UserProfileContext.Provider
+        <UserContext.Provider
           value={{ userProfile: { id: 'abc', isLoggedIn: true } }}
         >
           <CartContextProvider>
@@ -73,7 +73,7 @@ describe('Inventory tests', () => {
               <Inventory />
             </BrowserRouter>
           </CartContextProvider>
-        </UserProfileContext.Provider>{' '}
+        </UserContext.Provider>{' '}
       </MockedProvider>
     );
   // it('renders without crashing', async () => {

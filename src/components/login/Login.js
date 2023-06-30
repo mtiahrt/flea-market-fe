@@ -6,37 +6,16 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
   TwitterAuthProvider,
-  setPersistence,
-  browserLocalPersistence,
 } from 'firebase/auth';
 import styled from 'styled-components';
-import { auth } from '../../utils/firebase/firebase';
-import { useContext } from 'react';
-import { UserProfileContext } from '../../contexts/UserContext';
+import auth from '../../utils/firebase/firebase';
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 import UserContextModel from '../../models/UserContextModel';
 
 export default function Login() {
-  const { setUserProfile } = useContext(UserProfileContext);
-  const updateUserContext = (user, accessToken) => {
-    const {
-      displayName,
-      email,
-      photoURL,
-      uid: id,
-      accessToken: authToken,
-    } = user;
-    const userContextModel = new UserContextModel(
-      accessToken,
-      authToken,
-      displayName,
-      email,
-      photoURL,
-      id,
-      true
-    );
-    setUserProfile(userContextModel);
-  };
+  const { user, setUser } = useContext(UserContext);
   const loginProviderFactory = (provider) => {
     if (provider === 'google') {
       return new GoogleAuthProvider();
@@ -49,10 +28,9 @@ export default function Login() {
 
   const login = async (provider) => {
     const authProvider = loginProviderFactory(provider.currentTarget.value);
-    setPersistence(auth, browserLocalPersistence)
-      .then(async () => {
+    signInWithPopup(auth, authProvider)
+      .then((userAuth) => {
         try {
-          const userAuth = await signInWithPopup(auth, authProvider);
           axios
             .post(
               `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/generateAccessToken`,
@@ -63,11 +41,34 @@ export default function Login() {
                 },
               }
             )
-            .then((token) => {
-              // console.log('auth token', userAuth.user.accessToken);
-              // console.log('access token', token.data);
-              updateUserContext(userAuth.user, token.data);
+            .then((resp) => {
+              localStorage.setItem(
+                'access-token',
+                JSON.stringify({ 'access-token': resp.data })
+              );
+              setUser((prev) => ({
+                ...prev,
+                displayLogin: false,
+                accessToken: resp.data,
+              }));
             });
+          const myUser = new UserContextModel(userAuth.user, null);
+          setUser({ ...user, ...myUser });
+          const matches = ['displayName', 'email', 'id', 'photoURL'];
+          localStorage.setItem(
+            'user',
+            JSON.stringify(
+              Object.entries(myUser)
+                .filter((x) => matches.includes(x[0]))
+                .reduce((acc, curr) => {
+                  const x =
+                    curr[0] === 'id'
+                      ? { uid: curr[1] }
+                      : { [curr[0]]: curr[1] };
+                  return { ...acc, ...x };
+                }, {})
+            )
+          );
         } catch (error) {
           console.error(error);
         }

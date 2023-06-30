@@ -1,4 +1,4 @@
-import { UserProfileContext } from './contexts/UserContext';
+import { UserContext } from './contexts/UserContext';
 import { setContext } from '@apollo/client/link/context';
 import {
   ApolloClient,
@@ -13,12 +13,12 @@ const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_END_POINT_URI,
 });
 const FleaMarketProvider = ({ children }) => {
-  const { userProfile } = useContext(UserProfileContext);
+  const { user } = useContext(UserContext);
 
   const accessTokenMiddleware = setContext(async (_, { headers }) => ({
     headers: {
       ...headers,
-      'Access-Token': userProfile.accessToken,
+      'Access-Token': user.accessToken,
     },
   }));
 

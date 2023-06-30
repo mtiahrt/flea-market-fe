@@ -1,8 +1,6 @@
 //TODO Looking to scaling images down to lower resolution before uploading to S3...
 import axios from 'axios';
 
-let accessToken;
-
 export const postImage = async (image, accessToken) => {
   const { url } = await getSecureURL(accessToken);
   return fetch(url, {

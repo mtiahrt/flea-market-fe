@@ -24,14 +24,14 @@ import {
   saveItemImage,
   saveInventory,
 } from '../../utility-functions/images';
-import { useHistory } from 'react-router-dom';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { useSnackbar } from '../../hooks/useSnackbar';
 import { Snackbar } from '../shared/Snackbar';
+import Typography from '@mui/material/Typography';
 
 export default function AddItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
-  const { userProfile } = useContext(UserProfileContext);
+  const { user } = useContext(UserContext);
   const [category, setCategory] = useState(-1);
   const [subcategory, setSubcategory] = useState(-1);
   const {
@@ -47,7 +47,6 @@ export default function AddItem() {
   const [addInventory, { data, loading, error }] = useMutation(ADD_SALE_ITEM);
   const [addItemImage, { imageData, imageLoading, imageError }] =
     useMutation(ADD_ITEM_IMAGE);
-  const history = useHistory();
   const {
     loading: loadingCategories,
     error: errorCategories,
@@ -70,7 +69,7 @@ export default function AddItem() {
         ({ name }) => name === 'imageFile'
       );
       [...fileInputs.files].map(async (file) => {
-        promises.push(postImage(file, userProfile.accessToken));
+        promises.push(postImage(file, user.accessToken));
       });
       Promise.all(promises).then((data) => {
         const inventoryId = data.find(
@@ -121,7 +120,9 @@ export default function AddItem() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
-      <h2>New Sale Item</h2>
+      <Typography variant="h4" gutterBottom>
+        Add Sale Item
+      </Typography>
       <TextField
         {...register('name', { required: true })}
         id="name"

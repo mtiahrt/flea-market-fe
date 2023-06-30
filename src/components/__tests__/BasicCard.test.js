@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
-import { UserProfileContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { CartContextProvider } from '../../contexts/CartContext';
 import BasicCard from '../BasicCard';
 import { MockedProvider } from '@apollo/client/testing';
@@ -38,7 +38,7 @@ describe('BasicCard tests', () => {
   function setup(isInCart) {
     return render(
       <MockedProvider mocks={apolloMock} addTypename={false}>
-        <UserProfileContext.Provider
+        <UserContext.Provider
           value={{ userProfile: { id: 1, isLoggedIn: true } }}
         >
           <CartContextProvider
@@ -58,7 +58,7 @@ describe('BasicCard tests', () => {
               />
             </BrowserRouter>
           </CartContextProvider>
-        </UserProfileContext.Provider>
+        </UserContext.Provider>
       </MockedProvider>
     );
   }
