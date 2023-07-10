@@ -10,3 +10,14 @@ export default class UserContextModel {
     this.displayLogin = false;
   }
 }
+UserContextModel.prototype.signOut = function () {
+  this.accessToken = null;
+  this.authenticationToken = null;
+  this.displayName = null;
+  this.email = null;
+  this.photoURL = null;
+  this.id = null;
+  this.isLoggedIn = false;
+  this.displayLogin = false;
+  return this;
+};

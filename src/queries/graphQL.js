@@ -139,7 +139,7 @@ export const GET_SHIPPING_COSTS_ITEMS = gql`
   }
 `;
 export const GET_INVENTORY_ITEM = gql`
-  query ($inventoryId: Int!) {
+  query publicInventory($inventoryId: Int!) {
     inventory(id: $inventoryId) {
       id
       description
@@ -256,7 +256,7 @@ export const DELETE_CART_ITEM = gql`
 `;
 
 export const INVENTORY_LIST_AND_CART_ITEMS = gql`
-  query inventoryListWithCartId($userId: String) {
+  query publicInventory($userId: String) {
     inventoriesList(condition: { inStock: true }) {
       id
       subcategoryId

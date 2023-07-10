@@ -18,7 +18,7 @@ const FleaMarketProvider = ({ children }) => {
   const accessTokenMiddleware = setContext(async (_, { headers }) => ({
     headers: {
       ...headers,
-      'Access-Token': user.accessToken,
+      'Access-Token': user?.accessToken,
     },
   }));
 

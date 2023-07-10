@@ -40,6 +40,7 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 function App() {
+  const [user, setUser] = useState(undefined);
   const handleSignin = () => {
     console.log('in sign in');
     signInWithPopup(auth, new GoogleAuthProvider()).then((user) =>
@@ -48,9 +49,9 @@ function App() {
   };
   const handleSignOut = () => {
     auth.signOut().then(() => console.log('signed out'));
+    setUser(user.signOut());
   };
   //Todo: add and remove administrator buttons based on user type
-  const [user, setUser] = useState(undefined);
   const { loadUserContext, isUserInLocalStorage } = useUser();
   console.log('App component is rendering');
   const currentUser = loadUserContext();
@@ -61,7 +62,7 @@ function App() {
   return (
     <div className="App">
       {/*<button onClick={handleSignin}>Sign in</button>*/}
-      {/*<button onClick={handleSignOut}>Sign out</button>*/}
+      <button onClick={handleSignOut}>Sign out</button>
       <Router>
         <UserContext.Provider value={{ user, setUser }}>
           <FleaMarketProvider>
