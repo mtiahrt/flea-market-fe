@@ -21,8 +21,8 @@ import {
   createTheme,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useUser } from './hooks/useUser';
+import UserContextModel from './models/UserContextModel';
 
 let theme = createTheme({
   palette: {
@@ -41,15 +41,17 @@ theme = responsiveFontSizes(theme);
 
 function App() {
   const [user, setUser] = useState(undefined);
-  const handleSignin = () => {
-    console.log('in sign in');
-    signInWithPopup(auth, new GoogleAuthProvider()).then((user) =>
-      console.log(user)
-    );
-  };
+  // const handleSignin = () => {
+  //   console.log('in sign in');
+  //   signInWithPopup(auth, new GoogleAuthProvider()).then((user) =>
+  //     console.log(user)
+  //   );
+  // };
   const handleSignOut = () => {
     auth.signOut().then(() => console.log('signed out'));
-    setUser(user.signOut());
+    localStorage.removeItem('user');
+    localStorage.removeItem('access-token');
+    setUser(new UserContextModel().signOut());
   };
   //Todo: add and remove administrator buttons based on user type
   const { loadUserContext, isUserInLocalStorage } = useUser();

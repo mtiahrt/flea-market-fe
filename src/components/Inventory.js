@@ -59,10 +59,8 @@ const Inventory = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-  if (error) {
-    console.error(error);
-  }
+  if (error) return <p>{error.message}</p>;
+
   console.log('Inventory is rendering');
 
   function reduceCategories(data) {
