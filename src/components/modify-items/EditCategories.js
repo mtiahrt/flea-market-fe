@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import NavItem from '../../nav/NavItem';
 import { useSnackbar } from '../../hooks/useSnackbar';
 import { Snackbar } from '../shared/Snackbar';
+import Typography from '@mui/material/Typography';
 export default function EditCategories() {
   const { isActive, message, openSnackBar } = useSnackbar();
   const [toggleAddOptions, setToggleAddOptions] = useState(false);
@@ -151,7 +152,9 @@ export default function EditCategories() {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleNewItemSubmit, onError)}>
-      <h2>Add Categories and Subcategories</h2>
+      <Typography variant="h4" gutterBottom>
+        Add Categories and Subcategories
+      </Typography>
       <NavItem
         style={{ listStyle: 'none' }}
         isDropdown={true}

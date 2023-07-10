@@ -17,6 +17,8 @@ import FleaMarketProvider from './FleaMarketProvider';
 import Modal from './components/shared/Modal';
 import Login from './components/login/Login';
 import auth from './utils/firebase/firebase';
+import { ReactComponent as SaleIcon } from './icons/sale-svgrepo-com.svg';
+import { ReactComponent as CategoryIcon } from './icons/category-svgrepo-com.svg';
 import {
   ThemeProvider,
   createTheme,
@@ -79,7 +81,20 @@ function App() {
                   icon={<ShoppingCartIcon name="shoppingCart" />}
                 ></NavItem>
                 <NavItem isDropdown={true} icon={<PlusIcon name="plus" />}>
-                  <DropdownMenu />
+                  <DropdownMenu
+                    dropdownProps={[
+                      {
+                        icon: <SaleIcon />,
+                        url: '/addItem',
+                        content: 'Inventory Item',
+                      },
+                      {
+                        icon: <CategoryIcon />,
+                        url: '/editCategories',
+                        content: 'Category',
+                      },
+                    ]}
+                  />
                 </NavItem>
               </NavBar>
               <CartContextProvider>
