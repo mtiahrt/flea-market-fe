@@ -6,6 +6,7 @@ import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
+import { ReactComponent as LoginIcon } from './icons/login.svg';
 import React, { useState } from 'react';
 import { UserContext } from './contexts/UserContext';
 import CheckOut from './components/checkout/CheckOut';
@@ -41,12 +42,7 @@ theme = responsiveFontSizes(theme);
 
 function App() {
   const [user, setUser] = useState(undefined);
-  // const handleSignin = () => {
-  //   console.log('in sign in');
-  //   signInWithPopup(auth, new GoogleAuthProvider()).then((user) =>
-  //     console.log(user)
-  //   );
-  // };
+
   const handleSignOut = () => {
     auth.signOut().then(() => console.log('signed out'));
     localStorage.removeItem('user');
@@ -58,12 +54,10 @@ function App() {
   console.log('App component is rendering');
   const currentUser = loadUserContext();
   if (!user && isUserInLocalStorage()) {
-    //check if user is in storage or not.
     setUser(currentUser);
   }
   return (
     <div className="App">
-      {/*<button onClick={handleSignin}>Sign in</button>*/}
       <button onClick={handleSignOut}>Sign out</button>
       <Router>
         <UserContext.Provider value={{ user, setUser }}>
@@ -79,6 +73,7 @@ function App() {
               <NavBar title="Mark Tiahrt">
                 <NavItemProfile imgURL={user?.photoURL}></NavItemProfile>
                 <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
+                <NavItem url={'#'} icon={<LoginIcon name="login" />}></NavItem>
                 <NavItem
                   url={'CheckOut'}
                   icon={<ShoppingCartIcon name="shoppingCart" />}

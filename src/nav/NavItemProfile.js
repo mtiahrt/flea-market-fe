@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const NavItemProfile = ({ imgURL }) => {
   return (
     <li className="nav-item">
-      <Link to={{}} style={{ pointerEvents: 'none' }} className="icon-button">
+      <Link to={{}} className="icon-button">
         <img alt="profile" src={imgURL} />
       </Link>
     </li>
