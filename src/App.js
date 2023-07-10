@@ -2,11 +2,13 @@ import './App.css';
 import NavBar from './nav/NavBar';
 import NavItem from './nav/NavItem';
 import { BrowserRouter as Router } from 'react-router-dom';
-import NavItemProfile from './nav/NavItemProfile';
 import { ReactComponent as PlusIcon } from './icons/plus.svg';
 import { ReactComponent as ShoppingCartIcon } from './icons/shopping-cart.svg';
 import { ReactComponent as HomeIcon } from './icons/home.svg';
-import { ReactComponent as LoginIcon } from './icons/login.svg';
+import { ReactComponent as SaleIcon } from './icons/sale-svgrepo-com.svg';
+import { ReactComponent as CategoryIcon } from './icons/category-svgrepo-com.svg';
+import { ReactComponent as ProfileIcon } from './icons/profile.svg';
+import { ReactComponent as LoginOutIcon } from './icons/login-out.svg';
 import React, { useState } from 'react';
 import { UserContext } from './contexts/UserContext';
 import CheckOut from './components/checkout/CheckOut';
@@ -17,8 +19,7 @@ import FleaMarketProvider from './FleaMarketProvider';
 import Modal from './components/shared/Modal';
 import Login from './components/login/Login';
 import auth from './utils/firebase/firebase';
-import { ReactComponent as SaleIcon } from './icons/sale-svgrepo-com.svg';
-import { ReactComponent as CategoryIcon } from './icons/category-svgrepo-com.svg';
+
 import {
   ThemeProvider,
   createTheme,
@@ -73,9 +74,27 @@ function App() {
                 <Login />
               </Modal>
               <NavBar title="Mark Tiahrt">
-                <NavItemProfile imgURL={user?.photoURL}></NavItemProfile>
+                <NavItem
+                  isDropdown={true}
+                  icon={<ProfileIcon name="profile" />}
+                  imageURL={user?.photoURL}
+                >
+                  <DropdownMenu
+                    dropdownProps={[
+                      {
+                        icon: <LoginOutIcon />,
+                        url: '',
+                        content: user?.isLoggedIn ? 'Sign Out' : 'Sign In',
+                      },
+                      {
+                        icon: <ProfileIcon />,
+                        url: '/profile',
+                        content: 'User Profile',
+                      },
+                    ]}
+                  ></DropdownMenu>
+                </NavItem>
                 <NavItem url={'#'} icon={<HomeIcon name="home" />}></NavItem>
-                <NavItem url={'#'} icon={<LoginIcon name="login" />}></NavItem>
                 <NavItem
                   url={'CheckOut'}
                   icon={<ShoppingCartIcon name="shoppingCart" />}

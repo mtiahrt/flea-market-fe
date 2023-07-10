@@ -13,6 +13,7 @@ const NavItem = ({
   className,
   clickHandler,
   style,
+  imageURL,
 }) => {
   let history = useHistory();
   const [open, setOpen] = useState(false);
@@ -47,7 +48,7 @@ const NavItem = ({
           isActive === icon.props.name ? 'icon-button active' : 'icon-button'
         }
       >
-        {icon}
+        {imageURL ? <img alt="profile photo" src={imageURL} /> : icon}
       </a>
       {open && children}
     </li>
