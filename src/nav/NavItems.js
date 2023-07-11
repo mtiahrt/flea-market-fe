@@ -1,18 +1,33 @@
 import React, { useContext, useState } from 'react';
 import NavItem from './NavItem';
-import { ReactComponent as ProfileIcon } from '../icons/profile.svg';
 import DropdownMenu from './DropdownMenu';
+import auth from '../utils/firebase/firebase';
+import UserContextModel from '../models/UserContextModel';
 import { ReactComponent as LoginOutIcon } from '../icons/login-out.svg';
 import { ReactComponent as HomeIcon } from '../icons/home.svg';
 import { ReactComponent as ShoppingCartIcon } from '../icons/shopping-cart.svg';
 import { ReactComponent as PlusIcon } from '../icons/plus.svg';
 import { ReactComponent as SaleIcon } from '../icons/sale-svgrepo-com.svg';
 import { ReactComponent as CategoryIcon } from '../icons/category-svgrepo-com.svg';
+import { ReactComponent as ProfileIcon } from '../icons/profile.svg';
 import { UserContext } from '../contexts/UserContext';
 
-function NavItems(props) {
-  const { user } = useContext(UserContext);
+function NavItems() {
+  const { user, setUser } = useContext(UserContext);
   const [active, setActive] = useState('home');
+
+  const logUserOut = () => {
+    auth.signOut().then(() => console.log('signed out'));
+    localStorage.removeItem('user');
+    localStorage.removeItem('access-token');
+    setUser(new UserContextModel().signOut());
+  };
+  const logUserIn = () => {
+    if (!user?.isLoggedIn) {
+      setUser({ ...user, displayLogin: true });
+      return;
+    }
+  };
   return (
     <>
       <NavItem
@@ -28,7 +43,7 @@ function NavItems(props) {
               icon: <LoginOutIcon />,
               url: '',
               content: user?.isLoggedIn ? 'Sign Out' : 'Sign In',
-              onClickEventHandler: () => console.log('you clicked Logout'),
+              onClickEventHandler: user?.isLoggedIn ? logUserOut : logUserIn,
             },
             {
               icon: <ProfileIcon />,

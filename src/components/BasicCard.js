@@ -43,7 +43,7 @@ export default function BasicCard({
 
   function handleCartClick() {
     //TODO: Add snackbar messaging
-    if (!user) {
+    if (!user?.isLoggedIn) {
       setUser({ ...user, displayLogin: true });
       return;
     }

@@ -35,23 +35,15 @@ theme = responsiveFontSizes(theme);
 
 function App() {
   const [user, setUser] = useState(undefined);
-
-  const handleSignOut = () => {
-    auth.signOut().then(() => console.log('signed out'));
-    localStorage.removeItem('user');
-    localStorage.removeItem('access-token');
-    setUser(new UserContextModel().signOut());
-  };
   //Todo: add and remove administrator buttons based on user type
   const { loadUserContext, isUserInLocalStorage } = useUser();
   console.log('App component is rendering');
   const currentUser = loadUserContext();
-  if (!user && isUserInLocalStorage()) {
+  if (!user?.isLoggedIn && isUserInLocalStorage()) {
     setUser(currentUser);
   }
   return (
     <div className="App">
-      <button onClick={handleSignOut}>Sign out</button>
       <Router>
         <UserContext.Provider value={{ user, setUser }}>
           <FleaMarketProvider>

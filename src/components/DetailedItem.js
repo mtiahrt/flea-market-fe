@@ -104,7 +104,7 @@ function DetailedItem() {
   }
 
   const handleAddOrRemoveFromCartClick = () => {
-    if (!user) {
+    if (!user?.isLoggedIn) {
       setUser({ ...user, displayLogin: true });
       return;
     }
