@@ -1,22 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Navigation.css';
 import styled from 'styled-components';
+import NavItems from './NavItems';
 
 const NavBar = (props) => {
-  const [active, setActive] = useState('home');
   return (
     <StyledDiv style={{}}>
       <StyledNav className="navbar">
         <ul className="navbar-nav">
           <li style={{ marginRight: 'auto' }}>
-            <StyledH1>{props.title}</StyledH1>
+            <StyledH1>Mark Tiahrt</StyledH1>
           </li>
-          {React.Children.map(props.children, (child) =>
-            React.cloneElement(child, {
-              isActive: active,
-              setActive: setActive,
-            })
-          )}
+          <NavItems />
         </ul>
       </StyledNav>
     </StyledDiv>
@@ -38,7 +33,6 @@ const StyledH1 = styled.h1`
 
 const StyledNav = styled.nav`
   align-content: stretch;
-  //margin: 2px 0 1em 0;
 `;
 
 export default NavBar;

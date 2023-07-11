@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
 
-function DropdownMenu(props) {
-  function DropDownItem(props) {
+function DropdownMenu({ dropdownProps }) {
+  function DropDownItem({ url, icon, content, onClickEventHandler }) {
     return (
-      <Link to={props.url} className="menu-item">
-        <span className="icon-button">{props.icon}</span>
-        {props.content}
+      <Link onClick={onClickEventHandler} to={url} className="menu-item">
+        <span className="icon-button">{icon}</span>
+        {content}
       </Link>
     );
   }
   return (
     <div className="dropdown">
-      {props.dropdownProps.map((dropdownProp) => (
+      {dropdownProps.map((dropdownProp, index) => (
         <DropDownItem
+          key={`dropDownItem${index}`}
           content={dropdownProp.content}
           icon={dropdownProp.icon}
           url={dropdownProp.url}
+          onClickEventHandler={dropdownProp.onClickEventHandler}
         />
       ))}
     </div>
