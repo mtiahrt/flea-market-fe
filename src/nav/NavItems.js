@@ -3,7 +3,8 @@ import NavItem from './NavItem';
 import DropdownMenu from './DropdownMenu';
 import auth from '../utils/firebase/firebase';
 import UserContextModel from '../models/UserContextModel';
-import { ReactComponent as LoginOutIcon } from '../icons/login-out.svg';
+import { ReactComponent as LoginIcon } from '../icons/login.svg';
+import { ReactComponent as LogoutIcon } from '../icons/logout.svg';
 import { ReactComponent as HomeIcon } from '../icons/home.svg';
 import { ReactComponent as ShoppingCartIcon } from '../icons/shopping-cart.svg';
 import { ReactComponent as PlusIcon } from '../icons/plus.svg';
@@ -40,7 +41,7 @@ function NavItems() {
         <DropdownMenu
           dropdownProps={[
             {
-              icon: <LoginOutIcon />,
+              icon: user.isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
               url: '',
               content: user?.isLoggedIn ? 'Sign Out' : 'Sign In',
               onClickEventHandler: user?.isLoggedIn ? logUserOut : logUserIn,

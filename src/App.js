@@ -8,7 +8,6 @@ import FleaMarketRoutes from './FleaMarketRoutes';
 import FleaMarketProvider from './FleaMarketProvider';
 import Modal from './components/shared/Modal';
 import Login from './components/login/Login';
-import auth from './utils/firebase/firebase';
 
 import {
   ThemeProvider,
@@ -16,7 +15,6 @@ import {
   responsiveFontSizes,
 } from '@mui/material/styles';
 import { useUser } from './hooks/useUser';
-import UserContextModel from './models/UserContextModel';
 
 let theme = createTheme({
   palette: {

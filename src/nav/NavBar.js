@@ -3,7 +3,7 @@ import './Navigation.css';
 import styled from 'styled-components';
 import NavItems from './NavItems';
 
-const NavBar = (props) => {
+const NavBar = () => {
   return (
     <StyledDiv style={{}}>
       <StyledNav className="navbar">
