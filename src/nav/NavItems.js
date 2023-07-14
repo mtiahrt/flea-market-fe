@@ -41,7 +41,7 @@ function NavItems() {
         <DropdownMenu
           dropdownProps={[
             {
-              icon: user.isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
+              icon: user?.isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
               url: '',
               content: user?.isLoggedIn ? 'Sign Out' : 'Sign In',
               onClickEventHandler: user?.isLoggedIn ? logUserOut : logUserIn,
