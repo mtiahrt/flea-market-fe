@@ -80,6 +80,7 @@ export default function BasicCard({
         }}
       >
         <CardMedia
+          component="img"
           style={hasImage ? {} : { backgroundSize: 'contain' }}
           sx={{ height: 200 }}
           image={hasImage ? inventoryItem.itemImagesList[0].url : NoImage}

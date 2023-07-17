@@ -92,6 +92,7 @@
 .icon-button img {
   border-radius: 50%;
   width: 160%;
+  max-width: 160%;
 }
 
 .dropdown {
