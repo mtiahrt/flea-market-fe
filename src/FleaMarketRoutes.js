@@ -5,6 +5,7 @@ import AddItem from './components/modify-items/AddItem';
 import CheckOut from './components/checkout/CheckOut';
 import EditItem from './components/modify-items/EditItem';
 import EditCategories from './components/modify-items/EditCategories';
+import UserProfile from './components/UserProfile';
 
 const FleaMarketRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const FleaMarketRoutes = () => {
       <Route path="/CheckOut" children={<CheckOut />}></Route>
       <Route path="/EditItem/:id" children={<EditItem />}></Route>
       <Route path="/EditCategories" children={<EditCategories />}></Route>
+      <Route path="/Profile" children={<UserProfile />}></Route>
     </Switch>
   );
 };
