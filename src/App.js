@@ -41,7 +41,7 @@ function App() {
     setUser(currentUser);
   }
   return (
-    <div className="App">
+    <div className="app">
       <Router>
         <UserContext.Provider value={{ user, setUser }}>
           <FleaMarketProvider>

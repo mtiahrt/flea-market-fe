@@ -13,12 +13,12 @@ export default function CheckOut() {
 }
 
 const StyledDiv = styled.div`
+  margin: 0 10%;
   display: flex;
   flex-direction: row;
-  margin: 2rem;
   gap: 2rem;
-  @media (max-width: 768px) {
+  @media (max-width: 40em) {
+    margin: var(--margin-mobile);
     flex-direction: column;
-    margin: 0.5rem;
   }
 `;

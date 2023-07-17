@@ -257,12 +257,15 @@ export default function EditCategories() {
 }
 
 const StyledForm = styled.form`
+  margin: var(--margin-web);
   display: flex;
   background-color: var(--logo-fill-color);
   flex-direction: column;
   gap: 1rem;
-  margin: 2rem;
   padding: 2rem;
+  @media (max-width: 40em) {
+    margin: var(--margin-mobile);
+  }
 `;
 const StyledH3 = styled.h3`
   margin: 0;

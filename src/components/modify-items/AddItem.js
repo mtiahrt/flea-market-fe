@@ -223,10 +223,13 @@ export default function AddItem() {
 }
 
 const StyledForm = styled.form`
+  margin: var(--margin-web);
   background-color: var(--logo-fill-color);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 2rem;
   padding: 2rem;
+  @media (max-width: 40em) {
+    margin: var(--margin-mobile);
+  }
 `;

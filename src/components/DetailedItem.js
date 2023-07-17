@@ -136,7 +136,7 @@ function DetailedItem() {
   };
   console.log('detailItem component is rendering');
   return (
-    <StyledDiv className="container">
+    <StyledDiv className="detail-container">
       <StyledH2>Item Details</StyledH2>
       <StyledH4>Name: {data.inventory.name}</StyledH4>
       <StyledH4>Manufacturer Name: {data.inventory.manufacturerName}</StyledH4>
@@ -184,18 +184,18 @@ function DetailedItem() {
 
 export default DetailedItem;
 const StyledDiv = styled.div`
+  margin: var(--margin-web);
   display: flex;
   background-color: var(--logo-fill-color);
-  margin: 0 20%;
   padding: 3rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.2rem;
-  @media screen and (max-width: 700px) {
-    .container {
+  @media (max-width: 40em) {
+    .detail-container {
       align-items: center;
     }
-
+    margin: var(--margin-mobile);
     h2,
     h4 {
       align-self: flex-start;
@@ -228,7 +228,7 @@ const StyledButtonsDiv = styled.div`
     width: 48%;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 40em) {
     flex-direction: column;
     gap: 0.4rem;
     button {
