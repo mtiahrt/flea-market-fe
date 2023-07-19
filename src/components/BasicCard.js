@@ -68,6 +68,9 @@ export default function BasicCard({
   return (
     <Card
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        // justifyContent: 'space-between',
         boxShadow: 5,
         borderRadius: '8px',
         maxWidth: isMobleView ? 290 : 345,
@@ -99,8 +102,12 @@ export default function BasicCard({
           </Typography>
         </CardContent>
       </Link>
-      <CardActions>
-        <Button onClick={handleCartClick} size="small">
+      <CardActions sx={{ flexGrow: '1' }}>
+        <Button
+          sx={{ alignSelf: 'flex-end' }}
+          onClick={handleCartClick}
+          size="small"
+        >
           {isInCart && user?.id ? 'Remove from Cart' : 'Add To Cart'}
         </Button>
       </CardActions>
