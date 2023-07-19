@@ -48,10 +48,8 @@
   justify-content: flex-end;
   align-items: center;
 }
-
 .nav-item {
   width: calc(var(--nav-size) * 0.8);
-  /*display: flex;*/
   align-items: center;
   justify-content: center;
 }
@@ -71,14 +69,7 @@
 .icon-button.active svg {
   filter: brightness(2.6);
   fill: var(--logo-fill-color);
-  /*border: 2px solid var(--logo-fill-color);*/
-  /*--button-size: calc(var(--nav-size) * 0.6);*/
 }
-
-/*.icon-button:hover {*/
-/*  filter: brightness(1.2);*/
-/*}*/
-
 .icon-button:active, .icon-button:focus {
   filter: brightness(2.6);
 }
@@ -121,15 +112,28 @@
   margin: 3px;
   padding: 0.5rem;
 }
-
 .nav-item.chevron-left {
   display: none;
 }
+.filter-container {
+  position: sticky;
+  top: 3.8em;
+  align-self: flex-start;
+}
+
+.nav-item.chevron-left{
+  display: none;
+}
+
 @media (max-width: 40em) {
-  .nav-item.chevron-left{
-    display: flex;
+  .navbar{
+    padding-right: 0;
+  }
+  .nav-item.chevron-left {
+    display: block;
   }
 }
+
 .menu-item .icon-button {
   margin-right: 0.5rem;
 }

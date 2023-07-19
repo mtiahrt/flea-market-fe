@@ -41,7 +41,19 @@ function InventoryFilter({
   }
 
   return (
-    <StyledDivContainer className="filterContainer">
+    <StyledDivContainer className="filter-container">
+      <NavItem
+        className="chevron-left"
+        url={'#'}
+        icon={
+          showComponent ? (
+            <ChevronLeft name="filter" />
+          ) : (
+            <ChevronRight name="filter" />
+          )
+        }
+        clickHandler={handleRightChevronClick}
+      ></NavItem>
       <div
         className={`${showComponent ? 'show-filter' : 'hide-filter'}`}
         style={{ flexDirection: 'column', marginRight: '1%' }}
@@ -91,25 +103,12 @@ function InventoryFilter({
           </Accordion>
         ))}{' '}
       </div>
-      <NavItem
-        style={{ alignSelf: 'flex-start' }}
-        className="chevron-left"
-        url={'#'}
-        icon={
-          showComponent ? (
-            <ChevronLeft name="filter" />
-          ) : (
-            <ChevronRight name="filter" />
-          )
-        }
-        clickHandler={handleRightChevronClick}
-      ></NavItem>
     </StyledDivContainer>
   );
 }
 
 const StyledDivContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+  //display: flex;
+  //flex-direction: row;
 `;
 export default InventoryFilter;

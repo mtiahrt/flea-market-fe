@@ -154,7 +154,9 @@ function DetailedItem() {
           },
         }}
       >
-        <InputLabel id="quantity-select-label">Quantity</InputLabel>
+        <InputLabel sx={{ zIndex: '0' }} id="quantity-select-label">
+          Quantity
+        </InputLabel>
         <Select
           labelId="quantity-select-label"
           value={quantity}
@@ -192,6 +194,7 @@ const StyledDiv = styled.div`
   align-items: flex-start;
   gap: 0.2rem;
   @media (max-width: 40em) {
+    padding: 1rem;
     .detail-container {
       align-items: center;
     }

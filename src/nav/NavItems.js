@@ -32,6 +32,7 @@ function NavItems() {
   return (
     <>
       <NavItem
+        className="profile-button"
         isActive={active}
         setActive={setActive}
         isDropdown={true}
