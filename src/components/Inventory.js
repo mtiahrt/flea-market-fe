@@ -11,7 +11,6 @@ import BasicCard from './BasicCard';
 import { INVENTORY_LIST_AND_CART_ITEMS } from '../queries/graphQL';
 import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
-import InventoryFilter from './InventoryFilter';
 import filterReducer from './InventoryFilterReducer';
 import { UserContext } from '../contexts/UserContext';
 
@@ -96,12 +95,6 @@ const Inventory = () => {
   return (
     <>
       <StyledDiv>
-        <InventoryFilter
-          categories={categories ? categories : []}
-          dispatchFilter={dispatch}
-          showComponent={showFilter}
-          showComponentClickHandler={() => setShowFilter(!showFilter)}
-        />
         <StyledInventory role="item-list">
           {data?.inventoriesList.filter(filterFunction).map((item) => (
             <BasicCard

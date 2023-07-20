@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { GET_CATEGORIES } from '../queries/graphQL';
 
 function LowerNavBar() {
+  const { loading, error, data } = useQuery(GET_CATEGORIES, {});
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
+
   return (
     <StyledNav className="navbar">
       <StyledOl>
-        <li>Cloths</li>
-        <li>Mens</li>
-        <li>Household</li>
-        <li>Books</li>
-        <li>Fine Things</li>
-        <li>Plants</li>
+        {data?.categoriesList.map((cat) => (
+          <li key={`categoryId${cat.id}`}>{cat.name}</li>
+        ))}
       </StyledOl>
     </StyledNav>
   );

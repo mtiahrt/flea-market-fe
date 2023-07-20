@@ -1,9 +1,0 @@
-
-@media (max-width: 40em) {
-    .show-filter {
-        display: flex;
-    }
-    .hide-filter{
-        display: none;
-    }
-}
