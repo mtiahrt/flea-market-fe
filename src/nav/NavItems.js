@@ -5,7 +5,6 @@ import auth from '../utils/firebase/firebase';
 import UserContextModel from '../models/UserContextModel';
 import { ReactComponent as LoginIcon } from '../icons/login.svg';
 import { ReactComponent as LogoutIcon } from '../icons/logout.svg';
-import { ReactComponent as HomeIcon } from '../icons/home.svg';
 import { ReactComponent as ShoppingCartIcon } from '../icons/shopping-cart.svg';
 import { ReactComponent as PlusIcon } from '../icons/plus.svg';
 import { ReactComponent as SaleIcon } from '../icons/sale-svgrepo-com.svg';
@@ -56,12 +55,6 @@ function NavItems() {
           ]}
         ></DropdownMenu>
       </NavItem>
-      <NavItem
-        isActive={active}
-        setActive={setActive}
-        url={'#'}
-        icon={<HomeIcon name="home" />}
-      ></NavItem>
       <NavItem
         isActive={active}
         setActive={setActive}

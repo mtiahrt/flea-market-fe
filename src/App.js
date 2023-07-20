@@ -1,5 +1,5 @@
 import './App.css';
-import NavBar from './nav/NavBar';
+import UpperNavBar from './nav/UpperNavBar';
 import { BrowserRouter as Router } from 'react-router-dom';
 import React, { useState } from 'react';
 import { UserContext } from './contexts/UserContext';
@@ -15,6 +15,7 @@ import {
   responsiveFontSizes,
 } from '@mui/material/styles';
 import { useUser } from './hooks/useUser';
+import LowerNavBar from './nav/LowerNavBar';
 
 let theme = createTheme({
   palette: {
@@ -53,7 +54,8 @@ function App() {
               >
                 <Login />
               </Modal>
-              <NavBar></NavBar>
+              <UpperNavBar></UpperNavBar>
+              <LowerNavBar />
               <CartContextProvider>
                 <FleaMarketRoutes />
               </CartContextProvider>
