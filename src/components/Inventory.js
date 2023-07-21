@@ -1,51 +1,60 @@
-import React, {
-  useEffect,
-  useReducer,
-  useMemo,
-  useState,
-  useContext,
-} from 'react';
+import React, { useEffect, useReducer, useState, useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import { INVENTORY_LIST_AND_CART_ITEMS } from '../queries/graphQL';
+import {
+  INVENTORY_BY_CATEGORY_WITH_CART,
+  INVENTORY_LIST_AND_CART_ITEMS,
+} from '../queries/graphQL';
 import { useCart } from '../contexts/CartContext';
 import CartContextModel from '../models/CartContextModel';
 import filterReducer from './InventoryFilterReducer';
 import { UserContext } from '../contexts/UserContext';
+import { useParams } from 'react-router-dom';
 
 const Inventory = () => {
+  let { categoryId } = Number(useParams());
   const [showFilter, setShowFilter] = useState(false);
   const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(filterReducer, []);
   const { loadCartItems } = useCart();
 
-  const { loading, error, data } = useQuery(INVENTORY_LIST_AND_CART_ITEMS, {
-    variables: {
-      applicationUserId: user?.id,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const categories = useMemo(() => reduceCategories(data), [data]);
+  const { loading, error, data, refetch } = useQuery(
+    INVENTORY_BY_CATEGORY_WITH_CART,
+    {
+      variables: {
+        applicationUserId: user?.id,
+        categoryId: 1,
+      },
+      fetchPolicy: 'cache-and-network',
+    }
+  );
 
   useEffect(() => {
-    console.log('Inventory use effect fired...');
-    if (data?.inventoriesList.cartItems) {
-      loadCartItems(
-        data?.inventoriesList
-          ?.filter((item) => item.cartsList.length)
-          .map(
-            (item) =>
-              new CartContextModel(
-                item.cartsList[0].id,
-                item.cartsList[0].quantity,
-                item.price
-              )
-          )
+    if (categoryId) {
+      refetch({ applicationUserId: user?.id, categoryId: categoryId }).then(
+        (x) => console.log('refresh result is', x)
       );
     }
-  }, [data]);
+  }, [categoryId]);
+
+  // useEffect(() => {
+  //   console.log('Inventory use effect fired...');
+  //   if (data?.inventoriesList.cartItems) {
+  //     loadCartItems(
+  //       data?.inventoriesList
+  //         ?.filter((item) => item.cartsList.length)
+  //         .map(
+  //           (item) =>
+  //             new CartContextModel(
+  //               item.cartsList[0].id,
+  //               item.cartsList[0].quantity,
+  //               item.price
+  //             )
+  //         )
+  //     );
+  //   }
+  // }, [data]);
 
   const filterFunction = (inventoryItem) => {
     return state.length === 0
@@ -61,50 +70,22 @@ const Inventory = () => {
   if (error) return <p>{error.message}</p>;
 
   console.log('Inventory is rendering');
-
-  function reduceCategories(data) {
-    if (!data) {
-      return [];
-    }
-    console.log('reduce fired');
-    const categoriesMap = data.inventoriesList.reduce((map, item) => {
-      const categoryId = item.subcategory.category.id;
-      const subcategoryId = item.subcategory.id;
-
-      if (!map.has(categoryId)) {
-        map.set(categoryId, {
-          id: categoryId,
-          name: item.subcategory.category.name,
-          subcategories: [],
-        });
-      }
-
-      const category = map.get(categoryId);
-      if (!category.subcategories.some((x) => x.id === subcategoryId)) {
-        category.subcategories.push({
-          id: subcategoryId,
-          name: item.subcategory.name,
-        });
-      }
-
-      return map;
-    }, new Map());
-
-    return Array.from(categoriesMap.values());
-  }
   return (
     <>
       <StyledDiv>
         <StyledInventory role="item-list">
-          {data?.inventoriesList.filter(filterFunction).map((item) => (
-            <BasicCard
-              key={`card${item.id.toString()}`}
-              isItemInCart={item.cartsList?.length && user ? true : false}
-              link={`DetailedItem/${item.id}`}
-              inventoryItem={item}
-              isMobleView={showFilter}
-            ></BasicCard>
-          ))}
+          {data.subcategoriesList
+            .filter((x) => x.inventoriesList.length > 0)
+            .map((x) => x.inventoriesList.map((y) => console.log(y)))
+            .map((y) => (
+              <BasicCard
+                key={`card${x.inventoriesList.id.toString()}`}
+                isItemInCart={x.cartsList?.length && user ? true : false}
+                link={`DetailedItem/${x.inventoriesList.id}`}
+                inventoryItem={x.inventoriesList}
+                isMobleView={showFilter}
+              ></BasicCard>
+            ))}
         </StyledInventory>
       </StyledDiv>
     </>

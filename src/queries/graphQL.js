@@ -255,6 +255,35 @@ export const DELETE_CART_ITEM = gql`
   }
 `;
 
+export const INVENTORY_BY_CATEGORY_WITH_CART = gql`
+  query InventoryByCategory($categoryId: Int, $userId: String) {
+    subcategoriesList(condition: { categoryId: $categoryId }) {
+      inventoriesList {
+        name
+        price
+        quantity
+        id
+        description
+        subcategoryId
+        subcategory {
+          id
+          name
+        }
+        itemImagesList {
+          publicId
+          url
+        }
+        manufacturerName
+        cartsList(condition: { applicationUserId: $userId }) {
+          id
+          quantity
+          inventoryId
+          applicationUserId
+        }
+      }
+    }
+  }
+`;
 export const INVENTORY_LIST_AND_CART_ITEMS = gql`
   query publicInventory($userId: String) {
     inventoriesList(condition: { inStock: true }) {

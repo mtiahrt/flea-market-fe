@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
+import { Link } from 'react-router-dom';
 
 function LowerNavBar() {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
@@ -12,7 +13,9 @@ function LowerNavBar() {
     <StyledNav className="navbar">
       <StyledOl>
         {data?.categoriesList.map((cat) => (
-          <li key={`categoryId${cat.id}`}>{cat.name}</li>
+          <Link to={`/inventory/${cat.id}`}>
+            <li key={`categoryId${cat.id}`}>{cat.name}</li>
+          </Link>
         ))}
       </StyledOl>
     </StyledNav>

@@ -161,7 +161,7 @@ function DetailedItem() {
           labelId="quantity-select-label"
           value={quantity}
           label="Quantity"
-          disabled={data.inventory.quantity < 2}
+          disabled={data.inventory.quantity < 1}
           onChange={handleQuantitySelectChange}
         >
           {getQuantityDropDownOptions(data.inventory.quantity)}
