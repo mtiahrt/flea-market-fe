@@ -80,6 +80,41 @@
   max-width: 160%;
 }
 
+.nav-item.hamburger{
+  display: none;
+}
+
+.icon-button svg.hamburger .line  {
+  transition:
+          y 300ms ease-in 300ms,
+          rotate 300ms ease-in,
+          opacity 0ms 300ms;
+  transform-origin: center;
+}
+
+.icon-button.active svg.hamburger .line  {
+  transition:
+    y 300ms ease-in,
+    rotate 300ms ease-in 300ms,
+  opacity 0ms 300ms;
+}
+
+.icon-button.active svg.hamburger :is(.top, .bottom){
+  y:45;
+}
+
+.icon-button.active svg.hamburger .top{
+  rotate: 45deg;
+}
+
+.icon-button.active svg.hamburger .middle{
+  opacity: 0;
+}
+
+.icon-button.active svg.hamburger .bottom{
+  rotate: -45deg;
+}
+
 .dropdown {
   position: absolute;
   top: 50px;
@@ -124,6 +159,9 @@
     padding-right: 0;
   }
   .nav-item.chevron-left {
+    display: block;
+  }
+  .nav-item.hamburger{
     display: block;
   }
 }
