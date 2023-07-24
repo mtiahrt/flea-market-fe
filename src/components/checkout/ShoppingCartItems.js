@@ -160,7 +160,4 @@ const StyledCartRowItemDiv = styled.div`
     font-weight: 100;
     font-size: 100%;
   }
-  svg {
-    cursor: pointer;
-  }
 `;

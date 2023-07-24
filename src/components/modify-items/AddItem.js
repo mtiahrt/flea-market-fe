@@ -229,6 +229,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   gap: 1rem;
   padding: 2rem;
+  border-radius: var(--border-radius);
   @media (max-width: 40em) {
     margin: var(--margin-mobile);
   }

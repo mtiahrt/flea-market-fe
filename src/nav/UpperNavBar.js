@@ -3,13 +3,17 @@ import './Navigation.css';
 import styled from 'styled-components';
 import NavItems from './NavItems';
 import { Link } from 'react-router-dom';
+import { ReactComponent as HamburgerIcon } from '../icons/menu-hamburger.svg';
 
 const UpperNavBar = () => {
   return (
     <StyledDiv>
       <StyledNav className="navbar">
         <ul className="navbar-nav">
-          <StyledLiTitle style={{ flexGrow: '.3' }}>
+          <StyledLi className="nav-item">
+            <HamburgerIcon />
+          </StyledLi>
+          <StyledLiTitle>
             <Link to={'/#'}>
               <StyledH1>Upcycle Treasures</StyledH1>
             </Link>
@@ -25,8 +29,18 @@ const StyledDiv = styled.div`
   position: sticky;
   top: 0;
   z-index: 1;
+  @media (max-width: 40em) {
+    border-bottom: 5px solid var(--backdrop-color);
+  }
 `;
 
+const StyledLi = styled.li`
+  margin-right: auto;
+  display: none;
+  @media (max-width: 40em) {
+    display: block;
+  }
+`;
 const StyledLiTitle = styled.li`
   flex-grow: 0.4;
 `;

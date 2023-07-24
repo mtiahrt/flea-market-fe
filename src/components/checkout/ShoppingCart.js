@@ -159,6 +159,7 @@ const StyledSummation = styled.div`
 
 const StyledContainerDiv = styled.div`
   background-color: var(--logo-fill-color);
+  border-radius: var(--border-radius);
   display: flex;
   flex: 1 1 20em;
   flex-direction: column;

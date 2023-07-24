@@ -179,6 +179,7 @@ const textFieldStyles = {
 
 const StyledForm = styled.form`
   background-color: var(--logo-fill-color);
+  border-radius: var(--border-radius);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

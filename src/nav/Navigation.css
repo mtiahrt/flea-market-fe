@@ -74,12 +74,6 @@
   filter: brightness(2.6);
 }
 
-.icon-button svg {
-  fill: #2E4926;
-  width: 20px;
-  height: 20px;
-}
-
 .icon-button img {
   border-radius: 50%;
   width: 160%;
