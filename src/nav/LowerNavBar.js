@@ -24,7 +24,6 @@ function LowerNavBar() {
 const StyledNav = styled.nav`
   position: sticky;
   top: 2.5em;
-  z-index: 1;
   border-bottom: 5px solid var(--backdrop-color);
   border-top: 2px solid #2e4926;
   @media (max-width: 40em) {

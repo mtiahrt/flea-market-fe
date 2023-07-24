@@ -258,6 +258,7 @@ export default function EditCategories() {
 
 const StyledForm = styled.form`
   margin: var(--margin-web);
+  border-radius: var(--border-radius);
   display: flex;
   background-color: var(--logo-fill-color);
   flex-direction: column;

@@ -44,7 +44,7 @@ function NavItems() {
       ></NavItem>
       <StyledLiTitle>
         <Link to={'/#'}>
-          <StyledH1>Upcycle Treasures</StyledH1>
+          <StyledH1>Upcycled Treasures</StyledH1>
         </Link>
       </StyledLiTitle>
       <NavItem

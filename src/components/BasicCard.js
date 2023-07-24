@@ -71,7 +71,7 @@ export default function BasicCard({ inventoryItem, isItemInCart }) {
     >
       <Link
         to={{
-          pathname: `detailedItem/${inventoryItem.inventoryid}`,
+          pathname: `../detailedItem/${inventoryItem.inventoryid}`,
           state: { inventoryId: inventoryItem.inventoryid, isInCart: isInCart },
         }}
       >
