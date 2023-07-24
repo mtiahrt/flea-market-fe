@@ -28,7 +28,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledLiTitle = styled.li`
-  flex-grow: 0.3;
+  flex-grow: 0.4;
 `;
 
 const StyledH1 = styled.h1`

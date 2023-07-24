@@ -13,12 +13,7 @@ import { useMutation } from '@apollo/client';
 import { UserContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 
-export default function BasicCard({
-  inventoryItem,
-  link,
-  isItemInCart,
-  isMobleView,
-}) {
+export default function BasicCard({ inventoryItem, isItemInCart }) {
   const { user, setUser } = useContext(UserContext);
   const [
     addingCartItem,
@@ -38,8 +33,8 @@ export default function BasicCard({
   ] = useMutation(DELETE_CART_ITEM);
   const { addToCart, removeFromCart } = useCart();
   const [isInCart, setIsInCart] = useState(isItemInCart);
-  const cartId = inventoryItem.cartsList[0]?.id;
-  const inventoryId = inventoryItem.id;
+  const cartId = inventoryItem.cartid;
+  const inventoryId = inventoryItem.inventoryid;
 
   function handleCartClick() {
     //TODO: Add snackbar messaging
@@ -64,29 +59,27 @@ export default function BasicCard({
 
     setIsInCart((prev) => !prev);
   }
-  const hasImage = inventoryItem.itemImagesList[0]?.url;
+  const hasImage = inventoryItem.url ? true : false;
   return (
     <Card
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        // justifyContent: 'space-between',
         boxShadow: 5,
         borderRadius: '8px',
-        maxWidth: isMobleView ? 290 : 345,
       }}
     >
       <Link
         to={{
-          pathname: link,
-          state: { inventoryId: inventoryItem.id, isInCart: isInCart },
+          pathname: `detailedItem/${inventoryItem.inventoryid}`,
+          state: { inventoryId: inventoryItem.inventoryid, isInCart: isInCart },
         }}
       >
         <CardMedia
           component="img"
           style={hasImage ? {} : { backgroundSize: 'contain' }}
-          image={hasImage ? inventoryItem.itemImagesList[0].url : NoImage}
-          title={inventoryItem.name}
+          image={hasImage ? inventoryItem.url : NoImage}
+          title={inventoryItem.inventoryname}
         />
         <CardContent sx={{ borderTop: '1px solid #eee' }}>
           <Typography
