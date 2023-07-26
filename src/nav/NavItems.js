@@ -14,10 +14,13 @@ import { UserContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as HamburgerIcon } from '../icons/menu-hamburger.svg';
+import SlideDrawer from '../slideDrawer/SlideDrawer';
+import Backdrop from '../slideDrawer/Backdrop';
 
 function NavItems() {
   const { user, setUser } = useContext(UserContext);
   const [active, setActive] = useState('home');
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const logUserOut = () => {
     auth.signOut().then(() => console.log('signed out'));
@@ -31,14 +34,20 @@ function NavItems() {
       return;
     }
   };
+
+  const handlerHamburgerClick = () => {
+    setActive((prev) => (prev === 'hamburger' ? '' : 'hamburger'));
+    setOpenDrawer((prev) => !prev);
+  };
+
   return (
     <>
+      <SlideDrawer show={openDrawer} />
+      {openDrawer && <Backdrop close={handlerHamburgerClick} />}
       <NavItem
         className="hamburger"
         isActive={active}
-        clickHandler={() =>
-          setActive((prev) => (prev === 'hamburger' ? '' : 'hamburger'))
-        }
+        clickHandler={handlerHamburgerClick}
         style={{ marginRight: 'auto' }}
         icon={<HamburgerIcon name="hamburger" />}
       ></NavItem>
