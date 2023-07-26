@@ -120,7 +120,7 @@ export default function ShoppingCart() {
             width: '90%',
           }}
         >
-          <InputLabel>Select Shipping Option</InputLabel>
+          <InputLabel sx={{ zIndex: '0' }}>Select Shipping Option</InputLabel>
           <Select
             onChange={(e) => handleShippingSelectChange(e)}
             label="Select Shipping Option"

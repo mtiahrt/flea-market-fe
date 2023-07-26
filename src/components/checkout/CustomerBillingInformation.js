@@ -86,7 +86,9 @@ export default function CustomerBillingInformation() {
       />
 
       <FormControl style={stateSelectStyles}>
-        <InputLabel id="demo-simple-select-label">State</InputLabel>
+        <InputLabel sx={{ zIndex: '0' }} id="demo-simple-select-label">
+          State
+        </InputLabel>
         <Select
           {...register('state', { required: true })}
           labelId="state-select-label"
@@ -146,7 +148,9 @@ export default function CustomerBillingInformation() {
         variant="standard"
       />
       <FormControl style={stateSelectStyles}>
-        <InputLabel id="demo-simple-select-label">State</InputLabel>
+        <InputLabel sx={{ zIndex: '0' }} id="demo-simple-select-label">
+          State
+        </InputLabel>
         <Select
           {...register('state', { required: true })}
           id="billingState"

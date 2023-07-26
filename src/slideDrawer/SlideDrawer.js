@@ -1,15 +1,24 @@
 import React from 'react';
 import './SlideDrawer.css';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { GET_CATEGORIES } from '../queries/graphQL';
+import { Link } from 'react-router-dom';
 
-function SlideDrawer({ show }) {
+function SlideDrawer({ toggle, show }) {
+  const { loading, error, data } = useQuery(GET_CATEGORIES, {});
   console.log('Slide drawer rendered');
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
+
   return (
     <div className={`side-drawer ${show ? 'open' : ''}`}>
       <StyledDiv>
-        <StyledH4>Clothing</StyledH4>
-        <StyledH4>Jewelry</StyledH4>
-        <StyledH4>Kids</StyledH4>
+        {data?.categoriesList.map((cat) => (
+          <Link onClick={() => toggle()} to={`/inventory/${cat.id}`}>
+            <StyledH4 key={`sliderCategoryId${cat.id}`}>{cat.name}</StyledH4>
+          </Link>
+        ))}
       </StyledDiv>
     </div>
   );

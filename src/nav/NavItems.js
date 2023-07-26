@@ -20,7 +20,7 @@ import Backdrop from '../slideDrawer/Backdrop';
 function NavItems() {
   const { user, setUser } = useContext(UserContext);
   const [active, setActive] = useState('home');
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const logUserOut = () => {
     auth.signOut().then(() => console.log('signed out'));
@@ -35,19 +35,19 @@ function NavItems() {
     }
   };
 
-  const handlerHamburgerClick = () => {
+  const handleHamburgerClick = () => {
     setActive((prev) => (prev === 'hamburger' ? '' : 'hamburger'));
-    setOpenDrawer((prev) => !prev);
+    setDrawerOpen((prev) => !prev);
   };
 
   return (
     <>
-      <SlideDrawer show={openDrawer} />
-      {openDrawer && <Backdrop close={handlerHamburgerClick} />}
+      <SlideDrawer toggle={handleHamburgerClick} show={drawerOpen} />
+      {drawerOpen && <Backdrop close={handleHamburgerClick} />}
       <NavItem
         className="hamburger"
         isActive={active}
-        clickHandler={handlerHamburgerClick}
+        clickHandler={handleHamburgerClick}
         style={{ marginRight: 'auto' }}
         icon={<HamburgerIcon name="hamburger" />}
       ></NavItem>

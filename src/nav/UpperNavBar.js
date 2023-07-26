@@ -19,7 +19,7 @@ const StyledDiv = styled.div`
   position: sticky;
   top: 0;
   z-index: 1;
-  @media (max-width: 40em) {
+  @media (max-width: 52em) {
     border-bottom: 5px solid var(--backdrop-color);
   }
 `;
