@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_CATEGORIES = gql`
-  publicCategories {
+  query publicCategories {
     categoriesList(orderBy: NAME_ASC) {
       id
       name
@@ -39,7 +39,7 @@ export const ADD_SUBCATEGORY = gql`
   }
 `;
 export const GET_SUBCATEGORIES = gql`
-  publicSubcategories ($categoryId: Int!) {
+  query publicSubcategories($categoryId: Int!) {
     category(id: $categoryId) {
       subcategoriesList(orderBy: NAME_ASC) {
         description
