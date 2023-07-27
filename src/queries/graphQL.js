@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_CATEGORIES = gql`
-  query {
+  publicCategories {
     categoriesList(orderBy: NAME_ASC) {
       id
       name
@@ -39,7 +39,7 @@ export const ADD_SUBCATEGORY = gql`
   }
 `;
 export const GET_SUBCATEGORIES = gql`
-  query ($categoryId: Int!) {
+  publicSubcategories ($categoryId: Int!) {
     category(id: $categoryId) {
       subcategoriesList(orderBy: NAME_ASC) {
         description
@@ -165,7 +165,7 @@ export const GET_INVENTORY_ITEM = gql`
 `;
 
 export const GET_SALE_ITEM_AND_CATEGORIES = gql`
-  query inventoryData($saleId: Int!) {
+  query publicInventoryData($saleId: Int!) {
     inventory(id: $saleId) {
       description
       id
@@ -256,7 +256,7 @@ export const DELETE_CART_ITEM = gql`
 `;
 
 export const INVENTORY_BY_CATEGORY_WITH_CART = gql`
-  query inventoryByCategoryWithCart($categoryId: Int) {
+  query publicInventoryByCategoryWithCart($categoryId: Int) {
     inventoryByCategoryWithCartsList(condition: { categoryId: $categoryId }) {
       applicationUserId
       cartInventoryId
@@ -278,7 +278,7 @@ export const INVENTORY_BY_CATEGORY_WITH_CART = gql`
 `;
 
 export const GET_CART_ITEMS = gql`
-  query ($user_id: String) {
+  query cartItems($user_id: String) {
     cartsList(condition: { applicationUserId: $user_id }) {
       id
       inventoryId
