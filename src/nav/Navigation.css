@@ -1,6 +1,6 @@
 .navbar {
   background-color: var(--nav-bar-color);
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .login {

@@ -49,6 +49,7 @@ function NavItems() {
           marginRight: 'auto',
           background: 'transparent',
           border: 'none',
+          padding: 0,
         }}
         data-state={drawerOpen ? 'opened' : 'closed'}
         aria-expanded={drawerOpen ? 'true' : 'false'}
@@ -136,6 +137,7 @@ const StyledH1 = styled.h1`
   color: var(--logo-fill-color);
 `;
 const StyledLiTitle = styled.li`
+  margin-left: 1rem;
   flex-grow: 0.4;
 `;
 export default NavItems;
