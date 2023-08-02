@@ -67,7 +67,12 @@ function NavItems() {
         isActive={active}
         setActive={setActive}
         isDropdown={true}
-        icon={<ProfileIcon name="profile" />}
+        icon={
+          <ProfileIcon
+            className={drawerOpen ? 'drawer-open' : null}
+            name="profile"
+          />
+        }
         imageURL={user?.photoURL}
       >
         <DropdownMenu
@@ -88,16 +93,25 @@ function NavItems() {
         ></DropdownMenu>
       </NavItem>
       <NavItem
+        isDrawerOpen={drawerOpen}
         isActive={active}
         setActive={setActive}
         url={'CheckOut'}
-        icon={<ShoppingCartIcon name="shoppingCart" />}
+        icon={
+          <ShoppingCartIcon
+            className={drawerOpen ? 'drawer-open' : null}
+            name="shoppingCart"
+          />
+        }
       ></NavItem>
       <NavItem
+        isDrawerOpen={drawerOpen}
         isActive={active}
         setActive={setActive}
         isDropdown={true}
-        icon={<PlusIcon name="plus" />}
+        icon={
+          <PlusIcon className={drawerOpen ? 'drawer-open' : null} name="plus" />
+        }
       >
         <DropdownMenu
           dropdownProps={[

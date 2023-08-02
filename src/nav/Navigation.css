@@ -79,6 +79,9 @@ svg.hamburger{
   translate: 10px -10px;
   rotate: 0.125turn;
 }
+.button-hamburger[aria-expanded="true"] .hamburger path {
+  stroke: var(--logo-fill-color)
+}
 
 .button-hamburger .line {
   transition: 1s;

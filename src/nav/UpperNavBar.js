@@ -26,6 +26,13 @@ const StyledDiv = styled.div`
 
 const StyledNav = styled.nav`
   align-content: stretch;
+  li svg {
+    cursor: pointer;
+    fill: #2e4926;
+  }
+  li svg.drawer-open {
+    fill: #abb6a8;
+  }
 `;
 
 export default UpperNavBar;
