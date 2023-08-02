@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
 import { Link } from 'react-router-dom';
+import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
 
 function SlideDrawer({ toggle, show }) {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
@@ -13,18 +14,26 @@ function SlideDrawer({ toggle, show }) {
 
   return (
     <div className={`side-drawer ${show ? 'open' : ''}`}>
-      <StyledDiv>
+      <StyledDivContainer>
         {data?.categoriesList.map((cat) => (
           <Link onClick={() => toggle()} to={`/inventory/${cat.id}`}>
-            <StyledH4 key={`sliderCategoryId${cat.id}`}>{cat.name}</StyledH4>
+            <StyledDivRow>
+              <StyledH4 key={`sliderCategoryId${cat.id}`}>{cat.name}</StyledH4>
+              <ChevronRight />
+            </StyledDivRow>
           </Link>
         ))}
-      </StyledDiv>
+      </StyledDivContainer>
     </div>
   );
 }
-
-const StyledDiv = styled.div`
+const StyledDivRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-top: 0.1rem solid #e1e1e1;
+`;
+const StyledDivContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -33,9 +42,9 @@ const StyledH4 = styled.h4`
   cursor: pointer;
   margin: 0;
   padding: 1.2rem 2.5rem;
-  border-top: 0.1rem solid #e1e1e1;
   text-align: left;
   text-transform: uppercase;
+  flex-grow: inherit;
 `;
 
 export default SlideDrawer;
