@@ -12,8 +12,6 @@
 }
 
 .image-item {
-  max-width: 48%;
-  /* make a flex container to vertically and horizontally center*/
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
