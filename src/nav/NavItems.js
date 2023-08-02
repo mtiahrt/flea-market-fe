@@ -35,7 +35,7 @@ function NavItems() {
     }
   };
 
-  const handleHamburgerClick = () => {
+  const handleHamburgerClick = (e) => {
     setActive((prev) => (prev === 'hamburger' ? '' : 'hamburger'));
     setDrawerOpen((prev) => !prev);
   };
@@ -44,13 +44,19 @@ function NavItems() {
     <>
       <SlideDrawer toggle={handleHamburgerClick} show={drawerOpen} />
       {drawerOpen && <Backdrop close={handleHamburgerClick} />}
-      <NavItem
-        className="hamburger"
-        isActive={active}
-        clickHandler={handleHamburgerClick}
-        style={{ marginRight: 'auto' }}
-        icon={<HamburgerIcon name="hamburger" />}
-      ></NavItem>
+      <button
+        style={{
+          marginRight: 'auto',
+          background: 'transparent',
+          border: 'none',
+        }}
+        data-state={drawerOpen ? 'opened' : 'closed'}
+        aria-expanded={drawerOpen ? 'true' : 'false'}
+        onClick={handleHamburgerClick}
+        className="button-hamburger"
+      >
+        <HamburgerIcon />
+      </button>
       <StyledLiTitle>
         <Link to={'/#'}>
           <StyledH1>Upcycled Treasures</StyledH1>
