@@ -6,6 +6,10 @@ export const GET_CATEGORIES = gql`
       id
       name
       description
+      subcategoriesList(orderBy: NAME_ASC) {
+        id
+        name
+      }
     }
   }
 `;

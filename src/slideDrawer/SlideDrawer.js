@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SlideDrawer.css';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
-import { Link } from 'react-router-dom';
-import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
+import DrawerItem from './DrawerItem';
 
 function SlideDrawer({ toggle, show }) {
+  const [subcategoryIdSelected, setSubcategoryIdSelected] = useState(null);
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
   console.log('Slide drawer rendered');
   if (loading) return <p>Loading...</p>;
@@ -14,35 +14,39 @@ function SlideDrawer({ toggle, show }) {
 
   return (
     <div className={`side-drawer ${show ? 'open' : ''}`}>
-      <StyledDivContainer>
-        {data?.categoriesList.map((cat) => (
-          <Link onClick={() => toggle()} to={`/inventory/${cat.id}`}>
-            <StyledDivRow>
-              <StyledH4 key={`sliderCategoryId${cat.id}`}>{cat.name}</StyledH4>
-              <ChevronRight />
-            </StyledDivRow>
-          </Link>
-        ))}
-      </StyledDivContainer>
+      {!subcategoryIdSelected && (
+        <StyledDivContainer>
+          {data?.categoriesList.map((cat) => (
+            <DrawerItem
+              key={`categoryId${cat.id}`}
+              setSubcategoryIdSelected={setSubcategoryIdSelected}
+              toggle={toggle}
+              id={cat.id}
+              itemName={cat.name}
+            />
+          ))}
+        </StyledDivContainer>
+      )}
+      {subcategoryIdSelected && (
+        <StyledDivContainer className="slide-subcategories">
+          {data.categoriesList
+            .find((x) => x.id === subcategoryIdSelected)
+            .subcategoriesList.map((sub) => (
+              <DrawerItem
+                key={`subcategoryId${sub.id}`}
+                toggle={toggle}
+                id={sub.id}
+                itemName={sub.name}
+              />
+            ))}
+        </StyledDivContainer>
+      )}
     </div>
   );
 }
-const StyledDivRow = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  border-top: 0.1rem solid #e1e1e1;
-`;
 const StyledDivContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const StyledH4 = styled.h4`
-  color: var(--text-color-body);
-  cursor: pointer;
-  margin: 1rem;
-  text-align: left;
-  text-transform: uppercase;
 `;
 
 export default SlideDrawer;

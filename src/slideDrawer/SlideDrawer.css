@@ -13,3 +13,19 @@
 .side-drawer.open {
     transform: translateX(0);
 }
+
+.slide-subcategories {
+    height: 100%;
+    background: white;
+    position: fixed;
+    top: 3.5rem;
+    left: 0;
+    width: 80%;
+    z-index: 2;
+    box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+}
+.slide-subcategories.open{
+    transform: translateX(0);
+}
