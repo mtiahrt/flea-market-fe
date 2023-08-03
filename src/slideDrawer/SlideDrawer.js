@@ -40,11 +40,9 @@ const StyledDivContainer = styled.div`
 const StyledH4 = styled.h4`
   color: var(--text-color-body);
   cursor: pointer;
-  margin: 0;
-  padding: 1.2rem 2.5rem;
+  margin: 1rem;
   text-align: left;
   text-transform: uppercase;
-  flex-grow: inherit;
 `;
 
 export default SlideDrawer;
