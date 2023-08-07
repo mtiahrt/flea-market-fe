@@ -3,9 +3,9 @@ import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-function DrawerItem({ toggle, id, itemName, setSubcategoryIdSelected }) {
+function DrawerItem({ arrowClickHandler, toggle, id, itemName }) {
   const handleArrowClick = (e) => {
-    setSubcategoryIdSelected(id);
+    arrowClickHandler();
   };
   return (
     <StyledDivRow>
