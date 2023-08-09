@@ -51,7 +51,8 @@ export default function Login() {
                 displayLogin: false,
                 accessToken: resp.data,
               }));
-            });
+            })
+            .catch((error) => console.error(error)); //todo: add to the snackbar
           const myUser = new UserContextModel(userAuth.user, null);
           setUser({ ...user, ...myUser });
           const matches = ['displayName', 'email', 'id', 'photoURL'];

@@ -42,7 +42,7 @@ function NavItems() {
 
   return (
     <>
-      <DrawerContainer show={drawerOpen} toggle={handleHamburgerClick} />
+      <DrawerContainer drawerOpen={drawerOpen} />
       {drawerOpen && <Backdrop close={handleHamburgerClick} />}
       <button
         style={{

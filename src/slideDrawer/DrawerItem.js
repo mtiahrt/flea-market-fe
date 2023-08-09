@@ -3,13 +3,13 @@ import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-function DrawerItem({ arrowClickHandler, toggle, id, itemName }) {
+function DrawerItem({ arrowClickHandler, id, itemName }) {
   const handleArrowClick = (e) => {
     arrowClickHandler();
   };
   return (
     <StyledDivRow>
-      <Link onClick={() => toggle()} to={`/inventory/${id}`}>
+      <Link to={`/inventory/${id}`}>
         <StyledH4>{itemName}</StyledH4>
       </Link>
       <ChevronRight onClick={handleArrowClick} />

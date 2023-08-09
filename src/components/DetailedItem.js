@@ -108,6 +108,7 @@ function DetailedItem() {
       setUser({ ...user, displayLogin: true });
       return;
     }
+    //toggling if is in cart
     const refetchData = !isInCart;
     setIsInCart(!isInCart);
     isInCart
@@ -121,10 +122,10 @@ function DetailedItem() {
               quantity: quantity,
               userId: user?.id,
             },
-          })
+          }).then((data) => console.log('this data is', data))
         );
 
-    //refetch if item was added to cart
+    //todo: read cart context instead of refetch
     if (refetchData) {
       refetch({ inventoryId });
     }
