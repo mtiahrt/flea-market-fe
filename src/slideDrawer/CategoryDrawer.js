@@ -3,7 +3,12 @@ import './SlideDrawer.css';
 import styled from 'styled-components';
 import DrawerItem from './DrawerItem';
 
-function CategoryDrawer({ data, setShowCategory, setCategoryId }) {
+function CategoryDrawer({
+  data,
+  setShowCategory,
+  setCategoryId,
+  toggleDrawer,
+}) {
   console.log('category drawer rendered');
 
   return (
@@ -14,6 +19,7 @@ function CategoryDrawer({ data, setShowCategory, setCategoryId }) {
             setShowCategory(false);
             setCategoryId(cat.id);
           }}
+          toggleDrawer={toggleDrawer}
           arrowRight={true}
           key={`categoryId${cat.id}`}
           id={cat.id}

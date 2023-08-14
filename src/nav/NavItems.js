@@ -35,15 +35,18 @@ function NavItems() {
     }
   };
 
-  const handleHamburgerClick = (e) => {
+  const handleToggleDrawer = (e) => {
     setActive((prev) => (prev === 'hamburger' ? '' : 'hamburger'));
     setDrawerOpen((prev) => !prev);
   };
 
   return (
     <>
-      <DrawerContainer drawerOpen={drawerOpen} />
-      {drawerOpen && <Backdrop close={handleHamburgerClick} />}
+      <DrawerContainer
+        toggleDrawer={handleToggleDrawer}
+        drawerOpen={drawerOpen}
+      />
+      {drawerOpen && <Backdrop close={handleToggleDrawer} />}
       <button
         style={{
           marginRight: 'auto',
@@ -53,7 +56,7 @@ function NavItems() {
         }}
         data-state={drawerOpen ? 'opened' : 'closed'}
         aria-expanded={drawerOpen ? 'true' : 'false'}
-        onClick={handleHamburgerClick}
+        onClick={handleToggleDrawer}
         className="button-hamburger"
       >
         <HamburgerIcon />
