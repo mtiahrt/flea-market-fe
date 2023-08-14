@@ -43,8 +43,7 @@ function DrawerContainer({ drawerOpen }) {
         >
           <SubcategoriesDrawer
             setShowCategory={setShowCategory}
-            categoryId={5}
-            // categoryId={categoryIdSelected}
+            categoryId={categoryIdSelected}
             data={data}
           />
         </CSSTransition>
