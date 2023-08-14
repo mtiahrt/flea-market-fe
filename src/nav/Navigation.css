@@ -153,7 +153,6 @@ svg.hamburger{
   border: var(--border);
   border-radius: var(--border-radius);
   overflow: hidden;
-  transition: height var(--speed) ease;
   z-index: 2;
 }
 .menu {
@@ -164,7 +163,7 @@ svg.hamburger{
   display: flex;
   align-items: center;
   border-radius: calc(0.7*var(--border-radius));
-  transition: background var(--speed);
+  transition: background 500ms;
   margin: 3px;
   padding: 0.5rem;
 }
@@ -207,32 +206,4 @@ svg.hamburger{
 .menu-item:hover svg {
   fill: var(--logo-fill-color);
 }
-/* CSSTransition classes  */
-.menu-primary-enter {
-  position: absolute;
-  transform: translateX(-110%);
-}
-.menu-primary-enter-active {
-  transform: translateX(0%);
-  transition: all var(--speed) ease;
-}
-.menu-primary-exit {
-  position: absolute;
-}
-.menu-primary-exit-active {
-  transform: translateX(-110%);
-  transition: all var(--speed) ease;
-}
-.menu-secondary-enter {
-  transform: translateX(110%);
-}
-.menu-secondary-enter-active {
-  transform: translateX(0%);
-  transition: all var(--speed) ease;
-}
-.menu-secondary-exit {
-}
-.menu-secondary-exit-active {
-  transform: translateX(110%);
-  transition: all var(--speed) ease;
-}
+

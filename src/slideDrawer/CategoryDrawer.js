@@ -2,39 +2,25 @@ import React from 'react';
 import './SlideDrawer.css';
 import styled from 'styled-components';
 import DrawerItem from './DrawerItem';
-import { CSSTransition } from 'react-transition-group';
 
-function CategoryDrawer({
-  data,
-  showCategory,
-  setShowCategory,
-  setCategoryId,
-}) {
+function CategoryDrawer({ data, setShowCategory, setCategoryId }) {
   console.log('category drawer rendered');
 
   return (
-    // <CSSTransition
-    //   classNames="side-drawer"
-    //   in={showCategory}
-    //   timeout={300}
-    //   appear={true}
-    // >
-    //   <div className="side-drawer">
-    <StyledDivContainer>
+    <StyledDivContainer className="categories-drawer">
       {data?.categoriesList.map((cat) => (
         <DrawerItem
           arrowClickHandler={() => {
             setShowCategory(false);
             setCategoryId(cat.id);
           }}
+          arrowRight={true}
           key={`categoryId${cat.id}`}
           id={cat.id}
           itemName={cat.name}
         />
       ))}
     </StyledDivContainer>
-    //   </div>
-    // </CSSTransition>
   );
 }
 const StyledDivContainer = styled.div`

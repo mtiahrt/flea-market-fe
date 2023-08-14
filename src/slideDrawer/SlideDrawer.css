@@ -1,3 +1,4 @@
+
 .side-drawer {
     height: 100%;
     background: white;
@@ -6,9 +7,10 @@
     left: 0;
     width: 80%;
     z-index: 2;
+    overflow: hidden;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
     transform: translateX(-100%);
-    transition: transform 0.3s ease-out;
+    transition: transform 500ms ease-out;
 }
 .side-drawer-enter-active {
     transform: translateX(0);
@@ -17,18 +19,72 @@
     transform: translateX(0);
 }
 
-.slide-subcategories {
+.categories-drawer {
     background: white;
     top: 3.5rem;
     left: 0;
     z-index: 2;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
+}
+
+.categories-drawer-exit{
+
+}
+
+.categories-drawer-exit-active{
+    transform: translateX(-100%);
+    transition: transform var(--speed) ease-out;
+}
+
+.subcategories-drawer {
+    position: absolute;
+    left: 0;
+    top:0;
+    background: white;
+    z-index: 2;
+    box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
     transform: translateX(100%);
-    transition: transform 0.3s ease-out;
+    transition: transform var(--speed) ease-out;
 }
-.slide-subcategories-appear-active {
+.subcategories-drawer-enter-active {
+    transform: translateX(0);
+    width: 100%;
+}
+.subcategories-drawer-enter-done {
+    position: static;
     transform: translateX(0);
 }
-.slide-subcategories-appear-done {
+
+.subcategories-drawer-exit{
+    position: static;
     transform: translateX(0);
+}
+.subcategories-drawer-exit-active{
+    position: absolute;
+    transform: translateX(100%);
+    width: 100%;
+}
+.subcategories-drawer-exit-done{
+
+}
+
+.categories-drawer-enter{
+    position: absolute;
+    transition: transform var(--speed) ease-out;
+    width: 100%;
+    left: -100%;
+}
+.categories-drawer-enter-active{
+    transform: translateX(100%);
+    top: 0;
+}
+.categories-drawer-enter-done{
+    position: static;
+}
+.back-to-categories{
+    background-color: #eceded;
+}
+
+.back-to-categories a {
+    margin-left: 30%;
 }

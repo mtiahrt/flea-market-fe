@@ -1,18 +1,27 @@
 import React from 'react';
 import { ReactComponent as ChevronRight } from '../icons/chevron-right.svg';
+import { ReactComponent as ChevronLeft } from '../icons/chevron-left.svg';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-function DrawerItem({ arrowClickHandler, id, itemName }) {
+function DrawerItem({
+  arrowClickHandler,
+  id,
+  itemName,
+  arrowLeft,
+  arrowRight,
+  className,
+}) {
   const handleArrowClick = (e) => {
     arrowClickHandler();
   };
   return (
-    <StyledDivRow>
+    <StyledDivRow className={className}>
+      {arrowLeft && <ChevronLeft onClick={handleArrowClick} />}
       <Link to={`/inventory/${id}`}>
         <StyledH4>{itemName}</StyledH4>
       </Link>
-      <ChevronRight onClick={handleArrowClick} />
+      {arrowRight && <ChevronRight onClick={handleArrowClick} />}
     </StyledDivRow>
   );
 }

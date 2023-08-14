@@ -1,34 +1,29 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import DrawerItem from './DrawerItem';
 import styled from 'styled-components';
 
 function SubcategoriesDrawer({ setShowCategory, data, categoryId, toggle }) {
   return (
-    <CSSTransition
-      appear={true}
-      classNames="slide-subcategories"
-      in={true}
-      timeout={3000}
-    >
-      <StyledDivContainer className="slide-subcategories">
-        <DrawerItem
-          arrowClickHandler={() => setShowCategory(true)}
-          id={-1}
-          itemName="Categories"
-        />
-        {data.categoriesList
-          .find((x) => x.id === categoryId)
-          .subcategoriesList.map((sub) => (
-            <DrawerItem
-              key={`subcategoryId${sub.id}`}
-              toggle={toggle}
-              id={sub.id}
-              itemName={sub.name}
-            />
-          ))}
-      </StyledDivContainer>
-    </CSSTransition>
+    <StyledDivContainer className="subcategories-drawer">
+      <DrawerItem
+        arrowClickHandler={() => setShowCategory(true)}
+        className="back-to-categories"
+        id={-1}
+        itemName="Categories"
+        arrowLeft={true}
+      />
+      {data.categoriesList
+        .find((x) => x.id === categoryId)
+        .subcategoriesList.map((sub) => (
+          <DrawerItem
+            key={`subcategoryId${sub.id}`}
+            toggle={toggle}
+            id={sub.id}
+            arrowRight={true}
+            itemName={sub.name}
+          />
+        ))}
+    </StyledDivContainer>
   );
 }
 
