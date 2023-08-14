@@ -39,6 +39,5 @@ const StyledH4 = styled.h4`
 const StyledDivRow = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
   border-top: 0.1rem solid #e1e1e1;
 `;

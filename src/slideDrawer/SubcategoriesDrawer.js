@@ -19,7 +19,6 @@ function SubcategoriesDrawer({ setShowCategory, data, categoryId, toggle }) {
             key={`subcategoryId${sub.id}`}
             toggle={toggle}
             id={sub.id}
-            arrowRight={true}
             itemName={sub.name}
           />
         ))}
