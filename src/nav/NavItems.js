@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as HamburgerIcon } from '../icons/menu-hamburger.svg';
 import Backdrop from '../slideDrawer/Backdrop';
-import DrawerContainer from '../slideDrawer/DrawerContainer';
+import ContainerDrawer from '../slideDrawer/ContainerDrawer';
 
 function NavItems() {
   const { user, setUser } = useContext(UserContext);
@@ -42,7 +42,7 @@ function NavItems() {
 
   return (
     <>
-      <DrawerContainer
+      <ContainerDrawer
         toggleDrawer={handleToggleDrawer}
         drawerOpen={drawerOpen}
       />

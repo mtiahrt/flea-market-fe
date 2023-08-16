@@ -16,6 +16,7 @@ function SubcategoriesDrawer({ setShowCategory, data, categoryId, toggle }) {
         .find((x) => x.id === categoryId)
         .subcategoriesList.map((sub) => (
           <DrawerItem
+            route="subcategory"
             key={`subcategoryId${sub.id}`}
             toggle={toggle}
             id={sub.id}

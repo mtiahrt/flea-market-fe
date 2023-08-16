@@ -10,7 +10,9 @@ import { useParams } from 'react-router-dom';
 
 const Inventory = () => {
   let { categoryId } = useParams();
+  let { subcategoryId } = useParams();
   categoryId = Number(categoryId);
+  subcategoryId = Number(subcategoryId);
   const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(filterReducer, []);
   const { loadCartItems } = useCart();

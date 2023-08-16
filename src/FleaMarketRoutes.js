@@ -13,7 +13,14 @@ const FleaMarketRoutes = () => {
       <Route exact path="/">
         <Inventory />
       </Route>
-      <Route path="/inventory/:categoryId" children={<Inventory />}></Route>
+      <Route
+        path="/inventory/category/:categoryId"
+        children={<Inventory />}
+      ></Route>
+      <Route
+        path="/inventory/subcategory/:subcategoryId"
+        children={<Inventory />}
+      ></Route>
       <Route path="/detailedItem/:id" children={<DetailedItem />}></Route>
       <Route path="/addItem" children={<AddItem />}></Route>
       <Route path="/checkOut" children={<CheckOut />}></Route>

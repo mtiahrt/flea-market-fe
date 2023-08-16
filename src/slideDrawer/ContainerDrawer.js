@@ -5,7 +5,7 @@ import CategoryDrawer from './CategoryDrawer';
 import SubcategoriesDrawer from './SubcategoriesDrawer';
 import { CSSTransition } from 'react-transition-group';
 
-function DrawerContainer({ drawerOpen, toggleDrawer }) {
+function ContainerDrawer({ drawerOpen, toggleDrawer }) {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
   const [showCategory, setShowCategory] = useState(true);
   const [categoryIdSelected, setCategoryId] = useState(null);
@@ -53,4 +53,4 @@ function DrawerContainer({ drawerOpen, toggleDrawer }) {
   );
 }
 
-export default DrawerContainer;
+export default ContainerDrawer;
