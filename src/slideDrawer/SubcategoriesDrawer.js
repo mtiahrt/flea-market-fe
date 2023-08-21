@@ -2,7 +2,12 @@ import React from 'react';
 import DrawerItem from './DrawerItem';
 import styled from 'styled-components';
 
-function SubcategoriesDrawer({ setShowCategory, data, categoryId, toggle }) {
+function SubcategoriesDrawer({
+  setShowCategory,
+  data,
+  categoryId,
+  toggleDrawer,
+}) {
   return (
     <StyledDivContainer className="subcategories-drawer">
       <DrawerItem
@@ -16,9 +21,10 @@ function SubcategoriesDrawer({ setShowCategory, data, categoryId, toggle }) {
         .find((x) => x.id === categoryId)
         .subcategoriesList.map((sub) => (
           <DrawerItem
+            toggleDrawer={toggleDrawer}
             route="subcategory"
+            queryParameters={`?categoryId=${categoryId}&subcategoryId=${sub.id}`}
             key={`subcategoryId${sub.id}`}
-            toggle={toggle}
             id={sub.id}
             itemName={sub.name}
           />

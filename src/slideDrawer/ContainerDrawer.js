@@ -43,6 +43,7 @@ function ContainerDrawer({ drawerOpen, toggleDrawer }) {
           unmountOnExit
         >
           <SubcategoriesDrawer
+            toggleDrawer={toggleDrawer}
             setShowCategory={setShowCategory}
             categoryId={categoryIdSelected}
             data={data}

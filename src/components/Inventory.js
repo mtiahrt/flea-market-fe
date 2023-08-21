@@ -1,50 +1,48 @@
-import React, { useEffect, useReducer, useState, useContext } from 'react';
+import React, { useReducer, useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
-import { INVENTORY_BY_CATEGORY_WITH_CART } from '../queries/graphQL';
+import {
+  SEARCH_INVENTORY_BY_CATEGORY,
+  SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY,
+} from '../queries/graphQL';
 import { useCart } from '../contexts/CartContext';
 import filterReducer from './InventoryFilterReducer';
 import { UserContext } from '../contexts/UserContext';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 const Inventory = () => {
-  let { categoryId } = useParams();
-  let { subcategoryId } = useParams();
-  categoryId = Number(categoryId);
-  subcategoryId = Number(subcategoryId);
+  console.log('Inventory is rendering');
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const categoryId = Number(query.get('categoryId'));
+  const subcategoryId = Number(query.get('subcategoryId'));
   const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(filterReducer, []);
   const { loadCartItems } = useCart();
-
+  let queryVariables = { categoryid: categoryId };
+  queryVariables = {
+    ...queryVariables,
+    ...(subcategoryId && { subcategoryid: subcategoryId }),
+  };
   const { loading, error, data, refetch } = useQuery(
-    INVENTORY_BY_CATEGORY_WITH_CART,
+    subcategoryId > 0
+      ? SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY
+      : SEARCH_INVENTORY_BY_CATEGORY,
     {
-      variables: {
-        applicationUserId: user?.id,
-        categoryId: null,
-      },
+      variables: queryVariables,
       fetchPolicy: 'cache-and-network',
     }
   );
 
-  useEffect(() => {
-    if (categoryId) {
-      refetch({ categoryId: categoryId }).then((x) =>
-        console.log('refresh result is', x)
-      );
-    }
-  }, [categoryId]);
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-
-  console.log('Inventory is rendering');
+  const collectionName = Object.keys(data)[0];
   return (
     <>
       <StyledDiv>
         <StyledInventory role="item-list">
-          {data.inventoryByCategoryWithCartsList.map((y) => (
+          {data[collectionName]?.map((y) => (
             <BasicCard
               key={`card${y.inventoryid}`}
               isItemInCart={y.cartid ? true : false}

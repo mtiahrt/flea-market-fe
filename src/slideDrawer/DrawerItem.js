@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 function DrawerItem({
   route,
+  queryParameters,
   arrowClickHandler,
   toggleDrawer,
   id,
@@ -20,7 +21,10 @@ function DrawerItem({
   return (
     <StyledDivRow className={className}>
       {arrowLeft && <ChevronLeft onClick={handleArrowClick} />}
-      <Link onClick={toggleDrawer} to={`/inventory/${route}/${id}`}>
+      <Link
+        onClick={toggleDrawer}
+        to={`/inventory/${route}/${queryParameters}`}
+      >
         <StyledH4>{itemName}</StyledH4>
       </Link>
       {arrowRight && <ChevronRight onClick={handleArrowClick} />}

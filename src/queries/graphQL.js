@@ -259,9 +259,9 @@ export const DELETE_CART_ITEM = gql`
   }
 `;
 
-export const INVENTORY_BY_CATEGORY_WITH_CART = gql`
-  query publicInventoryByCategoryWithCart($categoryId: Int) {
-    inventoryByCategoryWithCartsList(condition: { categoryId: $categoryId }) {
+export const SEARCH_INVENTORY_BY_CATEGORY = gql`
+  query publicSearchInventoryByCategory($categoryid: Int) {
+    searchInventoryByCategoryList(categoryid: $categoryid) {
       applicationUserId
       cartInventoryId
       cartid
@@ -276,6 +276,38 @@ export const INVENTORY_BY_CATEGORY_WITH_CART = gql`
       manufacturerName
       price
       publicId
+      subcategoryId
+      subcategoryname
+      url
+    }
+  }
+`;
+
+export const SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY = gql`
+  query publicSearchInventoryByCategorySubcategory(
+    $categoryid: Int
+    $subcategoryid: Int
+  ) {
+    searchInventoryByCategorySubcategoryList(
+      categoryid: $categoryid
+      subcategoryid: $subcategoryid
+    ) {
+      applicationUserId
+      cartInventoryId
+      cartid
+      cartquantity
+      categoryId
+      categoryname
+      description
+      inventoryid
+      inventoryname
+      inventoryquantity
+      itemimageid
+      manufacturerName
+      price
+      publicId
+      subcategoryId
+      subcategoryname
       url
     }
   }

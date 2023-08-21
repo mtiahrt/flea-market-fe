@@ -19,6 +19,7 @@ function CategoryDrawer({
             setShowCategory(false);
             setCategoryId(cat.id);
           }}
+          queryParameters={`?categoryId=${cat.id}`}
           route="category"
           toggleDrawer={toggleDrawer}
           arrowRight={true}
