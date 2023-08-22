@@ -9,7 +9,6 @@ function DrawerItem({
   queryParameters,
   arrowClickHandler,
   toggleDrawer,
-  id,
   itemName,
   arrowLeft,
   arrowRight,

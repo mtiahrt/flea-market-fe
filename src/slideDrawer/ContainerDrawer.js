@@ -19,7 +19,7 @@ function ContainerDrawer({ drawerOpen, toggleDrawer }) {
       in={drawerOpen}
       classNames="side-drawer"
       appear={true}
-      timeout={2000}
+      timeout={drawerTiming}
     >
       <div className="side-drawer">
         <CSSTransition

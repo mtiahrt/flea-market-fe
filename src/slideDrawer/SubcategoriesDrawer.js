@@ -13,7 +13,6 @@ function SubcategoriesDrawer({
       <DrawerItem
         arrowClickHandler={() => setShowCategory(true)}
         className="back-to-categories"
-        id={-1}
         itemName="Categories"
         arrowLeft={true}
       />

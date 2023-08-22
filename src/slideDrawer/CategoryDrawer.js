@@ -15,6 +15,7 @@ function CategoryDrawer({
     <StyledDivContainer className="categories-drawer">
       {data?.categoriesList.map((cat) => (
         <DrawerItem
+          key={`categoryId${cat.id}`}
           arrowClickHandler={() => {
             setShowCategory(false);
             setCategoryId(cat.id);
@@ -23,8 +24,6 @@ function CategoryDrawer({
           route="category"
           toggleDrawer={toggleDrawer}
           arrowRight={true}
-          key={`categoryId${cat.id}`}
-          id={cat.id}
           itemName={cat.name}
         />
       ))}
