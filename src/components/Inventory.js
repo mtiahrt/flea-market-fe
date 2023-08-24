@@ -18,14 +18,13 @@ const Inventory = () => {
   const categoryId = Number(query.get('categoryId'));
   const subcategoryId = Number(query.get('subcategoryId'));
   const { user } = useContext(UserContext);
-  const [state, dispatch] = useReducer(filterReducer, []);
   const { loadCartItems } = useCart();
   let queryVariables = { categoryid: categoryId };
   queryVariables = {
     ...queryVariables,
     ...(subcategoryId && { subcategoryid: subcategoryId }),
   };
-  const { loading, error, data, refetch } = useQuery(
+  const { loading, error, data } = useQuery(
     subcategoryId > 0
       ? SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY
       : SEARCH_INVENTORY_BY_CATEGORY,
@@ -37,6 +36,7 @@ const Inventory = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
+  //different collection names can come through
   const collectionName = Object.keys(data)[0];
   return (
     <>
