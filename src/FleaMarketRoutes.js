@@ -6,10 +6,12 @@ import CheckOut from './components/checkout/CheckOut';
 import EditItem from './components/modify-items/EditItem';
 import EditCategories from './components/modify-items/EditCategories';
 import UserProfile from './components/UserProfile';
+import Home from './components/Home';
 
 const FleaMarketRoutes = () => {
   return (
     <Switch>
+      <Route path="/" exact={true} children={<Home />}></Route>
       <Route exact path="/">
         <Inventory />
       </Route>

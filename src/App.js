@@ -60,7 +60,6 @@ function App() {
               <CartContextProvider>
                 <FleaMarketRoutes />
               </CartContextProvider>
-              <Home />
             </ThemeProvider>
           </FleaMarketProvider>
         </UserContext.Provider>
