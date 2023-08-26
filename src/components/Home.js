@@ -31,9 +31,7 @@ function Home() {
         </StyledLI>
       </StyledUL>
       <StyledDiv>
-        <StyledSpan>
-          100s of Different Products Added! Unbeatable Prices...
-        </StyledSpan>
+        <StyledSpan>100s of Different Products Added Daily!</StyledSpan>
         <StyledSpan>Up to 70% Off of Retail!!!!</StyledSpan>
       </StyledDiv>
       <StyledUL>
