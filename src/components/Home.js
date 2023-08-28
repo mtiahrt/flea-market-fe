@@ -29,6 +29,7 @@ function Home() {
         <StyledLI>
           <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-elias-de-carvalho-1006999.jpg"></StyledIMG>
         </StyledLI>
+        <li></li>
       </StyledUL>
       <StyledDiv>
         <StyledSpan>100s of Different Products Added Daily!</StyledSpan>
@@ -70,6 +71,9 @@ const StyledUL = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.2rem;
+  //li:last-child {
+  //  flex-grow: 10;
+  //}
 `;
 
 const StyledLI = styled.li`
