@@ -9,7 +9,7 @@ function Home() {
           <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-ahmed-%C3%A3%C2%83%C2%84-13159182.jpg"></StyledIMG>
         </StyledLI>
         <StyledLI>
-          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-alina-matveycheva-17289658.jpg"></StyledIMG>
+          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-ricardo-acevedo-1375736.jpg"></StyledIMG>
         </StyledLI>
         <StyledLI>
           <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-anastasiia-chaikovska-15385901.jpg"></StyledIMG>
@@ -37,13 +37,13 @@ function Home() {
       </StyledDiv>
       <StyledUL>
         <StyledLI>
-          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-emmanuel-ikwuegbu-9720924.jpg"></StyledIMG>
+          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-the-glorious-studio-10983783.jpg"></StyledIMG>
         </StyledLI>
         <StyledLI>
-          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-evg-kowalievska-1381553.jpg"></StyledIMG>
+          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-lil-artsy-1374128.jpg"></StyledIMG>
         </StyledLI>
         <StyledLI>
-          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-godisable-jacob-914668.jpg"></StyledIMG>
+          <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-superlens-photography-11203750.jpg"></StyledIMG>
         </StyledLI>
       </StyledUL>
       <div>Add different categories here</div>
