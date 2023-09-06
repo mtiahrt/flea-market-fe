@@ -67,7 +67,8 @@ function NavItems() {
         </Link>
       </StyledLiTitle>
       <NavItem
-        className="profile-button"
+        classNameLi="nav-item profile-button"
+        classNameA="icon-button"
         isActive={active}
         setActive={setActive}
         isDropdown={true}
@@ -97,6 +98,8 @@ function NavItems() {
         ></DropdownMenu>
       </NavItem>
       <NavItem
+        classNameLi="nav-item"
+        classNameA="icon-button"
         isDrawerOpen={drawerOpen}
         isActive={active}
         setActive={setActive}
@@ -109,6 +112,8 @@ function NavItems() {
         }
       ></NavItem>
       <NavItem
+        classNameLi="nav-item"
+        classNameA="icon-button"
         isDrawerOpen={drawerOpen}
         isActive={active}
         setActive={setActive}

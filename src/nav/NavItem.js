@@ -10,7 +10,8 @@ const NavItem = ({
   isDropdown,
   url,
   children,
-  className,
+  classNameLi,
+  classNameA,
   clickHandler,
   style,
   imageURL,
@@ -34,18 +35,17 @@ const NavItem = ({
       history.push(url ? `/${url}` : '#');
     }
   };
-
   return (
     <li
       ref={isDropdown ? clickRef : null}
       style={{ ...style, cursor: 'pointer' }}
       onClick={handleClickEvent}
-      className={`nav-item ${className ? className : ''}`}
+      className={classNameLi}
     >
+      {name}
       <a
-        name={name}
         className={
-          isActive === icon.props.name ? 'icon-button active' : 'icon-button'
+          isActive === icon?.props.name ? `active ${classNameA}` : classNameA
         }
       >
         {imageURL ? <img alt="profile photo" src={imageURL} /> : icon}
