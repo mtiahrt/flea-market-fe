@@ -81,6 +81,7 @@ function NavItems() {
         imageURL={user?.photoURL}
       >
         <DropdownMenu
+          className="dropdown-upper-nav"
           dropdownProps={[
             {
               icon: user?.isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
@@ -123,6 +124,7 @@ function NavItems() {
         }
       >
         <DropdownMenu
+          className="dropdown-upper-nav"
           dropdownProps={[
             {
               icon: <SaleIcon />,

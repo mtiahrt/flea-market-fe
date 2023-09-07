@@ -4,7 +4,8 @@ import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
 import { Link } from 'react-router-dom';
 import NavItem from './NavItem';
-
+import DropdownMenu from './DropdownMenu';
+import './LowerNavBar.css';
 function LowerNavBar() {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
   if (loading) return <p>Loading...</p>;
@@ -14,19 +15,28 @@ function LowerNavBar() {
     <StyledNav className="navbar">
       <StyledOl>
         {data?.categoriesList.map((cat) => (
-          <Link to={`/inventory/${cat.id}`}>
+          <Link to={`/inventory/category/?categoryId=${cat.id}`}>
             <NavItem
               isDropdown={true}
               setActive={false}
               isDrawerOpen={false}
               name={cat.name}
-            ></NavItem>
+            >
+              <DropdownMenu
+                className="dropdown-lower-nav"
+                dropdownProps={cat.subcategoriesList.map((x) => ({
+                  url: `/inventory/subcategory/?category=${cat.id}&subcategoryId=${x.id}`,
+                  content: x.name,
+                }))}
+              />
+            </NavItem>
           </Link>
         ))}
       </StyledOl>
     </StyledNav>
   );
 }
+
 const StyledNav = styled.nav`
   position: sticky;
   top: 2.5em;

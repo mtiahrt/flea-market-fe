@@ -142,18 +142,9 @@ svg.hamburger{
   rotate: -45deg;
 }
 
-.dropdown {
-  position: absolute;
+.dropdown-upper-nav {
   top: 50px;
   right: 0;
-  margin-right: 10px;
-  width: max(200px, 23%);
-  background-color: var(--nav-bar-color);
-  color: var(--icon-background-color);
-  border: var(--border);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  z-index: 2;
 }
 .menu {
   width: 100%;
