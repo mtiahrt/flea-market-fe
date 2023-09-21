@@ -6,10 +6,8 @@ const DropdownMenu = ({ items, className }) => {
   function DropDownItem({ url, content, icon, onClickEventHandler }) {
     return (
       <Link onClick={onClickEventHandler} to={url} className="menu-item">
-        <div>
-          <span className="icon-button">{icon}</span>
-          {content}
-        </div>
+        <span className="icon-button">{icon}</span>
+        {content}
       </Link>
     );
   }
