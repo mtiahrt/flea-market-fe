@@ -15,6 +15,8 @@ const NavItem = ({
   clickHandler,
   style,
   imageURL,
+  onMouseEnterHandler,
+  onMouseLeaveHandler,
 }) => {
   let history = useHistory();
   const [open, setOpen] = useState(false);
@@ -40,6 +42,8 @@ const NavItem = ({
       ref={isDropdown ? clickRef : null}
       style={{ ...style, cursor: 'pointer' }}
       onClick={handleClickEvent}
+      onMouseEnter={onMouseEnterHandler}
+      onMouseLeave={onMouseLeaveHandler}
       className={classNameLi}
     >
       {name}

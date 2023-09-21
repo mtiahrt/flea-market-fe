@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
@@ -6,30 +6,51 @@ import { Link } from 'react-router-dom';
 import NavItem from './NavItem';
 import DropdownMenu from './DropdownMenu';
 import './LowerNavBar.css';
+
 function LowerNavBar() {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {});
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownMenuID, setDropdownMenuID] = useState(-1);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
+  const handleMouseEnter = (e, id) => {
+    setDropdownMenuID(id);
+    setDropdownVisible(true);
+  };
+
+  const handleMouseLeave = (e, id) => {
+    setDropdownVisible(false);
+  };
   return (
     <StyledNav className="navbar">
       <StyledOl>
         {data?.categoriesList.map((cat) => (
           <Link to={`/inventory/category/?categoryId=${cat.id}`}>
-            <NavItem
-              isDropdown={true}
-              setActive={false}
-              isDrawerOpen={false}
-              name={cat.name}
+            <li
+              key={cat.id}
+              className="menu"
+              onMouseEnter={(e) => handleMouseEnter(e, cat.id)}
+              onMouseLeave={(e) => handleMouseLeave(e, cat.id)}
             >
-              <DropdownMenu
-                className="dropdown-lower-nav"
-                dropdownProps={cat.subcategoriesList.map((x) => ({
-                  url: `/inventory/subcategory/?category=${cat.id}&subcategoryId=${x.id}`,
-                  content: x.name,
-                }))}
-              />
-            </NavItem>
+              {cat.name}
+              {isDropdownVisible && cat.id === dropdownMenuID && (
+                <DropdownMenu
+                  className="dropdown-lower-nav"
+                  items={data.categoriesList
+                    .filter((x) => x.id === dropdownMenuID)
+                    .map((x) =>
+                      x.subcategoriesList.map((y) => ({
+                        id: y.id,
+                        name: y.name,
+                        url: `/inventory/subcategory/?categoryId=${x.id}&subcategoryId=${y.id}`,
+                      }))
+                    )
+                    .find((x) => x)}
+                />
+              )}
+            </li>
           </Link>
         ))}
       </StyledOl>
@@ -54,3 +75,22 @@ const StyledOl = styled.ol`
   list-style: none;
 `;
 export default LowerNavBar;
+
+//           <NavItem
+//             isDropdown={true}
+//             setActive={false}
+//             isDrawerOpen={false}
+//             name={cat.name}
+//           >
+
+//             {isDropdownVisible && (
+//               <DropdownMenu
+//                 className="dropdown-lower-nav"
+//                 dropdownProps={cat.subcategoriesList.map((x) => ({
+//                   url: `/inventory/subcategory/?category=${cat.id}&subcategoryId=${x.id}`,
+//                   content: x.name,
+//                 }))}
+//               />
+//             )}
+
+//           </NavItem>
