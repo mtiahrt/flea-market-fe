@@ -82,7 +82,7 @@ function NavItems() {
       >
         <DropdownMenu
           className="dropdown-upper-nav"
-          dropdownProps={[
+          items={[
             {
               icon: user?.isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
               url: '',
@@ -125,6 +125,18 @@ function NavItems() {
       >
         <DropdownMenu
           className="dropdown-upper-nav"
+          items={[
+            {
+              icon: <SaleIcon />,
+              url: '/addItem',
+              content: 'Inventory Item',
+            },
+            {
+              icon: <CategoryIcon />,
+              url: '/editCategories',
+              content: 'Category',
+            },
+          ]}
           dropdownProps={[
             {
               icon: <SaleIcon />,

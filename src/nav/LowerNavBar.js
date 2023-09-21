@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES } from '../queries/graphQL';
 import { Link } from 'react-router-dom';
-import NavItem from './NavItem';
 import DropdownMenu from './DropdownMenu';
 import './LowerNavBar.css';
 
@@ -43,7 +42,7 @@ function LowerNavBar() {
                     .map((x) =>
                       x.subcategoriesList.map((y) => ({
                         id: y.id,
-                        name: y.name,
+                        content: y.name,
                         url: `/inventory/subcategory/?categoryId=${x.id}&subcategoryId=${y.id}`,
                       }))
                     )
@@ -75,22 +74,3 @@ const StyledOl = styled.ol`
   list-style: none;
 `;
 export default LowerNavBar;
-
-//           <NavItem
-//             isDropdown={true}
-//             setActive={false}
-//             isDrawerOpen={false}
-//             name={cat.name}
-//           >
-
-//             {isDropdownVisible && (
-//               <DropdownMenu
-//                 className="dropdown-lower-nav"
-//                 dropdownProps={cat.subcategoriesList.map((x) => ({
-//                   url: `/inventory/subcategory/?category=${cat.id}&subcategoryId=${x.id}`,
-//                   content: x.name,
-//                 }))}
-//               />
-//             )}
-
-//           </NavItem>
