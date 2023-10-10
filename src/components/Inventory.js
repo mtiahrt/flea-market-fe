@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import BasicCard from './BasicCard';
@@ -6,9 +6,6 @@ import {
   SEARCH_INVENTORY_BY_CATEGORY,
   SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY,
 } from '../queries/graphQL';
-import { useCart } from '../contexts/CartContext';
-import filterReducer from './InventoryFilterReducer';
-import { UserContext } from '../contexts/UserContext';
 import { useLocation } from 'react-router';
 
 const Inventory = () => {
@@ -17,8 +14,7 @@ const Inventory = () => {
   const query = new URLSearchParams(search);
   const categoryId = Number(query.get('categoryId'));
   const subcategoryId = Number(query.get('subcategoryId'));
-  const { user } = useContext(UserContext);
-  const { loadCartItems } = useCart();
+
   let queryVariables = { categoryid: categoryId };
   queryVariables = {
     ...queryVariables,

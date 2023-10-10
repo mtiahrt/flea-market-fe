@@ -66,7 +66,9 @@ const StyledDiv = styled.div`
   height: 6rem;
 `;
 
-const StyledSpan = styled.span``;
+const StyledSpan = styled.span`
+  font-size: var(--font-size-5);
+`;
 const StyledUL = styled.ul`
   display: flex;
   flex-wrap: wrap;

@@ -16,7 +16,6 @@ import {
 } from '@mui/material/styles';
 import { useUser } from './hooks/useUser';
 import LowerNavBar from './nav/LowerNavBar';
-import Home from './components/Home';
 
 let theme = createTheme({
   palette: {
@@ -57,7 +56,7 @@ function App() {
               </Modal>
               <UpperNavBar></UpperNavBar>
               <LowerNavBar />
-              <CartContextProvider>
+              <CartContextProvider userId={user?.id}>
                 <FleaMarketRoutes />
               </CartContextProvider>
             </ThemeProvider>

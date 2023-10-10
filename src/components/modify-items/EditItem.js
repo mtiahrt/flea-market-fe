@@ -254,7 +254,7 @@ const EditItem = () => {
         </Button>
         <Button
           onClick={() =>
-            history.push(`/DetailedItem/${inventoryId}`, {
+            history.push(`/inventory/detailedItem/${inventoryId}`, {
               isInCart,
               inventoryId,
             })

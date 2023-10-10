@@ -59,8 +59,6 @@ export default function ShoppingCart() {
     );
   }
 
-  console.log('data cart items is', dataCartItems);
-
   const shippingPriceByID = (shippingId) =>
     dataShippingCostItems.shippingCostsList.find((x) => x.id === shippingId);
 

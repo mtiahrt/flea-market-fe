@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import ImagesTile from './shared/ImagesTile';
 import {
   ADD_CART_ITEM,
@@ -23,7 +23,7 @@ import { Snackbar } from './shared/Snackbar';
 
 function DetailedItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
-  const { removeFromCart, updateQuantity, addToCart } = useCart();
+  const { removeFromCart, updateQuantity, addToCart, items } = useCart();
   const { user, setUser } = useContext(UserContext);
 
   const [
@@ -53,29 +53,28 @@ function DetailedItem() {
   ] = useMutation(UPDATE_CART_QUANTITY);
 
   const history = useHistory();
-  const location = useLocation();
+  const { id } = useParams();
+  const cartItem = items?.find((item) => item.inventoryId === Number(id));
   const [quantity, setQuantity] = useState(0);
-  const [isInCart, setIsInCart] = useState(location.state?.isInCart);
-  const inventoryId = location.state?.inventoryId;
-
-  const { loading, error, data, refetch } = useQuery(GET_INVENTORY_ITEM, {
-    variables: { inventoryId },
+  const [isInCart, setIsInCart] = useState(cartItem ? true : false);
+  const { loading, error, data } = useQuery(GET_INVENTORY_ITEM, {
+    variables: { inventoryId: Number(id) },
   });
   useEffect(() => {
     let quantity = 1;
     if (data && isInCart) {
-      quantity = data.inventory.cartsList[0].quantity;
+      quantity = cartItem.quantity;
     }
     setQuantity(quantity);
   }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-  const cartId = isInCart ? data.inventory.cartsList[0]?.id : -1;
+  const cartId = cartItem ? cartItem.cartId : -1;
   const handleQuantitySelectChange = (e) => {
     const quantity = +e.target.value;
     if (isInCart) {
-      updateQuantity(cartId, quantity, () =>
+      updateQuantity(cartId, id, quantity, () =>
         updatingCartQuantity({ variables: { cartId, quantity } })
       );
     }
@@ -108,27 +107,21 @@ function DetailedItem() {
       setUser({ ...user, displayLogin: true });
       return;
     }
-    //toggling if is in cart
-    const refetchData = !isInCart;
     setIsInCart(!isInCart);
     isInCart
       ? removeFromCart(cartId, () =>
           deleteingCartItem({ variables: { cartId } })
         )
-      : addToCart(inventoryId, quantity, () =>
+      : addToCart(Number(id), quantity, () =>
           addingCartItem({
             variables: {
-              inventoryId: inventoryId,
+              inventoryId: Number(id),
               quantity: quantity,
               userId: user?.id,
             },
-          }).then((data) => console.log('this data is', data))
+          })
         );
 
-    //todo: read cart context instead of refetch
-    if (refetchData) {
-      refetch({ inventoryId });
-    }
     openSnackBar(
       isInCart
         ? 'Item was removed from cart successfully'
@@ -173,10 +166,7 @@ function DetailedItem() {
         <Button onClick={handleAddOrRemoveFromCartClick} variant="contained">
           {isInCart ? 'Remove from cart' : 'Add to Cart'}
         </Button>
-        <Button
-          onClick={() => navigateToEditItem(inventoryId, inventoryId)}
-          variant="contained"
-        >
+        <Button onClick={() => navigateToEditItem(id)} variant="contained">
           Edit Item
         </Button>
       </StyledButtonsDiv>

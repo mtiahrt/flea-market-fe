@@ -47,8 +47,12 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
     const itemToChangeIndex = [...cartItems].findIndex(
       (item) => item.id === cartId
     );
-    updateQuantity(cartId, newQuantity, () =>
-      updatingCartQuantity({ variables: { cartId, quantity: newQuantity } })
+    updateQuantity(
+      cartId,
+      shoppingCartItems.find((x) => x.id === cartId).inventoryId,
+      newQuantity,
+      () =>
+        updatingCartQuantity({ variables: { cartId, quantity: newQuantity } })
     );
     const updatedChange = {
       ...cartItems[itemToChangeIndex],
