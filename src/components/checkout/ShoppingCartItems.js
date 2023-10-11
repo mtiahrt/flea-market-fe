@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,16 +31,16 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
   const { removeFromCart, updateQuantity } = useCart();
 
   useEffect(() => {
-    const newStateValue = shoppingCartItems.map((item) => ({
-      id: item.id,
-      manufacturerName: item.inventory.manufacturerName,
+    const newStateValue = shoppingCartItems?.map((item) => ({
+      id: item.cartId,
+      manufacturerName: item.manufacturerName,
       quantity: item.quantity,
-      totalQuantity: item.inventory.quantity,
-      price: item.inventory.price,
-      totalPrice: +(item.inventory.price * item.quantity),
+      totalQuantity: item.quantityAvailable,
+      price: item.price,
+      totalPrice: +(item.price * item.quantity),
     }));
     setCartItems(newStateValue);
-  }, []);
+  }, [shoppingCartItems]);
 
   const handleQuantitySelectChange = (e, cartId) => {
     const newQuantity = e.target.value;
@@ -108,7 +108,7 @@ const ShoppingCartItems = ({ shoppingCartItems, setCartTotal }) => {
         <React.Fragment key={item.id}>
           <StyledCartRowItemDiv>
             <h3>{item.manufacturerName}</h3>
-            <h4>${item.price}</h4>
+            <h4>${item.price.toFixed(2)}</h4>
             <FormControl
               sx={{
                 width: {

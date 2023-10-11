@@ -9,10 +9,7 @@ import {
   Select,
 } from '@mui/material';
 import { useQuery } from '@apollo/client';
-import {
-  GET_CART_ITEMS,
-  GET_SHIPPING_COSTS_ITEMS,
-} from '../../queries/graphQL';
+import { GET_SHIPPING_COSTS_ITEMS } from '../../queries/graphQL';
 import { UserContext } from '../../contexts/UserContext';
 import ShoppingCartItems from './ShoppingCartItems';
 import { useCart } from '../../contexts/CartContext';
@@ -20,7 +17,7 @@ import Typography from '@mui/material/Typography';
 
 export default function ShoppingCart() {
   const { user } = useContext(UserContext);
-  const { items } = useCart();
+  const { cartItems } = useCart();
   const [shippingCost, setShippingCost] = useState({
     id: 0,
     name: '',
@@ -28,32 +25,20 @@ export default function ShoppingCart() {
   });
   const [cartTotal, setCartTotal] = useState(0);
   const {
-    loading: loadingCartItems,
-    error: errorCartItems,
-    data: dataCartItems,
-  } = useQuery(GET_CART_ITEMS, {
-    variables: {
-      user_id: user?.id,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-  const {
     loading: loadingShippingCostItems,
     error: errorShippingCostItems,
     data: dataShippingCostItems,
   } = useQuery(GET_SHIPPING_COSTS_ITEMS);
 
-  useEffect(() => sumOfCart(), [dataCartItems]);
+  useEffect(() => sumOfCart(), [cartItems]);
 
-  if (loadingCartItems || loadingShippingCostItems) return 'Loading...';
-  if (errorCartItems || errorShippingCostItems)
-    return `Error! ${errorCartItems.message}`;
+  if (loadingShippingCostItems) return 'Loading...';
+  if (errorShippingCostItems) return `Error! ${errorShippingCostItems.message}`;
 
   function sumOfCart() {
     setCartTotal(
-      dataCartItems?.cartsList.reduce(
-        (prev, current) =>
-          (prev += +current.inventory.price * current.quantity),
+      cartItems?.reduce(
+        (prev, current) => (prev += +current.price * current.quantity),
         0
       )
     );
@@ -69,7 +54,7 @@ export default function ShoppingCart() {
   }
 
   function handleBuyNowClick() {
-    const requestBody = items.map((i) => {
+    const requestBody = cartItems.map((i) => {
       return { cartId: i.cartId, inventoryItem: true };
     });
     requestBody.push({ shippingId: shippingCost.id, inventoryItem: false });
@@ -102,7 +87,7 @@ export default function ShoppingCart() {
         Cart Items
       </Typography>
       <ShoppingCartItems
-        shoppingCartItems={dataCartItems.cartsList}
+        shoppingCartItems={cartItems}
         setCartTotal={setCartTotal}
       ></ShoppingCartItems>
       <Divider style={dividerStyle}></Divider>

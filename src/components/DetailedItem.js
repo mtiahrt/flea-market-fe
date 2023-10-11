@@ -23,7 +23,7 @@ import { Snackbar } from './shared/Snackbar';
 
 function DetailedItem() {
   const { isActive, message, openSnackBar } = useSnackbar();
-  const { removeFromCart, updateQuantity, addToCart, items } = useCart();
+  const { removeFromCart, updateQuantity, addToCart, cartItems } = useCart();
   const { user, setUser } = useContext(UserContext);
 
   const [
@@ -54,7 +54,7 @@ function DetailedItem() {
 
   const history = useHistory();
   const { id } = useParams();
-  const cartItem = items?.find((item) => item.inventoryId === Number(id));
+  const cartItem = cartItems?.find((item) => item.inventoryId === Number(id));
   const [quantity, setQuantity] = useState(0);
   const [isInCart, setIsInCart] = useState(cartItem ? true : false);
   const { loading, error, data } = useQuery(GET_INVENTORY_ITEM, {

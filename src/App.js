@@ -54,9 +54,9 @@ function App() {
               >
                 <Login />
               </Modal>
-              <UpperNavBar></UpperNavBar>
-              <LowerNavBar />
               <CartContextProvider userId={user?.id}>
+                <UpperNavBar></UpperNavBar>
+                <LowerNavBar />
                 <FleaMarketRoutes />
               </CartContextProvider>
             </ThemeProvider>

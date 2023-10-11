@@ -11,6 +11,7 @@ import { ReactComponent as SaleIcon } from '../icons/sale-svgrepo-com.svg';
 import { ReactComponent as CategoryIcon } from '../icons/category-svgrepo-com.svg';
 import { ReactComponent as ProfileIcon } from '../icons/profile.svg';
 import { UserContext } from '../contexts/UserContext';
+import { useCart } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as HamburgerIcon } from '../icons/menu-hamburger.svg';
@@ -21,12 +22,13 @@ function NavItems() {
   const { user, setUser } = useContext(UserContext);
   const [active, setActive] = useState('home');
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  const { clearCartItems } = useCart();
   const logUserOut = () => {
     auth.signOut().then(() => console.log('signed out'));
     localStorage.removeItem('user');
     localStorage.removeItem('access-token');
     setUser(new UserContextModel().signOut());
+    clearCartItems();
   };
   const logUserIn = () => {
     if (!user?.isLoggedIn) {

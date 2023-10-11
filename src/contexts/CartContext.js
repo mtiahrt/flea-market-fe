@@ -55,6 +55,8 @@ export function CartContextProvider(props) {
             item.id,
             item.inventoryId,
             item.quantity,
+            item.inventory.quantity,
+            item.inventory.manufacturerName,
             item.inventory.price
           )
       )
@@ -75,10 +77,13 @@ export function CartContextProvider(props) {
       setCartItems(updatedItems);
     });
   }
-
+  function clearCartItems() {
+    setCartItems(null);
+  }
   const items = cartItems ? [...cartItems] : null;
   const value = {
-    items,
+    cartItems: items,
+    clearCartItems,
     addToCart,
     removeFromCart,
     updateQuantity,
