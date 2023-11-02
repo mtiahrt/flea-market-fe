@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ReactComponent as FooterWave } from '../icons/footer-wave.svg';
 
 function Home() {
   return (
@@ -46,7 +47,7 @@ function Home() {
           <StyledIMG src="https://flea-market-images.s3.us-west-2.amazonaws.com/pexels-superlens-photography-11203750.jpg"></StyledIMG>
         </StyledLI>
       </StyledUL>
-      <div>Add different categories here</div>
+      <FooterWave />
     </>
   );
 }
@@ -73,9 +74,6 @@ const StyledUL = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.2rem;
-  //li:last-child {
-  //  flex-grow: 10;
-  //}
 `;
 
 const StyledLI = styled.li`
