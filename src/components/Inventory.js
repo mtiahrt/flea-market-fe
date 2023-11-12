@@ -7,6 +7,7 @@ import {
   SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY,
 } from '../queries/graphQL';
 import { useLocation } from 'react-router';
+import Card from './Card';
 
 const Inventory = () => {
   console.log('Inventory is rendering');
@@ -38,6 +39,7 @@ const Inventory = () => {
     <>
       <StyledDiv>
         <StyledInventory role="item-list">
+          <Card isItemInCart={false} inventoryItem={data[collectionName][1]} />
           {data[collectionName]?.map((y) => (
             <BasicCard
               key={`card${y.inventoryid}`}
