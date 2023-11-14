@@ -39,13 +39,12 @@ const Inventory = () => {
     <>
       <StyledDiv>
         <StyledInventory role="item-list">
-          <Card isItemInCart={false} inventoryItem={data[collectionName][1]} />
           {data[collectionName]?.map((y) => (
-            <BasicCard
+            <Card
               key={`card${y.inventoryid}`}
               isItemInCart={y.cartid ? true : false}
               inventoryItem={y}
-            ></BasicCard>
+            />
           ))}
         </StyledInventory>
       </StyledDiv>

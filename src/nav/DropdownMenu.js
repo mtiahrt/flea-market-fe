@@ -42,5 +42,4 @@ const StyledDiv = styled.div`
   border: var(--border);
   border-radius: var(--border-radius);
   overflow: hidden;
-  z-index: 2;
 `;
