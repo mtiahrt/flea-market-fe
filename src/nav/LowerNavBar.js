@@ -62,6 +62,7 @@ const StyledNav = styled.nav`
   top: 2.5em;
   border-bottom: 5px solid var(--backdrop-color);
   border-top: 2px solid #2e4926;
+  z-index: 1;
   @media (max-width: 52em) {
     display: none;
   }

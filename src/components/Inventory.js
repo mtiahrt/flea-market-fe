@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
-import BasicCard from './BasicCard';
 import {
   SEARCH_INVENTORY_BY_CATEGORY,
   SEARCH_INVENTORY_BY_CATEGORY_SUBCATEGORY,
