@@ -32,7 +32,7 @@
 }
 
 .card-footer {
-    padding: 2rem 2rem 3.5rem 2rem;
+    padding: 2rem 2rem 2rem 2rem;
     transition: all 0.3s ease;
     border-top: 1px solid rgb(238, 238, 238);
 }
@@ -51,6 +51,9 @@
 .card-footer p {
     font-size: 1.5rem;
     line-height: 25px;
+}
+p.card-footer-description{
+    font-size: var(--font-size-body);
 }
 
 .add-to-cart {

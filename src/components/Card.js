@@ -76,7 +76,7 @@ function Card({ inventoryItem, isItemInCart }) {
       </div>
       <div className="card-footer">
         <h3>{inventoryItem.manufacturerName}</h3>
-        <p>{inventoryItem.description}</p>
+        <p className="card-footer-description">{inventoryItem.description}</p>
       </div>
       <a href="#" onClick={(e) => handleCartClick(e)} className="add-to-cart">
         {isItemInCart && user?.id ? 'Remove from Cart' : 'Add To Cart'}
