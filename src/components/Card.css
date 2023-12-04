@@ -1,10 +1,10 @@
 .card {
     display: flex;
+    position: relative;
     flex-direction: column;
     background: white;
     border: 1px solid #343637;
-    overflow: hidden;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
 .card .card-image-container {
     width: 100%;
@@ -61,7 +61,6 @@ p.card-footer-description{
     padding: 1em 1em 1em 1em;
 }
 
-
 .card:hover .add-to-cart {
     color: rgb(56, 62, 58);
 }
@@ -77,30 +76,23 @@ p.card-footer-description{
     color: rgb(56, 62, 58);
 }
 
-.card::before {
-    content: "";
-    display: block;
-    width: 100%;
-    background-size: 200%;
-    background-position: 100%;
-    background-repeat: no-repeat;
-    bottom: 0;
-    left: 0;
+.card:hover {
     transition: all 0.5s;
-}
-
-.card:hover::before {
     background-position: 0%;
 }
 .slider{
-    width:100%;
     background: linear-gradient(to left, white 50%, var(--icon-background-color) 50%) right;
     background-size: 200% 100%;
     transition:all .5s ease;
     height: 5px;
+    border-radius: var(--border-radius);
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 .card-hover-enter-done{
     background-position:left bottom;
     cursor: pointer;
+    margin-left: 0;
+    margin-right: 0;
 }

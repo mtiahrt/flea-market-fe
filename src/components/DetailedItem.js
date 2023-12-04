@@ -184,7 +184,7 @@ const StyledDiv = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 0.2rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   @media (max-width: 40em) {
     padding: 1rem;
     .detail-container {

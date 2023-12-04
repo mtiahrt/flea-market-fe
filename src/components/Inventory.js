@@ -62,8 +62,7 @@ const StyledInventory = styled.div`
   gap: 25px;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 0.7fr));
   justify-content: center;
-  margin-right: 4rem;
-  margin-left: 4rem;
+  margin: 1rem 2rem 1rem 2rem;
   @media (max-width: 40em) {
     margin: var(--margin-mobile);
   }

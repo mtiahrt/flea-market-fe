@@ -104,7 +104,7 @@ export default function Login() {
 
 const StyledDiv = styled.div`
   color: #4a5568;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   margin-top: 32px;
   padding: 10px;
 `;

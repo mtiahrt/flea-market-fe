@@ -1,6 +1,6 @@
 :root {
   --margin-web: 0 20%;
-  --margin-mobile: 1rem;
+  --margin-mobile: .5rem;
   --mobile-size: 40em;
   --header-color: #7D6389;
   --nav-bar-color: #8EA489;
@@ -73,14 +73,20 @@ a {
   text-decoration: none;
   color: black;
 }
+.cart-item{
+  position: absolute;
+  bottom: 10px;
+  z-index: 1;
+}
 
 .send-to-cart.cart-item {
   display: block;
-  animation: xAxis 1s forwards cubic-bezier(1, 0.44, 0.84, 0.165);
+  animation: xAxis 4s forwards cubic-bezier(1, 0.44, 0.84, 0.165);
 }
 
 .send-to-cart.cart-item::before {
-  animation: yAxis 1s alternate forwards cubic-bezier(0.165, 0.84, 0.44, 1);
+  content: "1";
+  animation: yAxis 4s alternate forwards cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 
